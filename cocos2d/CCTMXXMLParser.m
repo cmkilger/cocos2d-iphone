@@ -283,8 +283,7 @@
 		
 		// build full path
 		NSString *imagename = [attributeDict valueForKey:@"source"];		
-		NSString *path = [filename_ stringByDeletingLastPathComponent];		
-		tileset.sourceImage = [path stringByAppendingPathComponent:imagename];
+		tileset.sourceImage = [CCFileUtils fullPathFromRelativePath:imagename];
 
 	} else if([elementName isEqualToString:@"data"]) {
 		NSString *encoding = [attributeDict valueForKey:@"encoding"];
