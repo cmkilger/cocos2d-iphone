@@ -282,8 +282,15 @@
 		CCTMXTilesetInfo *tileset = [tilesets_ lastObject];
 		
 		// build full path
-		NSString *imagename = [attributeDict valueForKey:@"source"];		
-		tileset.sourceImage = [CCFileUtils fullPathFromRelativePath:imagename];
+		NSString *imagename = [attributeDict valueForKey:@"source"];
+		if ([imagename isAbsolutePath]) {
+			tileset.sourceImage = imagename;
+		}
+		else {
+			NSString *path = [filename_ stringByDeletingLastPathComponent];    
+			tileset.sourceImage = [path stringByAppendingPathComponent:imagename];
+			tileset.sourceImage = [tileset.sourceImage stringByStandardizingPath];
+		}
 
 	} else if([elementName isEqualToString:@"data"]) {
 		NSString *encoding = [attributeDict valueForKey:@"encoding"];
