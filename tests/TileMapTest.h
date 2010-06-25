@@ -51,6 +51,10 @@
 {}
 @end
 
+@interface TMXDynamicHexTest : TileDemo
+{}
+@end
+
 @interface TMXIsoTest : TileDemo
 {}
 @end

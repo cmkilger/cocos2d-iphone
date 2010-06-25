@@ -25,6 +25,7 @@ static NSString *transitions[] = {
 			@"TMXIsoTest2",
 			@"TMXUncompressedTest",
 			@"TMXHexTest",
+			@"TMXDynamicHexTest",
 			@"TMXReadWriteTest",
 			@"TMXTilesetTest",
 			@"TMXOrthoObjectsTest",
@@ -600,6 +601,242 @@ Class restartAction()
 -(NSString *) title
 {
 	return @"TMX Hex test";
+}
+@end
+
+
+#pragma mark -
+#pragma mark TMXDynamicHexTest
+
+#import <zlib.h>
+
+@implementation TMXDynamicHexTest
+- (NSData *)gzipDeflateData:(NSData *)data
+{
+	if ([data length] == 0) return data;
+	
+	z_stream strm;
+	
+	strm.zalloc = Z_NULL;
+	strm.zfree = Z_NULL;
+	strm.opaque = Z_NULL;
+	strm.total_out = 0;
+	strm.next_in=(Bytef *)[data bytes];
+	strm.avail_in = [data length];
+	
+	if (deflateInit2(&strm, Z_DEFAULT_COMPRESSION, Z_DEFLATED, (15+16), 8, Z_DEFAULT_STRATEGY) != Z_OK) return nil;
+	
+	NSMutableData *compressed = [NSMutableData dataWithLength:16384];  // 16K chunks for expansion
+	
+	do {
+		if (strm.total_out >= [compressed length])
+			[compressed increaseLengthBy: 16384];
+		
+		strm.next_out = [compressed mutableBytes] + strm.total_out;
+		strm.avail_out = [compressed length] - strm.total_out;
+		
+		deflate(&strm, Z_FINISH);  
+		
+	} while (strm.avail_out == 0);
+	
+	deflateEnd(&strm);
+	
+	[compressed setLength: strm.total_out];
+	return [NSData dataWithData:compressed];
+}
+
+//  Created by Matt Gallagher on 2009/06/03.
+//  Copyright 2009 Matt Gallagher. All rights reserved.
+//
+//  Permission is given to use this source code file, free of charge, in any
+//  project, commercial or otherwise, entirely at your risk, with the condition
+//  that any redistribution (in part or whole) of source code must retain
+//  this copyright and permission notice. Attribution in compiled projects is
+//  appreciated but not required.
+//
+static unsigned char base64EncodeLookup[65] =
+"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+
+char *NewBase64Encode(
+					  const void *buffer,
+					  size_t length,
+					  bool separateLines,
+					  size_t *outputLength)
+{
+	const unsigned char *inputBuffer = (const unsigned char *)buffer;
+	
+#define MAX_NUM_PADDING_CHARS 2
+#define OUTPUT_LINE_LENGTH 64
+#define INPUT_LINE_LENGTH ((OUTPUT_LINE_LENGTH / BASE64_UNIT_SIZE) * BINARY_UNIT_SIZE)
+#define CR_LF_SIZE 2
+#define BINARY_UNIT_SIZE 3
+#define BASE64_UNIT_SIZE 4
+	
+	//
+	// Byte accurate calculation of final buffer size
+	//
+	size_t outputBufferSize =
+	((length / BINARY_UNIT_SIZE)
+	 + ((length % BINARY_UNIT_SIZE) ? 1 : 0))
+	* BASE64_UNIT_SIZE;
+	if (separateLines)
+	{
+		outputBufferSize +=
+		(outputBufferSize / OUTPUT_LINE_LENGTH) * CR_LF_SIZE;
+	}
+	
+	//
+	// Include space for a terminating zero
+	//
+	outputBufferSize += 1;
+	
+	//
+	// Allocate the output buffer
+	//
+	char *outputBuffer = (char *)malloc(outputBufferSize);
+	if (!outputBuffer)
+	{
+		return NULL;
+	}
+	
+	size_t i = 0;
+	size_t j = 0;
+	const size_t lineLength = separateLines ? INPUT_LINE_LENGTH : length;
+	size_t lineEnd = lineLength;
+	
+	while (true)
+	{
+		if (lineEnd > length)
+		{
+			lineEnd = length;
+		}
+		
+		for (; i + BINARY_UNIT_SIZE - 1 < lineEnd; i += BINARY_UNIT_SIZE)
+		{
+			//
+			// Inner loop: turn 48 bytes into 64 base64 characters
+			//
+			outputBuffer[j++] = base64EncodeLookup[(inputBuffer[i] & 0xFC) >> 2];
+			outputBuffer[j++] = base64EncodeLookup[((inputBuffer[i] & 0x03) << 4)
+												   | ((inputBuffer[i + 1] & 0xF0) >> 4)];
+			outputBuffer[j++] = base64EncodeLookup[((inputBuffer[i + 1] & 0x0F) << 2)
+												   | ((inputBuffer[i + 2] & 0xC0) >> 6)];
+			outputBuffer[j++] = base64EncodeLookup[inputBuffer[i + 2] & 0x3F];
+		}
+		
+		if (lineEnd == length)
+		{
+			break;
+		}
+		
+		//
+		// Add the newline
+		//
+		outputBuffer[j++] = '\r';
+		outputBuffer[j++] = '\n';
+		lineEnd += lineLength;
+	}
+	
+	if (i + 1 < length)
+	{
+		//
+		// Handle the single '=' case
+		//
+		outputBuffer[j++] = base64EncodeLookup[(inputBuffer[i] & 0xFC) >> 2];
+		outputBuffer[j++] = base64EncodeLookup[((inputBuffer[i] & 0x03) << 4)
+											   | ((inputBuffer[i + 1] & 0xF0) >> 4)];
+		outputBuffer[j++] = base64EncodeLookup[(inputBuffer[i + 1] & 0x0F) << 2];
+		outputBuffer[j++] =	'=';
+	}
+	else if (i < length)
+	{
+		//
+		// Handle the double '=' case
+		//
+		outputBuffer[j++] = base64EncodeLookup[(inputBuffer[i] & 0xFC) >> 2];
+		outputBuffer[j++] = base64EncodeLookup[(inputBuffer[i] & 0x03) << 4];
+		outputBuffer[j++] = '=';
+		outputBuffer[j++] = '=';
+	}
+	outputBuffer[j] = 0;
+	
+	//
+	// Set the output length and return the buffer
+	//
+	if (outputLength)
+	{
+		*outputLength = j;
+	}
+	return outputBuffer;
+}
+
+- (NSString *)base64EncodedStringWithData:(NSData *)data
+{
+	size_t outputLength;
+	char *outputBuffer =
+	NewBase64Encode([data bytes], [data length], true, &outputLength);
+	
+	NSString *result =
+	[[[NSString alloc]
+	  initWithBytes:outputBuffer
+	  length:outputLength
+	  encoding:NSASCIIStringEncoding]
+	 autorelease];
+	free(outputBuffer);
+	return result;
+}
+
+-(id) init
+{
+	if( (self=[super init]) ) {
+		CCColorLayer *color = [CCColorLayer layerWithColor:ccc4(64,64,64,255)];
+		[self addChild:color z:-1];
+		
+		//create tmx
+		NSMutableString * tmx = [NSMutableString string];
+		[tmx appendFormat:@"<?xml version=\"1.0\" encoding=\"UTF-8\"?>"];
+		[tmx appendFormat:@"<map version=\"1.0\" orientation=\"hexagonal\" width=\"5\" height=\"5\" tilewidth=\"175\" tileheight=\"150\">"];
+		[tmx appendFormat:@"<tileset firstgid=\"1\" name=\"bla\" tilewidth=\"175\" tileheight=\"150\">"];
+		[tmx appendFormat:@"<image source=\"%@\"/>", [[NSBundle mainBundle] pathForResource:@"TileMaps/hexa-tiles.png" ofType:nil]];//using absolute path for images
+		[tmx appendFormat:@"</tileset>"];
+		[tmx appendFormat:@"<layer name=\"Layer 0\" width=\"5\" height=\"5\">"];
+		[tmx appendFormat:@"<data encoding=\"base64\" compression=\"gzip\">"];
+		
+		UInt32 * data = calloc(25, sizeof(UInt32));
+		for (int i = 0; i < 25; i++) {
+			data[i] = arc4random()%6+1;
+		}
+		NSData * dataObject = [NSData dataWithBytes:data length:25*sizeof(UInt32)];
+		NSData * compressedData = [self gzipDeflateData:dataObject];
+		NSString * encodedData = [self base64EncodedStringWithData:compressedData];
+		[tmx appendFormat:@"%@", encodedData];
+		
+		[tmx appendFormat:@"</data>"];
+		[tmx appendFormat:@"</layer>"];
+		[tmx appendFormat:@"</map>"];
+		
+		//save to file
+		NSString * path = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
+		path = [path stringByAppendingPathComponent:@"hex-dynamictest.tmx"];
+		NSError * error = nil;
+		[tmx writeToFile:path atomically:YES encoding:NSUTF8StringEncoding error:&error];
+		if (error) {
+			NSLog(@"Error: %@", [error localizedDescription]);
+		}
+		
+		//use file
+		CCTMXTiledMap *map = [CCTMXTiledMap tiledMapWithTMXFile:path];
+		[self addChild:map z:0 tag:kTagTileMap];
+		
+		CGSize s = map.contentSize;
+		NSLog(@"ContentSize: %f, %f", s.width,s.height);
+	}	
+	return self;
+}
+
+-(NSString *) title
+{
+	return @"TMX Dynamic Hex test";
 }
 @end
 
@@ -1255,7 +1492,7 @@ Class restartAction()
 		
 		CCTMXTiledMap *map = [CCTMXTiledMap tiledMapWithTMXFile:@"TileMaps/orthogonal-test-movelayer.tmx"];
 		[self addChild:map z:0 tag:kTagTileMap];
-
+		
 		CGSize s = map.contentSize;
 		NSLog(@"ContentSize: %f, %f", s.width,s.height);
 		
