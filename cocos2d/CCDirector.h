@@ -191,28 +191,24 @@ and when to execute the Scenes.
 {
 	EAGLView	*openGLView_;
 
-	NSBundle* loadingBundle;
-
 	// internal timer
-	NSTimeInterval animationInterval;
-	NSTimeInterval oldAnimationInterval;
+	NSTimeInterval animationInterval_;
+	NSTimeInterval oldAnimationInterval_;
 
 	tPixelFormat pixelFormat_;
 	tDepthBufferFormat depthBufferFormat_;
-
-	/* landscape mode ? */
-	BOOL landscape;
 	
 	/* orientation */
 	ccDeviceOrientation	deviceOrientation_;
 	
 	/* display FPS ? */
-	BOOL displayFPS;
-	int frames;
-	ccTime accumDt;
-	ccTime frameRate;
+	BOOL displayFPS_;
+
+	int frames_;
+	ccTime accumDt_;
+	ccTime frameRate_;
 #if	CC_DIRECTOR_FAST_FPS
-	CCLabelAtlas *FPSLabel;
+	CCLabelAtlas *FPSLabel_;
 #endif
 	
 	/* is the running scene paused */
@@ -232,7 +228,7 @@ and when to execute the Scenes.
 	NSMutableArray *scenesStack_;
 	
 	/* last time the main loop was updated */
-	struct timeval lastUpdate;
+	struct timeval lastUpdate_;
 	/* delta time since last tick to main loop */
 	ccTime dt;
 	/* whether or not the next delta time will be zero */
@@ -252,9 +248,9 @@ and when to execute the Scenes.
 	
 	/* contentScaleFactor could be simulated */
 	BOOL	isContentScaleSupported_;
-	
+
 #if CC_ENABLE_PROFILERS
-	ccTime accumDtForProfiler;
+	ccTime accumDtForProfiler_;
 #endif
 }
 
@@ -436,6 +432,11 @@ and when to execute the Scenes.
  @warning Dont' call this function to start the main loop. To run the main loop call runWithScene
  */
 -(void) startAnimation;
+
+/** Draw the scene.
+ This method is called every frame. Don't call it manually.
+ */
+-(void) drawScene;
 
 // Memory Helper
 
