@@ -52,7 +52,7 @@
 		NSAssert( defaultFramebuffer_, @"Can't create default frame buffer");
         glGenRenderbuffersOES(1, &colorRenderbuffer_);
 		NSAssert( colorRenderbuffer_, @"Can't create default render buffer");
-				 
+
         glBindFramebufferOES(GL_FRAMEBUFFER_OES, defaultFramebuffer_);
         glBindRenderbufferOES(GL_RENDERBUFFER_OES, colorRenderbuffer_);
         glFramebufferRenderbufferOES(GL_FRAMEBUFFER_OES, GL_COLOR_ATTACHMENT0_OES, GL_RENDERBUFFER_OES, colorRenderbuffer_);
@@ -64,7 +64,7 @@
 //			glBindRenderbufferOES(GL_RENDERBUFFER_OES, depthBuffer_);
 //			glRenderbufferStorageOES(GL_RENDERBUFFER_OES, depthFormat_, 100, 100);
 //			glFramebufferRenderbufferOES(GL_FRAMEBUFFER_OES, GL_DEPTH_ATTACHMENT_OES, GL_RENDERBUFFER_OES, depthBuffer_);
-			
+
 			// default buffer
 //			glBindRenderbufferOES(GL_RENDERBUFFER_OES, colorRenderbuffer_);
 		}
@@ -78,126 +78,19 @@
 - (BOOL)resizeFromLayer:(CAEAGLLayer *)layer
 {	
     // Allocate color buffer backing based on the current layer size
-	CCLOG(@"cocos2d: contentScale:%f, contentsRect:%@, position:%@", layer.contentsScale, NSStringFromCGRect(layer.contentsRect), NSStringFromCGPoint(layer.position));
-	
     glBindRenderbufferOES(GL_RENDERBUFFER_OES, colorRenderbuffer_);
     [context_ renderbufferStorage:GL_RENDERBUFFER_OES fromDrawable:layer];
     glGetRenderbufferParameterivOES(GL_RENDERBUFFER_OES, GL_RENDERBUFFER_WIDTH_OES, &backingWidth_);
     glGetRenderbufferParameterivOES(GL_RENDERBUFFER_OES, GL_RENDERBUFFER_HEIGHT_OES, &backingHeight_);
 	
-	CCLOG(@"cocos2d: backingWidth:%d, backingHeight:%d", backingWidth_, backingHeight_);
-
-	GLenum status = glCheckFramebufferStatusOES(GL_FRAMEBUFFER_OES);
     if (glCheckFramebufferStatusOES(GL_FRAMEBUFFER_OES) != GL_FRAMEBUFFER_COMPLETE_OES)
     {
-		NSString * statusString = nil;
-		switch (glCheckFramebufferStatusOES(GL_FRAMEBUFFER_OES)) {
-			case GL_FRAMEBUFFER_OES:
-				statusString = @"GL_FRAMEBUFFER_OES";
-				break;
-			case GL_RENDERBUFFER_OES:
-				statusString = @"GL_RENDERBUFFER_OES";
-				break;
-			case GL_RGBA4_OES:
-				statusString = @"GL_RGBA4_OES";
-				break;
-			case GL_RGB5_A1_OES:
-				statusString = @"GL_RGB5_A1_OES";
-				break;
-			case GL_RGB565_OES:
-				statusString = @"GL_RGB565_OES";
-				break;
-			case GL_DEPTH_COMPONENT16_OES:
-				statusString = @"GL_DEPTH_COMPONENT16_OES";
-				break;
-			case GL_RENDERBUFFER_WIDTH_OES:
-				statusString = @"GL_RENDERBUFFER_WIDTH_OES";
-				break;
-			case GL_RENDERBUFFER_HEIGHT_OES:
-				statusString = @"GL_RENDERBUFFER_HEIGHT_OES";
-				break;
-			case GL_RENDERBUFFER_INTERNAL_FORMAT_OES:
-				statusString = @"GL_RENDERBUFFER_INTERNAL_FORMAT_OES";
-				break;
-			case GL_RENDERBUFFER_RED_SIZE_OES:
-				statusString = @"GL_RENDERBUFFER_RED_SIZE_OES";
-				break;
-			case GL_RENDERBUFFER_GREEN_SIZE_OES:
-				statusString = @"GL_RENDERBUFFER_GREEN_SIZE_OES";
-				break;
-			case GL_RENDERBUFFER_BLUE_SIZE_OES:
-				statusString = @"GL_RENDERBUFFER_BLUE_SIZE_OES";
-				break;
-			case GL_RENDERBUFFER_ALPHA_SIZE_OES:
-				statusString = @"GL_RENDERBUFFER_ALPHA_SIZE_OES";
-				break;
-			case GL_RENDERBUFFER_DEPTH_SIZE_OES:
-				statusString = @"GL_RENDERBUFFER_DEPTH_SIZE_OES";
-				break;
-			case GL_RENDERBUFFER_STENCIL_SIZE_OES:
-				statusString = @"GL_RENDERBUFFER_STENCIL_SIZE_OES";
-				break;
-			case GL_FRAMEBUFFER_ATTACHMENT_OBJECT_TYPE_OES:
-				statusString = @"GL_FRAMEBUFFER_ATTACHMENT_OBJECT_TYPE_OES";
-				break;
-			case GL_FRAMEBUFFER_ATTACHMENT_OBJECT_NAME_OES:
-				statusString = @"GL_FRAMEBUFFER_ATTACHMENT_OBJECT_NAME_OES";
-				break;
-			case GL_FRAMEBUFFER_ATTACHMENT_TEXTURE_LEVEL_OES:
-				statusString = @"GL_FRAMEBUFFER_ATTACHMENT_TEXTURE_LEVEL_OES";
-				break;
-			case GL_FRAMEBUFFER_ATTACHMENT_TEXTURE_CUBE_MAP_FACE_OES:
-				statusString = @"GL_FRAMEBUFFER_ATTACHMENT_TEXTURE_CUBE_MAP_FACE_OES";
-				break;
-			case GL_COLOR_ATTACHMENT0_OES:
-				statusString = @"GL_COLOR_ATTACHMENT0_OES";
-				break;
-			case GL_DEPTH_ATTACHMENT_OES:
-				statusString = @"GL_DEPTH_ATTACHMENT_OES";
-				break;
-			case GL_STENCIL_ATTACHMENT_OES:
-				statusString = @"GL_STENCIL_ATTACHMENT_OES";
-				break;
-			case GL_FRAMEBUFFER_COMPLETE_OES:
-				statusString = @"GL_FRAMEBUFFER_COMPLETE_OES";
-				break;
-			case GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT_OES:
-				statusString = @"GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT_OES";
-				break;
-			case GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT_OES:
-				statusString = @"GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT_OES";
-				break;
-			case GL_FRAMEBUFFER_INCOMPLETE_DIMENSIONS_OES:
-				statusString = @"GL_FRAMEBUFFER_INCOMPLETE_DIMENSIONS_OES";
-				break;
-			case GL_FRAMEBUFFER_INCOMPLETE_FORMATS_OES:
-				statusString = @"GL_FRAMEBUFFER_INCOMPLETE_FORMATS_OES";
-				break;
-			case GL_FRAMEBUFFER_UNSUPPORTED_OES:
-				statusString = @"GL_FRAMEBUFFER_UNSUPPORTED_OES";
-				break;
-			case GL_FRAMEBUFFER_BINDING_OES:
-				statusString = @"GL_FRAMEBUFFER_BINDING_OES";
-				break;
-			case GL_RENDERBUFFER_BINDING_OES:
-				statusString = @"GL_RENDERBUFFER_BINDING_OES";
-				break;
-			case GL_MAX_RENDERBUFFER_SIZE_OES:
-				statusString = @"GL_MAX_RENDERBUFFER_SIZE_OES";
-				break;
-			case GL_INVALID_FRAMEBUFFER_OPERATION_OES:
-				statusString = @"GL_INVALID_FRAMEBUFFER_OPERATION_OES";
-				break;
-			default:
-				statusString = @"Unknown";
-		}
-		
-        NSLog(@"Failed to make complete framebuffer object. %@ (0x%x)", statusString, status);
+        NSLog(@"Failed to make complete framebuffer object %x", glCheckFramebufferStatusOES(GL_FRAMEBUFFER_OES));
         return NO;
     }
 	
 	CCLOG(@"cocos2d: surface size: %dx%d", (int)backingWidth_, (int)backingHeight_);
-
+	
 	if (depthFormat_) {
 		if( ! depthBuffer_ )
 			glGenRenderbuffersOES(1, &depthBuffer_);
@@ -205,10 +98,10 @@
 		glBindRenderbufferOES(GL_RENDERBUFFER_OES, depthBuffer_);
 		glRenderbufferStorageOES(GL_RENDERBUFFER_OES, depthFormat_, backingWidth_, backingHeight_);
 		glFramebufferRenderbufferOES(GL_FRAMEBUFFER_OES, GL_DEPTH_ATTACHMENT_OES, GL_RENDERBUFFER_OES, depthBuffer_);
-
+		
 		// bind color buffer
 		glBindRenderbufferOES(GL_RENDERBUFFER_OES, colorRenderbuffer_);
-
+		
 	}
     return YES;
 }
@@ -245,7 +138,7 @@
 		glDeleteRenderbuffersOES(1, &depthBuffer_);
 		depthBuffer_ = 0;
 	}
-	
+
     // Tear down context
     if ([EAGLContext currentContext] == context_)
         [EAGLContext setCurrentContext:nil];
