@@ -315,7 +315,7 @@ Class restartAction()
 		CGSize s = map.contentSize;
 		NSLog(@"ContentSize: %f, %f", s.width,s.height);
 		
-		for( CCSpriteSheet* child in [map children] ) {
+		for( CCSpriteBatchNode* child in [map children] ) {
 			[[child texture] setAntiAliasTexParameters];
 		}
 		
@@ -358,7 +358,7 @@ Class restartAction()
 		CGSize s = map.contentSize;
 		NSLog(@"ContentSize: %f, %f", s.width,s.height);
 
-		for( CCSpriteSheet* child in [map children] ) {
+		for( CCSpriteBatchNode* child in [map children] ) {
 			[[child texture] setAntiAliasTexParameters];
 		}
 
@@ -387,7 +387,7 @@ Class restartAction()
 		CGSize s = map.contentSize;
 		NSLog(@"ContentSize: %f, %f", s.width,s.height);
 		
-		for( CCSpriteSheet* child in [map children] ) {
+		for( CCSpriteBatchNode* child in [map children] ) {
 			[[child texture] setAntiAliasTexParameters];
 		}
 		
@@ -416,7 +416,7 @@ Class restartAction()
 		CGSize s1 = map.contentSize;
 		NSLog(@"ContentSize: %f, %f", s1.width,s1.height);
 		
-		for( CCSpriteSheet* child in [map children] ) {
+		for( CCSpriteBatchNode* child in [map children] ) {
 			[[child texture] setAntiAliasTexParameters];
 		}
 		
@@ -1594,7 +1594,9 @@ char *NewBase64Encode(
 
 - (void)applicationWillTerminate:(UIApplication *)application
 {	
-	[[CCDirector sharedDirector] end];
+	CCDirector *director = [CCDirector sharedDirector];
+	[[director openGLView] removeFromSuperview];
+	[director end];
 }
 
 // purge memory

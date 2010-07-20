@@ -13,6 +13,7 @@ enum {
 
 static int sceneIdx=-1;
 static NSString *transitions[] = {
+	
 		@"DemoFlower",
 		@"DemoGalaxy",
 		@"DemoFirework",
@@ -1452,9 +1453,10 @@ Class restartAction()
 	[[CCDirector sharedDirector] startAnimation];
 }
 
+// application will be killed
 - (void)applicationWillTerminate:(UIApplication *)application
 {	
-	[[CCDirector sharedDirector] end];
+	CC_DIRECTOR_END();
 }
 
 // purge memory
