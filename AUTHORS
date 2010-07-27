@@ -149,11 +149,12 @@ People/companies who were/are contributing code to cocos2d for iPhone (alphabeti
 		BitmapFontAtlas supports sub-directories patch
 	* Joe Vennix:
 		patches for CocosNode
-	* Jon Kean:
+	* Jon Kean (http://twitter.com/awesomestsoft):
 		PointParticle asserts if size > 64
 		Fixed memory leaks when initialization of some nodes failed
 		Added removeFromParent method in CCNode
 		Improved performance in CCArray
+		Simplified CCArray getNSArray code
 		Particles: Uses Quad in ARMv7 and Point in ARMv6. patch.
 	* Jose Miguel Gomez Gonzalez (http://www.itlgames.com)
 		Author of the games tab in the cocos2d site
@@ -175,6 +176,8 @@ People/companies who were/are contributing code to cocos2d for iPhone (alphabeti
 		patches for Labels in Texture2D
 	* Keith Peters:
 		author of Bezier drawing primitives
+	* Kristoffer Grönlund
+		Added multiline support in CCBitmapFontAtlas
 	* Lam Pham (http://www.fancyratstudios.com/)
 		Author of CCProgressTimer node
 		Author of CCProgressTo and CCProgressFromTo actions
@@ -213,7 +216,7 @@ People/companies who were/are contributing code to cocos2d for iPhone (alphabeti
 		author of CCPropertyAction
 	* magicyu (crmagicxxx):
 		CocosLive client supports ranking request patch
-	* manucorporat (manu.valladolid) (http://manucorporat.blogspot.com/):
+	* manucorporat (manu.valladolid) (http://www.abstractionworks.com/):
 		added isPaused property to Director
 		patches for the setColor API for the RGBA protocol
 		MenuItemLabel: color is saved when item is disabled
@@ -229,6 +232,9 @@ People/companies who were/are contributing code to cocos2d for iPhone (alphabeti
 		Added CCArray in CCNode and CCSpriteSheet to improve performance
 		ccCArray: added missing functions so that it easier to wrap a fast enum object around it.
 		Improved performance in serveral places by using CCARRAY_FOREACH
+		Particles: also work with vertex array list (compile time option). patch.
+	* Marco Tillemans:
+		RenderTexture renders images with correct blend function. patch.
 	* marcu.catalin:
 		Menu items are not consumed is items are not visible
 	* Mark Cooke:
@@ -291,6 +297,7 @@ People/companies who were/are contributing code to cocos2d for iPhone (alphabeti
 		Author of Zwoptex editor. Added support for Zwoptex
 		Added support for left,right,top,bottom trim in CCSpriteFrameCache (patch).
 		Added support for Zwoptex rotated frames. patch
+		Author of Zwoptex Test
 	* Rolandas Razma (gamebit):
 		added support for auto-remove-on-finish in particles
 		TMX maps support visibility and opacity patch

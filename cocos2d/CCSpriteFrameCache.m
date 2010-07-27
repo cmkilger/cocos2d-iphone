@@ -67,7 +67,8 @@ static CCSpriteFrameCache *sharedSpriteFrameCache_=nil;
 -(id) init
 {
 	if( (self=[super init]) ) {
-		spriteFrames = [[NSMutableDictionary alloc] initWithCapacity: 100];
+		spriteFrames_ = [[NSMutableDictionary alloc] initWithCapacity: 100];
+		spriteFramesAliases_ = [[NSMutableDictionary alloc] initWithCapacity:10];
 	}
 	
 	return self;
@@ -75,14 +76,15 @@ static CCSpriteFrameCache *sharedSpriteFrameCache_=nil;
 
 - (NSString*) description
 {
-	return [NSString stringWithFormat:@"<%@ = %08X | num of sprite frames =  %i>", [self class], self, [spriteFrames count]];
+	return [NSString stringWithFormat:@"<%@ = %08X | num of sprite frames =  %i>", [self class], self, [spriteFrames_ count]];
 }
 
 -(void) dealloc
 {
 	CCLOGINFO(@"cocos2d: deallocing %@", self);
 	
-	[spriteFrames release];
+	[spriteFrames_ release];
+	[spriteFramesAliases_ release];
 	[super dealloc];
 }
 
@@ -91,15 +93,15 @@ static CCSpriteFrameCache *sharedSpriteFrameCache_=nil;
 -(void) addSpriteFramesWithDictionary:(NSDictionary*)dictionary texture:(CCTexture2D*)texture
 {
 	/*
-	Supported Zwoptex Formats:
-		enum {
-			ZWTCoordinatesListXMLFormat_Legacy = 0 // flash version
-			ZWTCoordinatesListXMLFormat_v1_0, // desktop version
-			ZWTCoordinatesListXMLFormat_v1_1, // desktop version - adds rotated support
-		};
+	 Supported Zwoptex Formats:
+	 ZWTCoordinatesFormatOptionXMLLegacy = 0, // Flash Version
+	 ZWTCoordinatesFormatOptionXML1_0 = 1, // Desktop Version 0.0 - 0.4b
+	 ZWTCoordinatesFormatOptionXML1_1 = 2, // Desktop Version 1.0.0 - 1.0.1
+	 ZWTCoordinatesFormatOptionXML1_2 = 3, // Desktop Version 1.0.2+
 	*/
 	NSDictionary *metadataDict = [dictionary objectForKey:@"metadata"];
 	NSDictionary *framesDict = [dictionary objectForKey:@"frames"];
+
 	int format = 0;
 	
 	// get the format
@@ -108,11 +110,10 @@ static CCSpriteFrameCache *sharedSpriteFrameCache_=nil;
 	}
 	
 	// check the format
-	if(format < 0 || format > 2) {
-		NSAssert(NO,@"cocos2d: WARNING: format is not supported for CCSpriteFrameCache addSpriteFramesWithDictionary:texture:");
-		return;
-	}
+	NSAssert( format >= 0 && format <= 3, @"cocos2d: WARNING: format is not supported for CCSpriteFrameCache addSpriteFramesWithDictionary:texture:");
 	
+	
+	// add real frames
 	for(NSString *frameDictKey in framesDict) {
 		NSDictionary *frameDict = [framesDict objectForKey:frameDictKey];
 		CCSpriteFrame *spriteFrame;
@@ -137,21 +138,44 @@ static CCSpriteFrameCache *sharedSpriteFrameCache_=nil;
 		} else if(format == 1 || format == 2) {
 			CGRect frame = CGRectFromString([frameDict objectForKey:@"frame"]);
 			BOOL rotated = NO;
-			if(format == 2) {
+			
+			// rotation
+			if(format == 2)
 				rotated = [[frameDict objectForKey:@"rotated"] boolValue];
-			}
+			
 			CGPoint offset = CGPointFromString([frameDict objectForKey:@"offset"]);
 			CGSize sourceSize = CGSizeFromString([frameDict objectForKey:@"sourceSize"]);
+			
 			// create frame
 			spriteFrame = [CCSpriteFrame frameWithTexture:texture rect:frame rotated:rotated offset:offset originalSize:sourceSize];
-		} else {
-			CCLOG(@"cocos2d: Unsupported Zwoptex version. Update cocos2d");
+		} else if(format == 3) {
+			// get values
+			CGSize spriteSize = CGSizeFromString([frameDict objectForKey:@"spriteSize"]);
+			CGPoint spriteOffset = CGPointFromString([frameDict objectForKey:@"spriteOffset"]);
+			CGSize spriteSourceSize = CGSizeFromString([frameDict objectForKey:@"spriteSourceSize"]);
+			CGRect textureRect = CGRectFromString([frameDict objectForKey:@"textureRect"]);
+			BOOL textureRotated = [[frameDict objectForKey:@"textureRotated"] boolValue];
+			
+			// get aliases
+			NSArray *aliases = [frameDict objectForKey:@"aliases"];
+			for(NSString *alias in aliases) {
+				if( [spriteFramesAliases_ objectForKey:alias] )
+					CCLOG(@"cocos2d: WARNING: an alias with name %@ already exists",alias);
+				
+				[spriteFramesAliases_ setObject:frameDictKey forKey:alias];
+			}
+			
+			// create frame
+			spriteFrame = [CCSpriteFrame frameWithTexture:texture 
+													 rect:CGRectMake(textureRect.origin.x, textureRect.origin.y, spriteSize.width, spriteSize.height) 
+												  rotated:textureRotated 
+												   offset:spriteOffset 
+											 originalSize:spriteSourceSize];
 		}
 
 		// add sprite frame
-		[spriteFrames setObject:spriteFrame forKey:frameDictKey];
+		[spriteFrames_ setObject:spriteFrame forKey:frameDictKey];
 	}
-	
 }
 
 -(void) addSpriteFramesWithFile:(NSString*)plist texture:(CCTexture2D*)texture
@@ -178,40 +202,59 @@ static CCSpriteFrameCache *sharedSpriteFrameCache_=nil;
 
 -(void) addSpriteFrame:(CCSpriteFrame*)frame name:(NSString*)frameName
 {
-	[spriteFrames setObject:frame forKey:frameName];
+	[spriteFrames_ setObject:frame forKey:frameName];
 }
 
 #pragma mark CCSpriteFrameCache - removing
 
 -(void) removeSpriteFrames
 {
-	[spriteFrames removeAllObjects];
+	[spriteFrames_ removeAllObjects];
+	[spriteFramesAliases_ removeAllObjects];
 }
 
 -(void) removeUnusedSpriteFrames
 {
-	NSArray *keys = [spriteFrames allKeys];
+	NSArray *keys = [spriteFrames_ allKeys];
 	for( id key in keys ) {
-		id value = [spriteFrames objectForKey:key];		
+		id value = [spriteFrames_ objectForKey:key];		
 		if( [value retainCount] == 1 ) {
 			CCLOG(@"cocos2d: CCSpriteFrameCache: removing unused frame: %@", key);
-			[spriteFrames removeObjectForKey:key];
+			[spriteFrames_ removeObjectForKey:key];
 		}
 	}	
 }
 
 -(void) removeSpriteFrameByName:(NSString*)name
 {
-	[spriteFrames removeObjectForKey:name];
+	// explicit nil handling
+	if( ! name )
+		return;
+	
+	// Is this an alias ?
+	NSString *key = [spriteFramesAliases_ objectForKey:name];
+	
+	if( key ) {
+		[spriteFrames_ removeObjectForKey:key];
+		[spriteFramesAliases_ removeObjectForKey:name];
+
+	} else
+		[spriteFrames_ removeObjectForKey:name];
 }
 
 #pragma mark CCSpriteFrameCache - getting
 
 -(CCSpriteFrame*) spriteFrameByName:(NSString*)name
 {
-	CCSpriteFrame *frame = [spriteFrames objectForKey:name];
-	if( ! frame )
-		CCLOG(@"cocos2d: CCSpriteFrameCache: Frame '%@' not found", name);
+	CCSpriteFrame *frame = [spriteFrames_ objectForKey:name];
+	if( ! frame ) {
+		// try alias dictionary
+		NSString *key = [spriteFramesAliases_ objectForKey:name];
+		frame = [spriteFrames_ objectForKey:key];
+		
+		if( ! frame )
+			CCLOG(@"cocos2d: CCSpriteFrameCache: Frame '%@' not found", name);
+	}
 	
 	return frame;
 }
@@ -220,7 +263,7 @@ static CCSpriteFrameCache *sharedSpriteFrameCache_=nil;
 
 -(CCSprite*) createSpriteWithFrameName:(NSString*)name
 {
-	CCSpriteFrame *frame = [spriteFrames objectForKey:name];
+	CCSpriteFrame *frame = [spriteFrames_ objectForKey:name];
 	return [CCSprite spriteWithSpriteFrame:frame];
 }
 @end

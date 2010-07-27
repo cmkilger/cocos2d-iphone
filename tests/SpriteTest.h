@@ -129,6 +129,10 @@
 }
 @end
 
+@interface SpriteFrameAliasNameTest : SpriteDemo
+{}
+@end
+
 @interface SpriteOffsetAnchorRotation : SpriteDemo
 {}
 @end
