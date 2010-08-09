@@ -10,49 +10,49 @@
 
 #define TRANSITION_DURATION (1.2f)
 
-@interface FadeWhiteTransition : CCFadeTransition 
+@interface FadeWhiteTransition : CCTransitionFade
 +(id) transitionWithDuration:(ccTime) t scene:(CCScene*)s;
 @end
-@interface FlipXLeftOver : CCFlipXTransition 
+@interface FlipXLeftOver : CCTransitionFlipX 
 +(id) transitionWithDuration:(ccTime) t scene:(CCScene*)s;
 @end
-@interface FlipXRightOver : CCFlipXTransition 
+@interface FlipXRightOver : CCTransitionFlipX 
 +(id) transitionWithDuration:(ccTime) t scene:(CCScene*)s;
 @end
-@interface FlipYUpOver : CCFlipYTransition 
+@interface FlipYUpOver : CCTransitionFlipY 
 +(id) transitionWithDuration:(ccTime) t scene:(CCScene*)s;
 @end
-@interface FlipYDownOver : CCFlipYTransition 
+@interface FlipYDownOver : CCTransitionFlipY 
 +(id) transitionWithDuration:(ccTime) t scene:(CCScene*)s;
 @end
-@interface FlipAngularLeftOver : CCFlipAngularTransition 
+@interface FlipAngularLeftOver : CCTransitionFlipAngular 
 +(id) transitionWithDuration:(ccTime) t scene:(CCScene*)s;
 @end
-@interface FlipAngularRightOver : CCFlipAngularTransition 
+@interface FlipAngularRightOver : CCTransitionFlipAngular 
 +(id) transitionWithDuration:(ccTime) t scene:(CCScene*)s;
 @end
-@interface ZoomFlipXLeftOver : CCZoomFlipXTransition 
+@interface ZoomFlipXLeftOver : CCTransitionZoomFlipX 
 +(id) transitionWithDuration:(ccTime) t scene:(CCScene*)s;
 @end
-@interface ZoomFlipXRightOver : CCZoomFlipXTransition 
+@interface ZoomFlipXRightOver : CCTransitionZoomFlipX 
 +(id) transitionWithDuration:(ccTime) t scene:(CCScene*)s;
 @end
-@interface ZoomFlipYUpOver : CCZoomFlipYTransition 
+@interface ZoomFlipYUpOver : CCTransitionZoomFlipY 
 +(id) transitionWithDuration:(ccTime) t scene:(CCScene*)s;
 @end
-@interface ZoomFlipYDownOver : CCZoomFlipYTransition 
+@interface ZoomFlipYDownOver : CCTransitionZoomFlipY 
 +(id) transitionWithDuration:(ccTime) t scene:(CCScene*)s;
 @end
-@interface ZoomFlipAngularLeftOver : CCZoomFlipAngularTransition 
+@interface ZoomFlipAngularLeftOver : CCTransitionZoomFlipAngular 
 +(id) transitionWithDuration:(ccTime) t scene:(CCScene*)s;
 @end
-@interface ZoomFlipAngularRightOver : CCZoomFlipAngularTransition 
+@interface ZoomFlipAngularRightOver : CCTransitionZoomFlipAngular 
 +(id) transitionWithDuration:(ccTime) t scene:(CCScene*)s;
 @end
-@interface PageTransitionForward : CCPageTurnTransition
+@interface TransitionPageForward : CCTransitionPageTurn
 +(id) transitionWithDuration:(ccTime) t scene:(CCScene*)s;
 @end
-@interface PageTransitionBackward : CCPageTurnTransition
+@interface TransitionPageBackward : CCTransitionPageTurn
 +(id) transitionWithDuration:(ccTime) t scene:(CCScene*)s;
 @end
 
@@ -124,13 +124,13 @@
 }
 @end
 
-@implementation PageTransitionForward
+@implementation TransitionPageForward
 +(id) transitionWithDuration:(ccTime) t scene:(CCScene*)s {
 	return [self transitionWithDuration:t scene:s backwards:NO];
 }
 @end
 
-@implementation PageTransitionBackward
+@implementation TransitionPageBackward
 +(id) transitionWithDuration:(ccTime) t scene:(CCScene*)s {
 	return [self transitionWithDuration:t scene:s backwards:YES];
 }
@@ -141,20 +141,20 @@
 
 static int sceneIdx=0;
 static NSString *transitions[] = {
-						@"CCJumpZoomTransition",
-						@"CCCrossFadeTransition",
-						@"CCRadialCCWTransition",
-						@"CCRadialCWTransition",
-						@"PageTransitionForward",
-						@"PageTransitionBackward",
-						@"CCFadeTRTransition",
-						@"CCFadeBLTransition",
-						@"CCFadeUpTransition",
-						@"CCFadeDownTransition",
-						@"CCTurnOffTilesTransition",
-						@"CCSplitRowsTransition",
-						@"CCSplitColsTransition",
-						@"CCFadeTransition",
+						@"CCTransitionJumpZoom",
+						@"CCTransitionCrossFade",
+						@"CCTransitionRadialCCW",
+						@"CCTransitionRadialCW",
+						@"TransitionPageForward",
+						@"TransitionPageBackward",
+						@"CCTransitionFadeTR",
+						@"CCTransitionFadeBL",
+						@"CCTransitionFadeUp",
+						@"CCTransitionFadeDown",
+						@"CCTransitionTurnOffTiles",
+						@"CCTransitionSplitRows",
+						@"CCTransitionSplitCols",
+						@"CCTransitionFade",
 						@"FadeWhiteTransition",
 						@"FlipXLeftOver",
 						@"FlipXRightOver",
@@ -168,22 +168,22 @@ static NSString *transitions[] = {
 						@"ZoomFlipYDownOver",
 						@"ZoomFlipAngularLeftOver",
 						@"ZoomFlipAngularRightOver",
-						@"CCShrinkGrowTransition",
-						@"CCRotoZoomTransition",
-						@"CCMoveInLTransition",
-						@"CCMoveInRTransition",
-						@"CCMoveInTTransition",
-						@"CCMoveInBTransition",
-						@"CCSlideInLTransition",
-						@"CCSlideInRTransition",
-						@"CCSlideInTTransition",
-						@"CCSlideInBTransition",
+						@"CCTransitionShrinkGrow",
+						@"CCTransitionRotoZoom",
+						@"CCTransitionMoveInL",
+						@"CCTransitionMoveInR",
+						@"CCTransitionMoveInT",
+						@"CCTransitionMoveInB",
+						@"CCTransitionSlideInL",
+						@"CCTransitionSlideInR",
+						@"CCTransitionSlideInT",
+						@"CCTransitionSlideInB",
 };
 
 Class nextTransition()
 {	
 	// HACK: else NSClassFromString will fail
-	[CCRadialCCWTransition node];
+	[CCTransitionRadialCCW node];
 	
 	sceneIdx++;
 	sceneIdx = sceneIdx % ( sizeof(transitions) / sizeof(transitions[0]) );
@@ -195,7 +195,7 @@ Class nextTransition()
 Class backTransition()
 {
 	// HACK: else NSClassFromString will fail
-	[CCFadeTransition node];
+	[CCTransitionFade node];
 
 	sceneIdx--;
 	int total = ( sizeof(transitions) / sizeof(transitions[0]) );
@@ -209,7 +209,7 @@ Class backTransition()
 Class restartTransition()
 {
 	// HACK: else NSClassFromString will fail
-	[CCFadeTransition node];
+	[CCTransitionFade node];
 
 	NSString *r = transitions[sceneIdx];
 	Class c = NSClassFromString(r);

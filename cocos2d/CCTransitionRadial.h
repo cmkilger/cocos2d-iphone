@@ -23,11 +23,26 @@
  *
  */
 
+#import "CCTransition.h"
+#import "CCProgressTimer.h"
+#import "CCProgressTimerActions.h"
 
-/*
+/** CCTransitionRadialCCW transition.
+ A counter colock-wise radial transition to the next scene
+ */
+@interface CCTransitionRadialCCW : CCTransitionScene
+@end
 
-EMPTY FILE
+/* will be removed in v1.0.1 */
+DEPRECATED_ATTRIBUTE @interface CCRadialCCWTransition : CCTransitionRadialCCW
+@end
 
-Will be removed in cocos2d v1.0.1
-
+/** CCTransitionRadialCW transition.
+ A counter colock-wise radial transition to the next scene
 */
+@interface CCTransitionRadialCW : CCTransitionRadialCCW
+@end
+
+/* will be removed in v1.0.1 */
+DEPRECATED_ATTRIBUTE @interface CCRadialCWTransition : CCTransitionRadialCW
+@end

@@ -56,7 +56,7 @@ struct transformValues_ {
 -(void)updateBlendFunc;
 -(void) initAnimationDictionary;
 -(void) setTextureRect:(CGRect)rect rotated:(BOOL)rotated untrimmedSize:(CGSize)size;
--(struct transformValues_) getTransformValues;	// optimization
+-(void) getTransformValues:(struct transformValues_*)tv;	// optimization
 @end
 
 @implementation CCSprite
@@ -458,58 +458,6 @@ struct transformValues_ {
 	}
 }
 
--(void)ignoreupdateTextureCoords:(CGRect)rect
-{
-	
-	float atlasWidth = texture_.pixelsWide;
-	float atlasHeight = texture_.pixelsHigh;
-	
-	float left,right,top,bottom;
-	
-	if(rectRotated_)
-	{
-		left = rect.origin.x / atlasWidth;
-		right = (rect.origin.x + rect.size.height) / atlasWidth;
-		top = rect.origin.y / atlasHeight;
-		bottom = (rect.origin.y + rect.size.width) / atlasHeight;
-		
-		if( flipX_)
-			CC_SWAP(top,bottom);
-		if( flipY_)
-			CC_SWAP(left,right);
-		
-		quad_.bl.texCoords.u = left;
-		quad_.bl.texCoords.v = top;
-		quad_.br.texCoords.u = left;
-		quad_.br.texCoords.v = bottom;
-		quad_.tl.texCoords.u = right;
-		quad_.tl.texCoords.v = top;
-		quad_.tr.texCoords.u = right;
-		quad_.tr.texCoords.v = bottom;
-	}
-	else
-	{
-		left = rect.origin.x / atlasWidth;
-		right = (rect.origin.x + rect.size.width) / atlasWidth;
-		top = rect.origin.y / atlasHeight;
-		bottom = (rect.origin.y + rect.size.height) / atlasHeight;
-		
-		if( flipX_)
-			CC_SWAP(left,right);
-		if( flipY_)
-			CC_SWAP(top,bottom);
-		
-		quad_.bl.texCoords.u = left;
-		quad_.bl.texCoords.v = bottom;
-		quad_.br.texCoords.u = right;
-		quad_.br.texCoords.v = bottom;
-		quad_.tl.texCoords.u = left;
-		quad_.tl.texCoords.v = top;
-		quad_.tr.texCoords.u = right;
-		quad_.tr.texCoords.v = top;
-	}
-}
-
 -(void)updateTransform
 {
 	NSAssert( usesBatchNode_, @"updateTransform is only valid when CCSprite is being renderd using an CCSpriteBatchNode");
@@ -548,7 +496,8 @@ struct transformValues_ {
 		
 		for (CCNode *p = self ; p && p != batchNode_ ; p = p.parent) {
 			
-			struct transformValues_ tv = [(CCSprite*)p getTransformValues];
+			struct transformValues_ tv;
+			[(CCSprite*)p getTransformValues: &tv];
 			
 			CGAffineTransform newMatrix = CGAffineTransformIdentity;
 			
@@ -613,16 +562,13 @@ struct transformValues_ {
 
 // XXX: Optimization: instead of calling 5 times the parent sprite to obtain: position, scale.x, scale.y, anchorpoint and rotation,
 // this fuction return the 5 values in 1 single call
--(struct transformValues_) getTransformValues
+-(void) getTransformValues:(struct transformValues_*) tv
 {
-	struct transformValues_ tv;
-	tv.pos = position_;
-	tv.scale.x = scaleX_;
-	tv.scale.y = scaleY_;
-	tv.rotation = rotation_;
-	tv.ap = anchorPointInPixels_;
-	
-	return tv;
+	tv->pos = position_;
+	tv->scale.x = scaleX_;
+	tv->scale.y = scaleY_;
+	tv->rotation = rotation_;
+	tv->ap = anchorPointInPixels_;
 }
 
 #pragma mark CCSprite - draw
