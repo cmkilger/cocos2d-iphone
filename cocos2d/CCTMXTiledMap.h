@@ -122,8 +122,20 @@ enum
 /** creates a TMX Tiled Map with a TMX file.*/
 +(id) tiledMapWithTMXFile:(NSString*)tmxFile;
 
+/** creates a TMX Tiled Map with TMX data.*/
++(id) tiledMapWithTMXData:(NSData*)tmxData;
+
+/** creates a TMX Tiled Map with TMX data.*/
++(id) tiledMapWithTMXData:(NSData*)tmxData directory:(NSString*)dirPath;
+
 /** initializes a TMX Tiled Map with a TMX file */
 -(id) initWithTMXFile:(NSString*)tmxFile;
+
+/** initializes a TMX Tiled Map with TMX data */
+-(id) initWithTMXData:(NSData*)tmxData;
+
+/** initializes a TMX Tiled Map with TMX data */
+-(id) initWithTMXData:(NSData*)tmxData directory:(NSString*)dirPath;
 
 /** return the TMXLayer for the specific layer */
 -(CCTMXLayer*) layerNamed:(NSString *)layerName;

@@ -113,13 +113,15 @@
 
 @interface CCTMXMapInfo (Private)
 /* initalises parsing of an XML file, either a tmx (Map) file or tsx (Tileset) file */
+-(void) parseXMLData:(NSData *)xmlData;
+/* initalises parsing of an XML file, either a tmx (Map) file or tsx (Tileset) file */
 -(void) parseXMLFile:(NSString *)xmlFilename;
 @end
 
 
 @implementation CCTMXMapInfo
 
-@synthesize orientation=orientation_, mapSize=mapSize_, layers=layers_, tilesets=tilesets_, tileSize=tileSize_, filename=filename_, objectGroups=objectGroups_, properties=properties_;
+@synthesize orientation=orientation_, mapSize=mapSize_, layers=layers_, tilesets=tilesets_, tileSize=tileSize_, mapFolder=mapFolder_, objectGroups=objectGroups_, properties=properties_;
 @synthesize tileProperties = tileProperties_;
 
 +(id) formatWithTMXFile:(NSString*)tmxFile
@@ -127,33 +129,65 @@
 	return [[[self alloc] initWithTMXFile:tmxFile] autorelease];
 }
 
++(id) formatWithTMXData:(NSData*)tmxData
+{
+	return [[[self alloc] initWithTMXData:tmxData directory:nil] autorelease];
+}
+
++(id) formatWithTMXData:(NSData*)tmxData directory:(NSString*)dirPath
+{
+	return [[[self alloc] initWithTMXData:tmxData directory:dirPath] autorelease];
+}
+
 -(id) initWithTMXFile:(NSString*)tmxFile
+{
+	NSAssert(tmxFile != nil, @"TMXTiledMap: tmx file should not be nil");
+	
+	NSString * filename = [CCFileUtils fullPathFromRelativePath:tmxFile];
+	NSString * directory = [filename stringByDeletingLastPathComponent];
+	NSData * tmxData = [NSData dataWithContentsOfFile:filename];
+	
+	return [self initWithTMXData:tmxData directory:directory];
+}
+
+-(id) initWithTMXData:(NSData*)tmxData
+{
+	return [self initWithTMXData:tmxData directory:nil];
+}
+
+// The designated initialized
+-(id) initWithTMXData:(NSData*)tmxData directory:(NSString*)dirPath
 {
 	if( (self=[super init])) {
 		
+		if (!dirPath)
+			self.mapFolder = [[NSBundle mainBundle] bundlePath];
+		else
+			self.mapFolder = dirPath;
+		
 		self.tilesets = [NSMutableArray arrayWithCapacity:4];
 		self.layers = [NSMutableArray arrayWithCapacity:4];
-		self.filename = [CCFileUtils fullPathFromRelativePath:tmxFile];
 		self.objectGroups = [NSMutableArray arrayWithCapacity:4];
 		self.properties = [NSMutableDictionary dictionaryWithCapacity:5];
 		self.tileProperties = [NSMutableDictionary dictionaryWithCapacity:5];
-	
+		
 		// tmp vars
 		currentString = [[NSMutableString alloc] initWithCapacity:1024];
 		storingCharacters = NO;
 		layerAttribs = TMXLayerAttribNone;
 		parentElement = TMXPropertyNone;
 		
-		[self parseXMLFile:filename_];		
+		[self parseXMLData:tmxData];		
 	}
 	return self;
 }
+
 - (void) dealloc
 {
 	CCLOGINFO(@"cocos2d: deallocing %@", self);
 	[tilesets_ release];
 	[layers_ release];
-	[filename_ release];
+	[mapFolder_ release];
 	[currentString release];
 	[objectGroups_ release];
 	[properties_ release];
@@ -161,21 +195,25 @@
 	[super dealloc];
 }
 
-- (void) parseXMLFile:(NSString *)xmlFilename
+- (void) parseXMLData:(NSData *)xmlData
 {
-	NSURL *url = [NSURL fileURLWithPath:xmlFilename];
-	NSXMLParser *parser = [[NSXMLParser alloc] initWithContentsOfURL:url];
-
+	NSXMLParser *parser = [[NSXMLParser alloc] initWithData:xmlData];
+	
 	// we'll do the parsing
 	[parser setDelegate:self];
 	[parser setShouldProcessNamespaces:NO];
 	[parser setShouldReportNamespacePrefixes:NO];
 	[parser setShouldResolveExternalEntities:NO];
 	[parser parse];
-
-	NSAssert1( ! [parser parserError], @"Error parsing file: %@.", xmlFilename );
-
+	
+	NSAssert( ! [parser parserError], @"Error parsing data.");
+	
 	[parser release];
+}
+
+- (void) parseXMLFile:(NSString *)xmlFilename
+{
+	[self parseXMLData:[NSData dataWithContentsOfFile:xmlFilename]];
 }
 
 // the XML parser calls here with all the elements
@@ -207,13 +245,15 @@
 		// If this is an external tileset then start parsing that
 		NSString *externalTilesetFilename = [attributeDict valueForKey:@"source"];
 		if (externalTilesetFilename) {
-				// Tileset file will be relative to the map file. So we need to convert it to an absolute path
-				NSString *dir = [filename_ stringByDeletingLastPathComponent];	// Directory of map file
-				externalTilesetFilename = [dir stringByAppendingPathComponent:externalTilesetFilename];	// Append path to tileset file
-				
-				[self parseXMLFile:externalTilesetFilename];
+			// Tileset file may be relative to the map file. So we need to convert it to an absolute path
+			if (![externalTilesetFilename isAbsolutePath]) {
+				externalTilesetFilename = [mapFolder_ stringByAppendingPathComponent:externalTilesetFilename];	// Append path to tileset file
+				externalTilesetFilename = [externalTilesetFilename stringByStandardizingPath];
+			}
+			
+			[self parseXMLFile:externalTilesetFilename];
 		} else {
-				
+			
 			CCTMXTilesetInfo *tileset = [CCTMXTilesetInfo new];
 			tileset.name = [attributeDict valueForKey:@"name"];
 			tileset.firstGid = [[attributeDict valueForKey:@"firstgid"] intValue];
@@ -287,8 +327,7 @@
 			tileset.sourceImage = imagename;
 		}
 		else {
-			NSString *path = [filename_ stringByDeletingLastPathComponent];    
-			tileset.sourceImage = [path stringByAppendingPathComponent:imagename];
+			tileset.sourceImage = [mapFolder_ stringByAppendingPathComponent:imagename];
 			tileset.sourceImage = [tileset.sourceImage stringByStandardizingPath];
 		}
 

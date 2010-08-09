@@ -34,6 +34,7 @@
 #import "CCSprite.h"
 #import "CCSpriteSheet.h"
 #import "CCTextureCache.h"
+#import "Support/CCFileUtils.h"
 #import "Support/CGPointExtension.h"
 
 
@@ -57,15 +58,42 @@
 	return [[[self alloc] initWithTMXFile:tmxFile] autorelease];
 }
 
++(id) tiledMapWithTMXData:(NSData*)tmxData
+{
+	return [[[self alloc] initWithTMXData:tmxData directory:nil] autorelease];
+}
+
++(id) tiledMapWithTMXData:(NSData*)tmxData directory:(NSString*)dirPath;
+{
+	return [[[self alloc] initWithTMXData:tmxData directory:nil] autorelease];
+}
+
 -(id) initWithTMXFile:(NSString*)tmxFile
 {
-	NSAssert(tmxFile != nil, @"TMXTiledMap: tmx file should not bi nil");
+	NSAssert(tmxFile != nil, @"TMXTiledMap: tmx file should not be nil");
+	
+	NSString * filename = [CCFileUtils fullPathFromRelativePath:tmxFile];
+	NSString * directory = [filename stringByDeletingLastPathComponent];
+	NSData * tmxData = [NSData dataWithContentsOfFile:filename];
+	
+	return [self initWithTMXData:tmxData directory:directory];
+}
 
+-(id) initWithTMXData:(NSData*)tmxData
+{
+	return [self initWithTMXData:tmxData directory:nil];
+}
+
+// The designated initializer
+-(id) initWithTMXData:(NSData*)tmxData directory:(NSString*)dirPath
+{
+	NSAssert(tmxData != nil, @"TMXTiledMap: tmx data should not be nil");
+	
 	if ((self=[super init])) {
 		
 		[self setContentSize:CGSizeZero];
-
-		CCTMXMapInfo *mapInfo = [CCTMXMapInfo formatWithTMXFile:tmxFile];
+		
+		CCTMXMapInfo *mapInfo = [CCTMXMapInfo formatWithTMXData:tmxData directory:dirPath];
 		
 		NSAssert( [mapInfo.tilesets count] != 0, @"TMXTiledMap: Map not found. Please check the filename.");
 		
@@ -75,9 +103,9 @@
 		objectGroups_ = [mapInfo.objectGroups retain];
 		properties_ = [mapInfo.properties retain];
 		tileProperties_ = [mapInfo.tileProperties retain];
-				
+		
 		int idx=0;
-
+		
 		for( CCTMXLayerInfo *layerInfo in mapInfo.layers ) {
 			
 			if( layerInfo.visible ) {
@@ -90,12 +118,12 @@
 				currentSize.width = MAX( currentSize.width, childSize.width );
 				currentSize.height = MAX( currentSize.height, childSize.height );
 				[self setContentSize:currentSize];
-	
+				
 				idx++;
 			}			
 		}		
 	}
-
+	
 	return self;
 }
 

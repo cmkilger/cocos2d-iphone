@@ -815,17 +815,10 @@ char *NewBase64Encode(
 		[tmx appendFormat:@"</layer>"];
 		[tmx appendFormat:@"</map>"];
 		
-		//save to file
-		NSString * path = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
-		path = [path stringByAppendingPathComponent:@"hex-dynamictest.tmx"];
-		NSError * error = nil;
-		[tmx writeToFile:path atomically:YES encoding:NSUTF8StringEncoding error:&error];
-		if (error) {
-			NSLog(@"Error: %@", [error localizedDescription]);
-		}
+		NSData * tmxData = [tmx dataUsingEncoding:NSUTF8StringEncoding];
 		
 		//use file
-		CCTMXTiledMap *map = [CCTMXTiledMap tiledMapWithTMXFile:path];
+		CCTMXTiledMap *map = [CCTMXTiledMap tiledMapWithTMXData:tmxData];
 		[self addChild:map z:0 tag:kTagTileMap];
 		
 		CGSize s = map.contentSize;
