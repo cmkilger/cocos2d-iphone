@@ -29,7 +29,7 @@
 #import "CCTransitionRadial.h"
 #import "CCRenderTexture.h"
 #import "CCLayer.h"
-#import "CCInstantAction.h"
+#import "CCActionInstant.h"
 #import "Support/CGPointExtension.h"
 
 enum {
@@ -81,7 +81,7 @@ enum {
 	outNode.anchorPoint = ccp(0.5f,0.5f);
 			
 	// create the blend action
-	CCIntervalAction * layerAction = [CCSequence actions:
+	CCActionInterval * layerAction = [CCSequence actions:
 									  [CCProgressFromTo actionWithDuration:duration from:100.f to:0.f],
 									  [CCCallFunc actionWithTarget:self selector:@selector(finish)],
 									  nil ];	
@@ -101,10 +101,6 @@ enum {
 }
 @end
 
-/* XXX DEPRECATED. Will be removed in v1.0.1 */
-@implementation CCRadialCCWTransition
-@end
-
 #pragma mark -
 #pragma mark Transition Radial CW
 
@@ -113,9 +109,5 @@ enum {
 {
 	return kCCProgressTimerTypeRadialCW;
 }
-@end
-
-/* XXX DEPRECATED. Will be removed in v1.0.1 */
-@implementation CCRadialCWTransition
 @end
 

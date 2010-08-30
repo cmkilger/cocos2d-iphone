@@ -228,21 +228,26 @@ Class restartTransition()
 		y = size.height;
 
 		CCSprite *bg1;
+		
+#ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
 		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
 			bg1 = [CCSprite spriteWithFile:@"background1-ipad.jpg"];
 		} else {
 			bg1 = [CCSprite spriteWithFile:@"background1.jpg"];
 		}
+#elif defined(__MAC_OS_X_VERSION_MAX_ALLOWED)
+		bg1 = [CCSprite spriteWithFile:@"background1.jpg"];
+#endif // Mac
 		
 		bg1.position = ccp(size.width/2, size.height/2);
 		[self addChild:bg1 z:-1];
 
-		CCLabel* title = [CCLabel labelWithString:transitions[sceneIdx] fontName:@"Thonburi" fontSize:40];
+		CCLabelTTF *title = [CCLabelTTF labelWithString:transitions[sceneIdx] fontName:@"Thonburi" fontSize:40];
 		[self addChild:title];
 		[title setColor:ccc3(255,32,32)];
 		[title setPosition: ccp(x/2, y-100)];
 
-		CCLabel* label = [CCLabel labelWithString:@"SCENE 1" fontName:@"Marker Felt" fontSize:64];
+		CCLabelTTF *label = [CCLabelTTF labelWithString:@"SCENE 1" fontName:@"Marker Felt" fontSize:64];
 		[label setColor:ccc3(16,16,255)];
 		[label setPosition: ccp(x/2,y/2)];	
 		[self addChild: label];
@@ -332,20 +337,24 @@ Class restartTransition()
 		y = size.height;
 		
 		CCSprite *bg2;
+#ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
 		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
 			bg2 = [CCSprite spriteWithFile:@"background2-ipad.jpg"];
 		} else {
 			bg2 = [CCSprite spriteWithFile:@"background2.jpg"];
-		}		
+		}
+#elif defined(__MAC_OS_X_VERSION_MAX_ALLOWED)
+		bg2 = [CCSprite spriteWithFile:@"background2.jpg"];
+#endif // Mac
 		bg2.position = ccp(size.width/2, size.height/2);
 		[self addChild:bg2 z:-1];
 		
-		CCLabel* title = [CCLabel labelWithString:transitions[sceneIdx] fontName:@"Thonburi" fontSize:40];
+		CCLabelTTF *title = [CCLabelTTF labelWithString:transitions[sceneIdx] fontName:@"Thonburi" fontSize:40];
 		[self addChild:title];
 		[title setColor:ccc3(255,32,32)];
 		[title setPosition: ccp(x/2, y-100)];		
 		
-		CCLabel* label = [CCLabel labelWithString:@"SCENE 2" fontName:@"Marker Felt" fontSize:64];
+		CCLabelTTF *label = [CCLabelTTF labelWithString:@"SCENE 2" fontName:@"Marker Felt" fontSize:64];
 		[label setColor:ccc3(16,16,255)];
 		[label setPosition: ccp(x/2,y/2)];
 		[self addChild: label];
@@ -424,6 +433,12 @@ Class restartTransition()
 @end
 
 // CLASS IMPLEMENTATIONS
+
+#ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
+
+#pragma mark -
+#pragma mark AppController - iPhone
+
 @implementation AppController
 
 @synthesize window;
@@ -528,3 +543,36 @@ Class restartTransition()
 }
 
 @end
+
+#pragma mark -
+#pragma mark AppController - Mac
+
+#elif defined(__MAC_OS_X_VERSION_MAX_ALLOWED)
+
+@implementation cocos2dmacAppDelegate
+
+@synthesize window=window_, glView=glView_;
+
+- (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
+	
+	
+	CCDirector *director = [CCDirector sharedDirector];
+	
+	[director setDisplayFPS:YES];
+	
+	[director setOpenGLView:glView_];
+	
+	//	[director setProjection:kCCDirectorProjection2D];
+	
+	// Enable "moving" mouse event. Default no.
+	[window_ setAcceptsMouseMovedEvents:NO];
+	
+	
+	CCScene *scene = [CCScene node];
+	[scene addChild: [TextLayer node]];
+	
+	[director runWithScene:scene];
+}
+
+@end
+#endif

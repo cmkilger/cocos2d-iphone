@@ -25,12 +25,8 @@
 
 
 #import "CCTransitionPageTurn.h"
-#import	"CCPageTurn3DAction.h"
+#import	"CCActionPageTurn3D.h"
 #import "CCDirector.h"
-
-// XXX Deprecated XXX Will be removed in v1.0.1
-@implementation CCPageTurnTransition
-@end
 
 @implementation CCTransitionPageTurn
 
@@ -100,7 +96,7 @@
 	
 }
 
--(CCIntervalAction*) actionWithSize: (ccGridSize) v
+-(CCActionInterval*) actionWithSize: (ccGridSize) v
 {
 	if( back_ )
 	{

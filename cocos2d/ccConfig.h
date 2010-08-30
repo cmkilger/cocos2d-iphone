@@ -23,6 +23,8 @@
  */
 
 
+#import <Availability.h>
+
 /**
  @file
  cocos2d (cc) configuration file
@@ -53,12 +55,16 @@
 
 /** @def CC_FONT_LABEL_SUPPORT
  If enabled, FontLabel will be used to render .ttf files.
- If the .ttf file is not found, then it will use the standard UIFont class
- If disabled, the standard UIFont class will be used.
+ If the .ttf file is not found, then it will use the standard CCFont class
+ If disabled, the standard CCFont class will be used.
  
  To enable set it to a value different than 0. Enabled by default.
  */
+#ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
 #define CC_FONT_LABEL_SUPPORT	1
+#elif defined(__MAC_OS_X_VERSION_MAX_ALLOWED)
+#define CC_FONT_LABEL_SUPPORT 0
+#endif
 
 /** @def CC_DIRECTOR_FAST_FPS
  If enabled, then the FPS will be drawn using CCLabelAtlas (fast rendering).
@@ -88,7 +94,19 @@
  
  @warning This feature is experimental
  */
- #define CC_DIRECTOR_DISPATCH_FAST_EVENTS 0
+#define CC_DIRECTOR_DISPATCH_FAST_EVENTS 0
+
+/** @def CC_DIRECTOR_MAC_USE_DISPLAY_LINK_THREAD
+ If enabled, cocos2d-mac will run on the Display Link thread.
+ 
+ By default cocos2d-mac will run in its own thread. Enable it if your game is skipping some frames.
+ 
+ To enable set it to a value different than 0. Disabled by default.
+
+ Only valid for cocos2d-mac. Not supported on cocos2d-ios.
+
+ */
+#define CC_DIRECTOR_MAC_USE_DISPLAY_LINK_THREAD 0
 
 /** @def CC_COCOSNODE_RENDER_SUBPIXEL
  If enabled, the CCNode objects (CCSprite, CCLabel,etc) will be able to render in subpixels.
@@ -110,13 +128,12 @@
  If enabled, batch nodes (texture atlas and particle system) will use VBO instead of vertex list (VBO is recommended by Apple)
  
  To enable set it to a value different than 0.
- Enabled by default on ARMv7 processors and iPhone Simulator.
- Disabled by default on ARMv6 processors.
+ Enabled by default on iPhone with ARMv7 processors, iPhone Simulator and Mac
+ Disabled by default on iPhone with ARMv6 processors.
  
  @since v0.99.5
  */
-
-#if defined(__ARM_NEON__) || defined(TARGET_IPHONE_SIMULATOR)
+#if defined(__ARM_NEON__) || defined(TARGET_IPHONE_SIMULATOR) || defined(__MAC_OS_X_VERSION_MAX_ALLOWED)
 #define CC_USES_VBO 1
 #else
 #define CC_USES_VBO 0
@@ -154,6 +171,7 @@
 
  */
 #define CC_TEXTURE_ATLAS_USE_TRIANGLE_STRIP 0
+
 
 /** @def CC_TEXTURE_NPOT_SUPPORT
  If enabled, NPOT textures will be used where available. Only 3rd gen (and newer) devices support NPOT textures.

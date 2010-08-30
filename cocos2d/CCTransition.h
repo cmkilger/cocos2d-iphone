@@ -25,7 +25,7 @@
 
 
 #import "CCScene.h"
-@class CCIntervalAction;
+@class CCActionInterval;
 @class CCNode;
 
 /** CCTransitionEaseScene can ease the actions of the scene protocol.
@@ -35,7 +35,7 @@
 /** returns the Ease action that will be performed on a linear action.
  @since v0.8.2
  */
--(CCIntervalAction*) easeActionWithAction:(CCIntervalAction*)action;
+-(CCActionInterval*) easeActionWithAction:(CCActionInterval*)action;
 @end
 
 /** Orientation Type used by some transitions
@@ -91,24 +91,12 @@ typedef enum {
 {}
 @end
 
-/* XXX DEPRECATED. Will be removed in v1.0.1 */
-DEPRECATED_ATTRIBUTE @interface CCRotoZoomTransition : CCTransitionRotoZoom
-{}
-@end
-
-
 /** CCTransitionJumpZoom:
  Zoom out and jump the outgoing scene, and then jump and zoom in the incoming 
 */
 @interface CCTransitionJumpZoom : CCTransitionScene
 {}
 @end
-
-/* XXX DEPRECATED. Will be removed in v1.0.1 */
-DEPRECATED_ATTRIBUTE @interface CCJumpZoomTransition : CCTransitionJumpZoom
-{}
-@end
-
 
 /** CCTransitionMoveInL:
  Move in from to the left the incoming scene.
@@ -118,14 +106,8 @@ DEPRECATED_ATTRIBUTE @interface CCJumpZoomTransition : CCTransitionJumpZoom
 /** initializes the scenes */
 -(void) initScenes;
 /** returns the action that will be performed */
--(CCIntervalAction*) action;
+-(CCActionInterval*) action;
 @end
-
-/* XXX DEPRECATED. Will be removed in v1.0.1 */
-DEPRECATED_ATTRIBUTE @interface CCMoveInLTransition : CCTransitionMoveInL
-{}
-@end
-
 
 /** CCTransitionMoveInR:
  Move in from to the right the incoming scene.
@@ -134,12 +116,6 @@ DEPRECATED_ATTRIBUTE @interface CCMoveInLTransition : CCTransitionMoveInL
 {}
 @end
 
-/* XXX DEPRECATED. Will be removed in v1.0.1 */
-DEPRECATED_ATTRIBUTE @interface CCMoveInRTransition : CCTransitionMoveInR
-{}
-@end
-
-
 /** CCTransitionMoveInT:
  Move in from to the top the incoming scene.
  */
@@ -147,24 +123,12 @@ DEPRECATED_ATTRIBUTE @interface CCMoveInRTransition : CCTransitionMoveInR
 {}
 @end
 
-/* XXX DEPRECATED. Will be removed in v1.0.1 */
-DEPRECATED_ATTRIBUTE @interface CCMoveInTTransition : CCTransitionMoveInT
-{}
-@end
-
-
 /** CCTransitionMoveInB:
  Move in from to the bottom the incoming scene.
  */
 @interface CCTransitionMoveInB : CCTransitionMoveInL
 {}
 @end
-
-/* XXX DEPRECATED. Will be removed in v1.0.1 */
-DEPRECATED_ATTRIBUTE @interface CCMoveInBTransition : CCTransitionMoveInB
-{}
-@end
-
 
 /** CCTransitionSlideInL:
  Slide in the incoming scene from the left border.
@@ -174,14 +138,8 @@ DEPRECATED_ATTRIBUTE @interface CCMoveInBTransition : CCTransitionMoveInB
 /** initializes the scenes */
 -(void) initScenes;
 /** returns the action that will be performed by the incomming and outgoing scene */
--(CCIntervalAction*) action;
+-(CCActionInterval*) action;
 @end
-
-/* XXX DEPRECATED. Will be removed in v1.0.1 */
-DEPRECATED_ATTRIBUTE @interface CCSlideInLTransition : CCTransitionSlideInL
-{}
-@end
-
 
 /** CCTransitionSlideInR:
  Slide in the incoming scene from the right border.
@@ -190,24 +148,12 @@ DEPRECATED_ATTRIBUTE @interface CCSlideInLTransition : CCTransitionSlideInL
 {}
 @end
 
-/* XXX DEPRECATED. Will be removed in v1.0.1 */
-DEPRECATED_ATTRIBUTE @interface CCSlideInRTransition : CCTransitionSlideInR
-{}
-@end
-
-
 /** CCTransitionSlideInB:
  Slide in the incoming scene from the bottom border.
  */
 @interface CCTransitionSlideInB : CCTransitionSlideInL
 {}
 @end
-
-/* XXX DEPRECATED. Will be removed in v1.0.1 */
-DEPRECATED_ATTRIBUTE @interface CCSlideInBTransition : CCTransitionSlideInB
-{}
-@end
-
 
 /** CCTransitionSlideInT:
  Slide in the incoming scene from the top border.
@@ -216,24 +162,12 @@ DEPRECATED_ATTRIBUTE @interface CCSlideInBTransition : CCTransitionSlideInB
 {}
 @end
 
-/* XXX DEPRECATED. Will be removed in v1.0.1 */
-DEPRECATED_ATTRIBUTE @interface CCSlideInTTransition : CCTransitionSlideInT
-{}
-@end
-
-
 /**
  Shrink the outgoing scene while grow the incoming scene
  */
 @interface CCTransitionShrinkGrow : CCTransitionScene <CCTransitionEaseScene>
 {}
 @end
-
-/* XXX DEPRECATED. Will be removed in v1.0.1 */
-DEPRECATED_ATTRIBUTE @interface CCShrinkGrowTransition : CCTransitionShrinkGrow
-{}
-@end
-
 
 /** CCTransitionFlipX:
  Flips the screen horizontally.
@@ -243,12 +177,6 @@ DEPRECATED_ATTRIBUTE @interface CCShrinkGrowTransition : CCTransitionShrinkGrow
 {}
 @end
 
-/* XXX DEPRECATED. Will be removed in v1.0.1 */
-DEPRECATED_ATTRIBUTE @interface CCFlipXTransition : CCTransitionFlipX
-{}
-@end
-
-
 /** CCTransitionFlipY:
  Flips the screen vertically.
  The front face is the outgoing scene and the back face is the incoming scene.
@@ -256,12 +184,6 @@ DEPRECATED_ATTRIBUTE @interface CCFlipXTransition : CCTransitionFlipX
 @interface CCTransitionFlipY : CCTransitionSceneOriented
 {}
 @end
-
-/* XXX DEPRECATED. Will be removed in v1.0.1 */
-DEPRECATED_ATTRIBUTE @interface CCFlipYTransition : CCTransitionFlipY
-{}
-@end
-
 
 /** CCTransitionFlipAngular:
  Flips the screen half horizontally and half vertically.
@@ -271,12 +193,6 @@ DEPRECATED_ATTRIBUTE @interface CCFlipYTransition : CCTransitionFlipY
 {}
 @end
 
-/* XXX DEPRECATED. Will be removed in v1.0.1 */
-DEPRECATED_ATTRIBUTE @interface CCFlipAngularTransition : CCTransitionFlipAngular
-{}
-@end
-
-
 /** CCTransitionZoomFlipX:
  Flips the screen horizontally doing a zoom out/in
  The front face is the outgoing scene and the back face is the incoming scene.
@@ -284,12 +200,6 @@ DEPRECATED_ATTRIBUTE @interface CCFlipAngularTransition : CCTransitionFlipAngula
 @interface CCTransitionZoomFlipX : CCTransitionSceneOriented
 {}
 @end
-
-/* XXX DEPRECATED. Will be removed in v1.0.1 */
-DEPRECATED_ATTRIBUTE @interface CCZoomFlipXTransition : CCTransitionZoomFlipX
-{}
-@end
-
 
 /** CCTransitionZoomFlipY:
  Flips the screen vertically doing a little zooming out/in
@@ -299,12 +209,6 @@ DEPRECATED_ATTRIBUTE @interface CCZoomFlipXTransition : CCTransitionZoomFlipX
 {}
 @end
 
-/* XXX DEPRECATED. Will be removed in v1.0.1 */
-DEPRECATED_ATTRIBUTE @interface CCZoomFlipYTransition : CCTransitionZoomFlipY
-{}
-@end
-
-
 /** CCTransitionZoomFlipAngular:
  Flips the screen half horizontally and half vertically doing a little zooming out/in.
  The front face is the outgoing scene and the back face is the incoming scene.
@@ -312,12 +216,6 @@ DEPRECATED_ATTRIBUTE @interface CCZoomFlipYTransition : CCTransitionZoomFlipY
 @interface CCTransitionZoomFlipAngular : CCTransitionSceneOriented
 {}
 @end
-
-/* XXX DEPRECATED. Will be removed in v1.0.1 */
-DEPRECATED_ATTRIBUTE @interface CCZoomFlipAngularTransition : CCTransitionZoomFlipAngular
-{}
-@end
-
 
 /** CCTransitionFade:
  Fade out the outgoing scene and then fade in the incoming scene.'''
@@ -334,12 +232,6 @@ DEPRECATED_ATTRIBUTE @interface CCZoomFlipAngularTransition : CCTransitionZoomFl
 -(id) initWithDuration:(ccTime)duration scene:(CCScene*)scene withColor:(ccColor3B)color;
 @end
 
-/* XXX DEPRECATED. Will be removed in v1.0.1 */
-DEPRECATED_ATTRIBUTE @interface CCFadeTransition : CCTransitionFade
-{}
-@end
-
-
 
 /**
  CCTransitionCrossFade:
@@ -350,12 +242,6 @@ DEPRECATED_ATTRIBUTE @interface CCFadeTransition : CCTransitionFade
 {}
 @end
 
-/* XXX DEPRECATED. Will be removed in v1.0.1 */
-DEPRECATED_ATTRIBUTE @interface CCCrossFadeTransition : CCTransitionCrossFade
-{}
-@end
-
-
 /** CCTransitionTurnOffTiles:
  Turn off the tiles of the outgoing scene in random order
  */
@@ -363,25 +249,13 @@ DEPRECATED_ATTRIBUTE @interface CCCrossFadeTransition : CCTransitionCrossFade
 {}
 @end
 
-/* XXX DEPRECATED. Will be removed in v1.0.1 */
-DEPRECATED_ATTRIBUTE @interface CCTurnOffTilesTransition : CCTransitionTurnOffTiles
-{}
-@end
-
-
 /** CCTransitionSplitCols:
  The odd columns goes upwards while the even columns goes downwards.
  */
 @interface CCTransitionSplitCols : CCTransitionScene <CCTransitionEaseScene>
 {}
--(CCIntervalAction*) action;
+-(CCActionInterval*) action;
 @end
-
-/* XXX DEPRECATED. Will be removed in v1.0.1 */
-DEPRECATED_ATTRIBUTE @interface CCSplitColsTransition : CCTransitionSplitCols
-{}
-@end
-
 
 /** CCTransitionSplitRows:
  The odd rows goes to the left while the even rows goes to the right.
@@ -390,25 +264,13 @@ DEPRECATED_ATTRIBUTE @interface CCSplitColsTransition : CCTransitionSplitCols
 {}
 @end
 
-/* XXX DEPRECATED. Will be removed in v1.0.1 */
-DEPRECATED_ATTRIBUTE @interface CCSplitRowsTransition : CCTransitionSplitRows
-{}
-@end
-
-
 /** CCTransitionFadeTR:
  Fade the tiles of the outgoing scene from the left-bottom corner the to top-right corner.
  */
 @interface CCTransitionFadeTR : CCTransitionScene <CCTransitionEaseScene>
 {}
--(CCIntervalAction*) actionWithSize:(ccGridSize) vector;
+-(CCActionInterval*) actionWithSize:(ccGridSize) vector;
 @end
-
-/* XXX DEPRECATED. Will be removed in v1.0.1 */
-DEPRECATED_ATTRIBUTE @interface CCFadeTRTransition : CCTransitionFadeTR
-{}
-@end
-
 
 /** CCTransitionFadeBL:
  Fade the tiles of the outgoing scene from the top-right corner to the bottom-left corner.
@@ -417,12 +279,6 @@ DEPRECATED_ATTRIBUTE @interface CCFadeTRTransition : CCTransitionFadeTR
 {}
 @end
 
-/* XXX DEPRECATED. Will be removed in v1.0.1 */
-DEPRECATED_ATTRIBUTE @interface CCFadeBLTransition : CCTransitionFadeBL
-{}
-@end
-
-
 /** CCTransitionFadeUp:
  * Fade the tiles of the outgoing scene from the bottom to the top.
  */
@@ -430,21 +286,9 @@ DEPRECATED_ATTRIBUTE @interface CCFadeBLTransition : CCTransitionFadeBL
 {}
 @end
 
-/* XXX DEPRECATED. Will be removed in v1.0.1 */
-DEPRECATED_ATTRIBUTE @interface CCFadeUpTransition : CCTransitionFadeUp
-{}
-@end
-
-
 /** CCTransitionFadeDown:
  * Fade the tiles of the outgoing scene from the top to the bottom.
  */
 @interface CCTransitionFadeDown : CCTransitionFadeTR
 {}
 @end
-
-/* XXX DEPRECATED. Will be removed in v1.0.1 */
-DEPRECATED_ATTRIBUTE @interface CCFadeDownTransition : CCTransitionFadeDown
-{}
-@end
-

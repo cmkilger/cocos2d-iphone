@@ -22,8 +22,9 @@
  * THE SOFTWARE.
  */
 
+#import <Foundation/Foundation.h>
 
-#import <OpenGLES/ES1/gl.h>
+#import "Platforms/CCGL.h"
 
 /** iOS version definitions */
 enum {

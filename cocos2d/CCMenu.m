@@ -27,17 +27,20 @@
 
 #import "CCMenu.h"
 #import "CCDirector.h"
-#import "CCTouchDispatcher.h"
 #import "Support/CGPointExtension.h"
+
+#import <Availability.h>
+#ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
+#import "Platforms/iOS/CCDirectorIOS.h"
+#import "Platforms/iOS/CCTouchDispatcher.h"
+#elif defined(__MAC_OS_X_VERSION_MAX_ALLOWED)
+#import "Platforms/Mac/MacGLView.h"
+#import "Platforms/Mac/CCDirectorMac.h"
+#endif
 
 enum {
 	kDefaultPadding =  5,
 };
-
-@interface CCMenu (Private)
-// returns touched menu item, if any
--(CCMenuItem *) itemForTouch: (UITouch *) touch;
-@end
 
 @implementation CCMenu
 
@@ -67,7 +70,11 @@ enum {
 {
 	if( (self=[super init]) ) {
 
+#ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
 		self.isTouchEnabled = YES;
+#elif defined(__MAC_OS_X_VERSION_MAX_ALLOWED)
+		self.isMouseEnabled = YES;
+#endif
 		
 		// menu in the center of the screen
 		CGSize s = [[CCDirector sharedDirector] winSize];
@@ -78,12 +85,14 @@ enum {
 		
 		// XXX: in v0.7, winSize should return the visible size
 		// XXX: so the bar calculation should be done there
+#ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
 		CGRect r = [[UIApplication sharedApplication] statusBarFrame];
 		ccDeviceOrientation orientation = [[CCDirector sharedDirector] deviceOrientation];
 		if( orientation == CCDeviceOrientationLandscapeLeft || orientation == CCDeviceOrientationLandscapeRight )
 			s.height -= r.size.width;
 		else
 			s.height -= r.size.height;
+#endif
 		self.position = ccp(s.width/2, s.height/2);
 
 		int z=0;
@@ -119,12 +128,46 @@ enum {
 	NSAssert( [child isKindOfClass:[CCMenuItem class]], @"Menu only supports MenuItem objects as children");
 	return [super addChild:child z:z tag:aTag];
 }
-	
-#pragma mark Menu - Events
 
+- (void) onExit
+{
+	if(state == kMenuStateTrackingTouch)
+	{
+		[selectedItem unselected];		
+		state = kMenuStateWaiting;
+		selectedItem = nil;
+	}
+	[super onExit];
+}
+	
+#pragma mark Menu - Touches
+
+#ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
 -(void) registerWithTouchDispatcher
 {
 	[[CCTouchDispatcher sharedDispatcher] addTargetedDelegate:self priority:INT_MIN+1 swallowsTouches:YES];
+}
+
+-(CCMenuItem *) itemForTouch: (UITouch *) touch
+{
+	CGPoint touchLocation = [touch locationInView: [touch view]];
+	touchLocation = [[CCDirector sharedDirector] convertToGL: touchLocation];
+	
+	CCMenuItem* item;
+	CCARRAY_FOREACH(children_, item){
+		// ignore invisible and disabled items: issue #779, #866
+		if ( [item visible] && [item isEnabled] ) {
+			
+			CGPoint local = [item convertToNodeSpace:touchLocation];
+			
+			CGRect r = [item rect];
+			r.origin = CGPointZero;
+			
+			if( CGRectContainsPoint( r, local ) )
+				return item;
+		}
+	}
+	return nil;
 }
 
 -(BOOL) ccTouchBegan:(UITouch *)touch withEvent:(UIEvent *)event
@@ -173,6 +216,85 @@ enum {
 		[selectedItem selected];
 	}
 }
+#pragma mark Menu - Mouse
+
+#elif defined(__MAC_OS_X_VERSION_MAX_ALLOWED)
+
+-(NSInteger) mouseDelegatePriority
+{
+	return NSIntegerMin+1;
+}
+
+-(CCMenuItem *) itemForMouseEvent: (NSEvent *) event
+{
+	CGPoint location = [(CCDirectorMac*)[CCDirector sharedDirector] convertEventToGL:event];
+	
+	CCMenuItem* item;
+	CCARRAY_FOREACH(children_, item){
+		// ignore invisible and disabled items: issue #779, #866
+		if ( [item visible] && [item isEnabled] ) {
+			
+			CGPoint local = [item convertToNodeSpace:location];
+			
+			CGRect r = [item rect];
+			r.origin = CGPointZero;
+			
+			if( CGRectContainsPoint( r, local ) )
+				return item;
+		}
+	}
+	return nil;
+	
+	
+	return nil;
+}
+
+-(BOOL) ccMouseUp:(NSEvent *)event
+{	
+	state = kMenuStateWaiting;
+
+	if( selectedItem ) {
+		[selectedItem unselected];
+		[selectedItem activate];
+		
+		return YES;
+	}
+	
+	return NO;
+}
+
+-(BOOL) ccMouseDown:(NSEvent *)event
+{
+	if( state != kMenuStateWaiting || !visible_ )
+		return NO;
+	
+	selectedItem = [self itemForMouseEvent:event];
+	[selectedItem selected];
+	
+	if( selectedItem ) {
+		state = kMenuStateTrackingTouch;
+		return YES;
+	}
+	return NO;	
+}
+
+-(BOOL) ccMouseDragged:(NSEvent *)event
+{
+	CCMenuItem *currentItem = [self itemForMouseEvent:event];
+	
+	if (currentItem != selectedItem) {
+		[selectedItem unselected];
+		selectedItem = currentItem;
+		[selectedItem selected];
+	}
+	
+	// swallows event ?
+	if( state == kMenuStateTrackingTouch )
+		return YES;
+	return NO;
+}
+
+#endif // Mac Mouse support
 
 #pragma mark Menu - Alignment
 -(void) alignItemsVertically
@@ -391,29 +513,5 @@ enum {
 	id<CCRGBAProtocol> item;
 	CCARRAY_FOREACH(children_, item)
 		[item setColor:color_];
-}
-
-#pragma mark Menu - Private
-
--(CCMenuItem *) itemForTouch: (UITouch *) touch
-{
-	CGPoint touchLocation = [touch locationInView: [touch view]];
-	touchLocation = [[CCDirector sharedDirector] convertToGL: touchLocation];
-	
-	CCMenuItem* item;
-	CCARRAY_FOREACH(children_, item){
-		// ignore invisible and disabled items: issue #779, #866
-		if ( [item visible] && [item isEnabled] ) {
-
-			CGPoint local = [item convertToNodeSpace:touchLocation];
-
-			CGRect r = [item rect];
-			r.origin = CGPointZero;
-			
-			if( CGRectContainsPoint( r, local ) )
-				return item;
-		}
-	}
-	return nil;
 }
 @end

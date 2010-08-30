@@ -24,8 +24,6 @@
  */
 
 
-#import <UIKit/UIKit.h>
-
 #import "CCMenuItem.h"
 #import "CCLayer.h"
 

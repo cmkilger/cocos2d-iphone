@@ -55,11 +55,6 @@
  */
 -(id) initWithDuration:(ccTime) t scene:(CCScene*)s backwards:(BOOL) back;
 
--(CCIntervalAction*) actionWithSize:(ccGridSize) vector;
+-(CCActionInterval*) actionWithSize:(ccGridSize) vector;
 
-@end
-
-DEPRECATED_ATTRIBUTE @interface CCPageTurnTransition : CCTransitionPageTurn
-{
-}
 @end
