@@ -44,7 +44,7 @@
 
 @interface CCArray : NSObject <NSFastEnumeration, NSCoding, NSCopying>
 {
-	@public ccArray *data;
+	@public __strong ccArray *data;
 }
 
 + (id) array;

@@ -43,6 +43,9 @@
 #import <stdlib.h>
 #import <string.h>
 
+static inline BOOL garbageCollectionEnabled() {
+    return (objc_msgSend(NSClassFromString(@"NSGarbageCollector"), @selector(defaultCollector)) != nil);
+}
 
 #pragma mark -
 #pragma mark ccArray for Objects
@@ -61,11 +64,18 @@ typedef struct ccArray {
 static inline ccArray* ccArrayNew(NSUInteger capacity) {
 	if (capacity == 0)
 		capacity = 1; 
-	
+
+#if TARGET_OS_IPHONE
 	ccArray *arr = (ccArray*)malloc( sizeof(ccArray) );
 	arr->num = 0;
 	arr->arr =  (id*) malloc( capacity * sizeof(id) );
 	arr->max = capacity;
+#elif TARGET_OS_MAC
+	 ccArray *arr = (ccArray*)NSAllocateCollectable( sizeof(ccArray), NSScannedOption );
+	arr->arr =  (id*) NSAllocateCollectable( capacity * sizeof(id), NSScannedOption );
+	arr->max = capacity;
+	arr->num = 0;
+#endif
 	
 	return arr;
 }
@@ -79,8 +89,10 @@ static inline void ccArrayFree(ccArray *arr)
 	
 	ccArrayRemoveAllObjects(arr);
 	
-	free(arr->arr);
-	free(arr);
+	if (!garbageCollectionEnabled()) {
+		free(arr->arr);
+		free(arr);
+	}
 }
 
 /** Doubles array capacity */
