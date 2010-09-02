@@ -45,6 +45,7 @@
 @synthesize supportsBGRA8888=supportsBGRA8888_;
 @synthesize supportsDiscardFramebuffer=supportsDiscardFramebuffer_;
 @synthesize OSVersion=OSVersion_;
+@synthesize garbageCollectionEnabled=garbageCollectionEnabled_;
 
 //
 // singleton stuff
@@ -158,6 +159,9 @@ static char * glExtensions;
 			  "NO"
 #endif
 			  );
+		
+		garbageCollectionEnabled_ = (objc_msgSend(NSClassFromString(@"NSGarbageCollector"), @selector(defaultCollector)) != nil);
+
 	}
 	
 	return self;

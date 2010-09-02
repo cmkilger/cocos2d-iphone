@@ -95,7 +95,8 @@ static CCActionManager *sharedManager_ = nil;
 	HASH_DEL(targets, element);
 //	CCLOG(@"cocos2d: ---- buckets: %d/%d - %@", targets->entries, targets->size, element->target);
 	[element->target release];
-	free(element);
+	if (![CCConfiguration sharedConfiguration].garbageCollectionEnabled)
+		free(element);
 }
 
 -(void) actionAllocWithHashElement:(tHashElement*)element
@@ -171,10 +172,15 @@ static CCActionManager *sharedManager_ = nil;
 	NSAssert( action != nil, @"Argument action must be non-nil");
 	NSAssert( target != nil, @"Argument target must be non-nil");	
 	
-	tHashElement *element = NULL;
+	__strong tHashElement *element = NULL;
 	HASH_FIND_INT(targets, &target, element);
 	if( ! element ) {
+#if TARGET_OS_IPHONE
 		element = calloc( sizeof( *element ), 1 );
+#elif TARGET_OS_MAC
+		element = NSAllocateCollectable( sizeof( *element ), NSScannedOption );
+		memset(element, 0, sizeof(*element));
+#endif
 		element->paused = paused;
 		element->target = [target retain];
 		HASH_ADD_INT(targets, target, element);

@@ -58,7 +58,7 @@ typedef struct _hashUpdateEntry
 // Hash Element used for "selectors with interval"
 typedef struct _hashSelectorEntry
 {
-	struct ccArray	*timers;
+	__strong struct ccArray	*timers;
 	id				target;		// hash key (retained)
 	unsigned int	timerIndex;
 	CCTimer			*currentTimer;

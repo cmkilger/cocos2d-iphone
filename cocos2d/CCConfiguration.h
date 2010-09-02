@@ -59,6 +59,7 @@ enum {
 	BOOL			supportsNPOT_;
 	BOOL			supportsBGRA8888_;
 	BOOL			supportsDiscardFramebuffer_;
+	BOOL			garbageCollectionEnabled_;
 	NSUInteger		OSVersion_;
 }
 
@@ -94,6 +95,12 @@ enum {
  @since v0.99.2
  */
 @property (nonatomic, readonly) BOOL supportsDiscardFramebuffer;
+
+/** Whether or not garbage collection is enabled
+ 
+ @since v0.99.5
+ */
+@property (nonatomic, readonly) BOOL garbageCollectionEnabled;
 
 /** returns the OS version.
 	- On iOS devices it returns the firmware version.

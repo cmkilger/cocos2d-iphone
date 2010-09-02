@@ -28,6 +28,7 @@
 #import "CCDirector.h"
 #import "ccMacros.h"
 #import "Support/CGPointExtension.h"
+#import "CCConfiguration.h"
 
 typedef struct
 {
@@ -206,7 +207,7 @@ typedef struct
 -(void)dealloc
 {
 	if ( tilesOrder ) free(tilesOrder);
-	if ( tiles ) free(tiles);
+	if ( tiles && ![CCConfiguration sharedConfiguration].garbageCollectionEnabled) free(tiles);
 	[super dealloc];
 }
 
@@ -270,7 +271,12 @@ typedef struct
 	
 	[self shuffle:tilesOrder count:tilesCount];
 	
+#if TARGET_OS_IPHONE
 	tiles = malloc(tilesCount*sizeof(Tile));
+#elif TARGET_OS_MAC
+	tiles = NSAllocateCollectable(tilesCount*sizeof(Tile), NSScannedOption);
+#endif
+	
 	Tile *tileArray = (Tile*)tiles;
 	
 	for( i = 0; i < gridSize.x; i++ )

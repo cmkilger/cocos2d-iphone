@@ -66,7 +66,7 @@
 	int	seed;
 	int tilesCount;
 	int *tilesOrder;
-	void *tiles;
+	__strong void *tiles;
 }
 
 /** creates the action with a random seed, the grid size and the duration */

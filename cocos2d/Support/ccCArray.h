@@ -39,13 +39,10 @@
 #define CC_ARRAY_H
 
 #import <Foundation/Foundation.h>
+#import "CCConfiguration.h"
 
 #import <stdlib.h>
 #import <string.h>
-
-static inline BOOL garbageCollectionEnabled() {
-    return (objc_msgSend(NSClassFromString(@"NSGarbageCollector"), @selector(defaultCollector)) != nil);
-}
 
 #pragma mark -
 #pragma mark ccArray for Objects
@@ -89,7 +86,7 @@ static inline void ccArrayFree(ccArray *arr)
 	
 	ccArrayRemoveAllObjects(arr);
 	
-	if (!garbageCollectionEnabled()) {
+	if (![CCConfiguration sharedConfiguration].garbageCollectionEnabled) {
 		free(arr->arr);
 		free(arr);
 	}

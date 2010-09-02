@@ -31,7 +31,7 @@
 
 typedef struct _hashElement
 {
-	struct ccArray	*actions;
+	__strong struct ccArray	*actions;
 	id				target;
 	unsigned int	actionIndex;
 	CCAction		*currentAction;
@@ -53,8 +53,8 @@ typedef struct _hashElement
  */
 @interface CCActionManager : NSObject {
 
-	tHashElement	*targets;
-	tHashElement	*currentTarget;
+	__strong tHashElement	*targets;
+	__strong tHashElement	*currentTarget;
 	BOOL			currentTargetSalvaged;
 }
 
