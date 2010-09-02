@@ -44,6 +44,7 @@
 	CGPoint		step_;
 	CCGrabber	*grabber_;
 	BOOL		isTextureFlipped_;
+	CCDirector	*director_;
 }
 
 /** wheter or not the grid is active */
@@ -61,11 +62,11 @@
 /** is texture flipped */
 @property (nonatomic, readwrite) BOOL isTextureFlipped;
 
-+(id) gridWithSize:(ccGridSize)gridSize texture:(CCTexture2D*)texture flippedTexture:(BOOL)flipped;
-+(id) gridWithSize:(ccGridSize)gridSize;
++(id) gridWithSize:(ccGridSize)gridSize director:(CCDirector *)director texture:(CCTexture2D*)texture flippedTexture:(BOOL)flipped;
++(id) gridWithSize:(ccGridSize)gridSize director:(CCDirector *)director;
 
--(id) initWithSize:(ccGridSize)gridSize texture:(CCTexture2D*)texture flippedTexture:(BOOL)flipped;
--(id)initWithSize:(ccGridSize)gridSize;
+-(id) initWithSize:(ccGridSize)gridSize director:(CCDirector *)director texture:(CCTexture2D*)texture flippedTexture:(BOOL)flipped;
+-(id)initWithSize:(ccGridSize)gridSize director:(CCDirector *)director;
 -(void)beforeDraw;
 -(void)afterDraw:(CCNode*)target;
 -(void)blit;

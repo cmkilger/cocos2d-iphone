@@ -691,7 +691,7 @@ typedef struct
 -(void)startWithTarget:(id)aTarget
 {
 	[super startWithTarget:aTarget];
-	winSize = [[CCDirector sharedDirector] winSize];
+	winSize = [[aTarget director] winSize];
 }
 
 -(void)update:(ccTime)time
@@ -744,7 +744,7 @@ typedef struct
 -(void)startWithTarget:(id)aTarget
 {
 	[super startWithTarget:aTarget];
-	winSize = [[CCDirector sharedDirector] winSize];
+	winSize = [[aTarget director] winSize];
 }
 
 -(void)update:(ccTime)time

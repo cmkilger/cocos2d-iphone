@@ -63,7 +63,7 @@ enum {
 		
 		
 		// elastic effect
-		CGSize s = [[CCDirector sharedDirector] winSize];
+		CGSize s = [self.director winSize];
 		int i=0;
 		for( CCNode *child in [menu children] ) {
 			CGPoint dstPoint = child.position;
@@ -250,7 +250,7 @@ enum {
 		CCMenu *menu = [CCMenu menuWithItems: item1, item2, item3, nil];	
 		menu.position = ccp(0,0);
 		
-		CGSize s = [[CCDirector sharedDirector] winSize];
+		CGSize s = [self.director winSize];
 		
 		item1.position = ccp(s.width/2 - 150, s.height/2);
 		item2.position = ccp(s.width/2 - 200, s.height/2);
@@ -428,13 +428,13 @@ enum {
 	CC_DIRECTOR_INIT();
 
 	// get instance of the shared director
-	CCDirector *director = [CCDirector sharedDirector];
+	CCDirector *director_ = director;
 	
 	// before creating any layer, set the landscape mode
-	[director setDeviceOrientation:kCCDeviceOrientationLandscapeLeft];
+	[self.director setDeviceOrientation:kCCDeviceOrientationLandscapeLeft];
 	
 	// display FPS (useful when debugging)
-	[director setDisplayFPS:YES];
+	[self.director setDisplayFPS:YES];
 	
 	// Default texture format for PNG/BMP/TIFF/JPEG/GIF images
 	// It can be RGBA8888, RGBA4444, RGB5_A1, RGB565
@@ -446,29 +446,29 @@ enum {
 	CCMultiplexLayer *layer = [CCMultiplexLayer layerWithLayers: [Layer1 node], [Layer2 node], [Layer3 node], [Layer4 node], nil];
 	[scene addChild: layer z:0];
 
-	[director runWithScene: scene];
+	[self.director runWithScene: scene];
 }
 
 // getting a call, pause the game
 -(void) applicationWillResignActive:(UIApplication *)application
 {
-	[[CCDirector sharedDirector] pause];
+	[self.director pause];
 }
 
 // call got rejected
 -(void) applicationDidBecomeActive:(UIApplication *)application
 {
-	[[CCDirector sharedDirector] resume];
+	[self.director resume];
 }
 
 -(void) applicationDidEnterBackground:(UIApplication*)application
 {
-	[[CCDirector sharedDirector] stopAnimation];
+	[self.director stopAnimation];
 }
 
 -(void) applicationWillEnterForeground:(UIApplication*)application
 {
-	[[CCDirector sharedDirector] startAnimation];
+	[self.director startAnimation];
 }
 
 // application will be killed
@@ -481,13 +481,13 @@ enum {
 // purge memory
 - (void)applicationDidReceiveMemoryWarning:(UIApplication *)application
 {
-	[[CCDirector sharedDirector] purgeCachedData];
+	[self.director purgeCachedData];
 }
 
 // next delta time will be zero
 -(void) applicationSignificantTimeChange:(UIApplication *)application
 {
-	[[CCDirector sharedDirector] setNextDeltaTimeZero:YES];
+	[self.director setNextDeltaTimeZero:YES];
 }
 
 - (void) dealloc
@@ -509,13 +509,13 @@ enum {
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
 	
 	
-	CCDirector *director = [CCDirector sharedDirector];
+	CCDirector *director_ = director;
 	
-	[director setDisplayFPS:YES];
+	[self.director setDisplayFPS:YES];
 	
-	[director setOpenGLView:glView_];
+	[self.director setOpenGLView:glView_];
 	
-	//	[director setProjection:kCCDirectorProjection2D];
+	//	[self.director setProjection:kCCDirectorProjection2D];
 	
 	// Enable "moving" mouse event. Default no.
 	[window_ setAcceptsMouseMovedEvents:NO];
@@ -526,7 +526,7 @@ enum {
 	CCMultiplexLayer *layer = [CCMultiplexLayer layerWithLayers: [Layer1 node], [Layer2 node], [Layer3 node], [Layer4 node], nil];
 	[scene addChild: layer z:0];
 	
-	[director runWithScene:scene];
+	[self.director runWithScene:scene];
 }
 
 @end

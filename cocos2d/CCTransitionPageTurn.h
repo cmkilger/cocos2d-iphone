@@ -33,7 +33,7 @@
  * This uses a 3DAction so it's strongly recommended that depth buffering
  * is turned on in CCDirector using:
  *
- * 	[[CCDirector sharedDirector] setDepthBufferFormat:kCCDepthBuffer16]; 
+ * 	[self.director setDepthBufferFormat:kCCDepthBuffer16]; 
  *
  * @since v0.8.2
  */

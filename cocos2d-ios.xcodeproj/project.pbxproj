@@ -7888,7 +7888,14 @@
 			isa = PBXProject;
 			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXProject "cocos2d-ios" */;
 			compatibilityVersion = "Xcode 3.1";
+			developmentRegion = English;
 			hasScannedForEncodings = 1;
+			knownRegions = (
+				English,
+				Japanese,
+				French,
+				German,
+			);
 			mainGroup = 29B97314FDCFA39411CA2CEA /* CustomTemplate */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -11082,6 +11089,7 @@
 				OTHER_LDFLAGS = "";
 				PREBINDING = NO;
 				PRODUCT_NAME = cocos2d;
+				SDKROOT = iphoneos4.1;
 			};
 			name = Debug;
 		};
@@ -11100,6 +11108,7 @@
 				OTHER_LDFLAGS = "";
 				PREBINDING = NO;
 				PRODUCT_NAME = cocos2d;
+				SDKROOT = iphoneos4.1;
 				ZERO_LINK = NO;
 			};
 			name = Release;
@@ -11336,6 +11345,7 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				PREBINDING = NO;
 				PRODUCT_NAME = libpng;
+				SDKROOT = iphoneos4.1;
 			};
 			name = Debug;
 		};
@@ -11348,6 +11358,7 @@
 				GCC_ENABLE_FIX_AND_CONTINUE = NO;
 				PREBINDING = NO;
 				PRODUCT_NAME = libpng;
+				SDKROOT = iphoneos4.1;
 				ZERO_LINK = NO;
 			};
 			name = Release;
@@ -11929,6 +11940,7 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				PREBINDING = NO;
 				PRODUCT_NAME = FontLabel;
+				SDKROOT = iphoneos4.1;
 			};
 			name = Debug;
 		};
@@ -11941,6 +11953,7 @@
 				GCC_ENABLE_FIX_AND_CONTINUE = NO;
 				PREBINDING = NO;
 				PRODUCT_NAME = FontLabel;
+				SDKROOT = iphoneos4.1;
 				ZERO_LINK = NO;
 			};
 			name = Release;
@@ -12495,6 +12508,7 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				PREBINDING = NO;
 				PRODUCT_NAME = "build all tests";
+				SDKROOT = iphoneos4.1;
 			};
 			name = Debug;
 		};
@@ -12507,6 +12521,7 @@
 				GCC_ENABLE_FIX_AND_CONTINUE = NO;
 				PREBINDING = NO;
 				PRODUCT_NAME = "build all tests";
+				SDKROOT = iphoneos4.1;
 				ZERO_LINK = NO;
 			};
 			name = Release;
@@ -12728,6 +12743,7 @@
 				);
 				PREBINDING = NO;
 				PRODUCT_NAME = Chipmunk;
+				SDKROOT = iphoneos4.1;
 			};
 			name = Debug;
 		};
@@ -12750,6 +12766,7 @@
 				OTHER_CFLAGS = "";
 				PREBINDING = NO;
 				PRODUCT_NAME = Chipmunk;
+				SDKROOT = iphoneos4.1;
 				ZERO_LINK = NO;
 			};
 			name = Release;
@@ -12971,6 +12988,7 @@
 				);
 				PREBINDING = NO;
 				PRODUCT_NAME = ActionsTest;
+				SDKROOT = iphoneos4.1;
 			};
 			name = Debug;
 		};
@@ -12995,6 +13013,7 @@
 				);
 				PREBINDING = NO;
 				PRODUCT_NAME = ActionsTest;
+				SDKROOT = iphoneos4.1;
 				ZERO_LINK = NO;
 			};
 			name = Release;
@@ -13008,6 +13027,7 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				PREBINDING = NO;
 				PRODUCT_NAME = CocosDenshion;
+				SDKROOT = iphoneos4.1;
 			};
 			name = Debug;
 		};
@@ -13020,6 +13040,7 @@
 				GCC_ENABLE_FIX_AND_CONTINUE = NO;
 				PREBINDING = NO;
 				PRODUCT_NAME = CocosDenshion;
+				SDKROOT = iphoneos4.1;
 				ZERO_LINK = NO;
 			};
 			name = Release;

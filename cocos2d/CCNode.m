@@ -69,6 +69,11 @@
 @synthesize anchorPointInPixels=anchorPointInPixels_, isRelativeAnchorPoint=isRelativeAnchorPoint_;
 @synthesize userData;
 
+-(CCDirector*) director
+{
+	return parent_.director;
+}
+
 // getters synthesized, setters explicit
 -(void) setRotation: (float)newRotation
 {
@@ -766,7 +771,7 @@
 - (CGPoint)convertToWindowSpace:(CGPoint)nodePoint
 {
     CGPoint worldPoint = [self convertToWorldSpace:nodePoint];
-	return [[CCDirector sharedDirector] convertToUI:worldPoint];
+	return [self.director convertToUI:worldPoint];
 }
 
 // convenience methods which take a UITouch instead of CGPoint
@@ -776,14 +781,14 @@
 - (CGPoint)convertTouchToNodeSpace:(UITouch *)touch
 {
 	CGPoint point = [touch locationInView: [touch view]];
-	point = [[CCDirector sharedDirector] convertToGL: point];
+	point = [self.director convertToGL: point];
 	return [self convertToNodeSpace:point];
 }
 
 - (CGPoint)convertTouchToNodeSpaceAR:(UITouch *)touch
 {
 	CGPoint point = [touch locationInView: [touch view]];
-	point = [[CCDirector sharedDirector] convertToGL: point];
+	point = [self.director convertToGL: point];
 	return [self convertToNodeSpaceAR:point];
 }
 #endif // __IPHONE_OS_VERSION_MAX_ALLOWED

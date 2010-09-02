@@ -51,19 +51,21 @@
 @synthesize gridSize=gridSize_;
 @synthesize step=step_;
 
-+(id) gridWithSize:(ccGridSize)gridSize texture:(CCTexture2D*)texture flippedTexture:(BOOL)flipped
++(id) gridWithSize:(ccGridSize)gridSize director:(CCDirector *)director texture:(CCTexture2D*)texture flippedTexture:(BOOL)flipped
 {
-	return [[[self alloc] initWithSize:gridSize texture:texture flippedTexture:flipped] autorelease];
+	return [[[self alloc] initWithSize:gridSize director:director texture:texture flippedTexture:flipped] autorelease];
 }
 
-+(id) gridWithSize:(ccGridSize)gridSize
++(id) gridWithSize:(ccGridSize)gridSize director:(CCDirector *)director
 {
-	return [[(CCGridBase*)[self alloc] initWithSize:gridSize] autorelease];
+	return [[(CCGridBase*)[self alloc] initWithSize:gridSize director:director] autorelease];
 }
 
--(id) initWithSize:(ccGridSize)gridSize texture:(CCTexture2D*)texture flippedTexture:(BOOL)flipped
+-(id) initWithSize:(ccGridSize)gridSize director:(CCDirector *)director texture:(CCTexture2D*)texture flippedTexture:(BOOL)flipped
 {
 	if( (self=[super init]) ) {
+		
+		director_ = director;
 		
 		active_ = NO;
 		reuseGrid_ = 0;
@@ -84,16 +86,15 @@
 	return self;
 }
 
--(id)initWithSize:(ccGridSize)gSize
-{
-	CCDirector *director = [CCDirector sharedDirector];
+-(id)initWithSize:(ccGridSize)gSize director:(CCDirector *)director
+{	
 	CGSize s = [director winSize];
 	
 	unsigned int POTWide = ccNextPOT(s.width);
 	unsigned int POTHigh = ccNextPOT(s.height);
 	
 #ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
-	EAGLView *glview = [[CCDirector sharedDirector] openGLView];
+	EAGLView *glview = [director openGLView];
 	NSString *pixelFormat = [glview pixelFormat];
 
 	CCTexture2DPixelFormat format = [pixelFormat isEqualToString: kEAGLColorFormatRGB565] ? kCCTexture2DPixelFormat_RGB565 : kCCTexture2DPixelFormat_RGBA8888;
@@ -117,7 +118,7 @@
 		return nil;
 	}
 	
-	self = [self initWithSize:gSize texture:texture flippedTexture:NO];
+	self = [self initWithSize:gSize director:director texture:texture flippedTexture:NO];
 	
 	[texture release];
 	
@@ -149,9 +150,8 @@
 {
 	active_ = active;
 	if( ! active ) {
-		CCDirector *director = [CCDirector sharedDirector];
-		ccDirectorProjection proj = [director projection];
-		[director setProjection:proj];
+		ccDirectorProjection proj = [director_ projection];
+		[director_ setProjection:proj];
 	}
 }
 
@@ -172,13 +172,13 @@
 #ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
 -(void)applyLandscape
 {
-	CCDirector *director = [CCDirector sharedDirector];
+	CCDirector *director_ = director;
 	
-	CGSize winSize = [director displaySize];
+	CGSize winSize = [self.director displaySize];
 	float w = winSize.width / 2;
 	float h = winSize.height / 2;
 
-	ccDeviceOrientation orientation  = [director deviceOrientation];
+	ccDeviceOrientation orientation  = [self.director deviceOrientation];
 
 	switch (orientation) {
 		case CCDeviceOrientationLandscapeLeft:
@@ -204,7 +204,7 @@
 
 -(void)set2DProjection
 {
-	CGSize	winSize = [[CCDirector sharedDirector] winSize];
+	CGSize	winSize = [director_ winSize];
 	
 	glLoadIdentity();
 	glViewport(0, 0, winSize.width, winSize.height);
@@ -217,7 +217,7 @@
 // This routine can be merged with Director
 -(void)set3DProjection
 {
-	CGSize	winSize = [[CCDirector sharedDirector] displaySize];
+	CGSize	winSize = [director_ displaySize];
 	
 	glViewport(0, 0, winSize.width, winSize.height);
 	glMatrixMode(GL_PROJECTION);
@@ -226,7 +226,7 @@
 	
 	glMatrixMode(GL_MODELVIEW);	
 	glLoadIdentity();
-	gluLookAt( winSize.width/2, winSize.height/2, [[CCDirector sharedDirector] getZEye],
+	gluLookAt( winSize.width/2, winSize.height/2, [director_ getZEye],
 			  winSize.width/2, winSize.height/2, 0,
 			  0.0f, 1.0f, 0.0f
 			  );

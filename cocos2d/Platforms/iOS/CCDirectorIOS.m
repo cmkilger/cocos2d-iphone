@@ -60,44 +60,6 @@
 -(void) calculateDeltaTime;
 @end
 
-@implementation CCDirector (iOSExtensionClassMethods)
-
-+(Class) defaultDirector
-{
-	return [CCDirectorTimer class];
-}
-
-+ (BOOL) setDirectorType:(ccDirectorType)type
-{
-	if( type == CCDirectorTypeDisplayLink ) {
-		NSString *reqSysVer = @"3.1";
-		NSString *currSysVer = [[UIDevice currentDevice] systemVersion];
-		
-		if([currSysVer compare:reqSysVer options:NSNumericSearch] == NSOrderedAscending)
-			return NO;
-	}
-	switch (type) {
-		case CCDirectorTypeNSTimer:
-			[CCDirectorTimer sharedDirector];
-			break;
-		case CCDirectorTypeDisplayLink:
-			[CCDirectorDisplayLink sharedDirector];
-			break;
-		case CCDirectorTypeMainLoop:
-			[CCDirectorFast sharedDirector];
-			break;
-		case CCDirectorTypeThreadMainLoop:
-			[CCDirectorFastThreaded sharedDirector];
-			break;
-		default:
-			NSAssert(NO,@"Unknown director type");
-	}
-	
-	return YES;
-}
-
-@end
-
 
 
 #pragma mark -

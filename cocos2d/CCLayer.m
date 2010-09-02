@@ -49,7 +49,7 @@
 {
 	if( (self=[super init]) ) {
 	
-		CGSize s = [[CCDirector sharedDirector] winSize];
+		CGSize s = [self.director winSize];
 		anchorPoint_ = ccp(0.5f, 0.5f);
 		[self setContentSize:s];
 		self.isRelativeAnchorPoint = NO;
@@ -268,7 +268,7 @@
 
 - (id) initWithColor:(ccColor4B)color
 {
-	CGSize s = [[CCDirector sharedDirector] winSize];
+	CGSize s = [self.director winSize];
 	return [self initWithColor:color width:s.width height:s.height];
 }
 

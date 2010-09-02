@@ -74,7 +74,7 @@ Class restartAction()
 		[self addChild: kathia z:2];
 		[self addChild: tamara z:1];
 
-		CGSize s = [[CCDirector sharedDirector] winSize];
+		CGSize s = [self.director winSize];
 		
 		[grossini setPosition: ccp(60, 50)];
 		[kathia setPosition: ccp(60, 150)];
@@ -112,21 +112,21 @@ Class restartAction()
 {
 	CCScene *s = [CCScene node];
 	[s addChild: [restartAction() node]];
-	[[CCDirector sharedDirector] replaceScene: s];
+	[self.director replaceScene: s];
 }
 
 -(void) nextCallback: (id) sender
 {
 	CCScene *s = [CCScene node];
 	[s addChild: [nextAction() node]];
-	[[CCDirector sharedDirector] replaceScene: s];
+	[self.director replaceScene: s];
 }
 
 -(void) backCallback: (id) sender
 {
 	CCScene *s = [CCScene node];
 	[s addChild: [backAction() node]];
-	[[CCDirector sharedDirector] replaceScene: s];
+	[self.director replaceScene: s];
 }
 
 
@@ -152,7 +152,7 @@ Class restartAction()
 {
 	[super onEnter];
 	
-	CGSize s = [[CCDirector sharedDirector] winSize];
+	CGSize s = [self.director winSize];
 
 	id move = [CCMoveBy actionWithDuration:3 position:ccp(s.width-130,0)];
 	id move_back = [move reverse];
@@ -201,7 +201,7 @@ Class restartAction()
 {
 	[super onEnter];
 	
-	CGSize s = [[CCDirector sharedDirector] winSize];
+	CGSize s = [self.director winSize];
 
 	id move = [CCMoveBy actionWithDuration:3 position:ccp(s.width-130,0)];
 //	id move_back = [move reverse];
@@ -237,7 +237,7 @@ Class restartAction()
 {
 	[super onEnter];
 	
-	CGSize s = [[CCDirector sharedDirector] winSize];
+	CGSize s = [self.director winSize];
 	
 	id move = [CCMoveBy actionWithDuration:3 position:ccp(s.width-130,0)];
 	id move_back = [move reverse];
@@ -271,7 +271,7 @@ Class restartAction()
 {
 	[super onEnter];
 	
-	CGSize s = [[CCDirector sharedDirector] winSize];
+	CGSize s = [self.director winSize];
 	
 	id move = [CCMoveBy actionWithDuration:3 position:ccp(s.width-130,0)];
 	id move_back = [move reverse];
@@ -302,7 +302,7 @@ Class restartAction()
 {
 	[super onEnter];
 	
-	CGSize s = [[CCDirector sharedDirector] winSize];
+	CGSize s = [self.director winSize];
 	
 	id move = [CCMoveBy actionWithDuration:3 position:ccp(s.width-130,0)];
 	id move_back = [move reverse];
@@ -337,7 +337,7 @@ Class restartAction()
 {
 	[super onEnter];
 	
-	CGSize s = [[CCDirector sharedDirector] winSize];
+	CGSize s = [self.director winSize];
 	
 	id move = [CCMoveBy actionWithDuration:3 position:ccp(s.width-130,0)];
 	id move_back = [move reverse];
@@ -369,7 +369,7 @@ Class restartAction()
 {
 	[super onEnter];
 
-	CGSize s = [[CCDirector sharedDirector] winSize];
+	CGSize s = [self.director winSize];
 	
 	id move = [CCMoveBy actionWithDuration:3 position:ccp(s.width-130,0)];
 	
@@ -406,7 +406,7 @@ Class restartAction()
 {
 	[super onEnter];
 	
-	CGSize s = [[CCDirector sharedDirector] winSize];
+	CGSize s = [self.director winSize];
 	
 	id move = [CCMoveBy actionWithDuration:3 position:ccp(s.width-130,0)];
 	id move_back = [move reverse];
@@ -440,7 +440,7 @@ Class restartAction()
 {
 	[super onEnter];
 	
-	CGSize s = [[CCDirector sharedDirector] winSize];
+	CGSize s = [self.director winSize];
 	
 	id move = [CCMoveBy actionWithDuration:3 position:ccp(s.width-130,0)];
 	id move_back = [move reverse];
@@ -472,7 +472,7 @@ Class restartAction()
 {
 	[super onEnter];
 	
-	CGSize s = [[CCDirector sharedDirector] winSize];
+	CGSize s = [self.director winSize];
 	
 	id move = [CCMoveBy actionWithDuration:3 position:ccp(s.width-130,0)];
 	id move_back = [move reverse];
@@ -503,7 +503,7 @@ Class restartAction()
 {
 	[super onEnter];
 	
-	CGSize s = [[CCDirector sharedDirector] winSize];
+	CGSize s = [self.director winSize];
 	
 	id move = [CCMoveBy actionWithDuration:3 position:ccp(s.width-130,0)];
 	id move_back = [move reverse];
@@ -535,7 +535,7 @@ Class restartAction()
 {
 	[super onEnter];
 	
-	CGSize s = [[CCDirector sharedDirector] winSize];
+	CGSize s = [self.director winSize];
 	
 	id move = [CCMoveBy actionWithDuration:3 position:ccp(s.width-130,0)];
 	id move_back = [move reverse];
@@ -568,7 +568,7 @@ Class restartAction()
 {
 	[super onEnter];
 	
-	CGSize s = [[CCDirector sharedDirector] winSize];
+	CGSize s = [self.director winSize];
 	
 	// rotate and jump
 	CCActionInterval *jump1 = [CCJumpBy actionWithDuration:4 position:ccp(-s.width+80,0) height:100 jumps:4];
@@ -668,7 +668,7 @@ Class restartAction()
 {
 	[super onEnter];
 	
-	CGSize s = [[CCDirector sharedDirector] winSize];
+	CGSize s = [self.director winSize];
 	
 	// rotate and jump
 	CCActionInterval *jump1 = [CCJumpBy actionWithDuration:4 position:ccp(-s.width+80,0) height:100 jumps:4];
@@ -694,9 +694,9 @@ Class restartAction()
 	
 	sliderCtl = [self sliderCtl];
 #ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
-	[[[[CCDirector sharedDirector] openGLView] window] addSubview: sliderCtl];
+	[[[self.director openGLView] window] addSubview: sliderCtl];
 #elif defined(__MAC_OS_X_VERSION_MAX_ALLOWED)
-	MacGLView *view = [[CCDirector sharedDirector] openGLView];
+	MacGLView *view = [self.director openGLView];
 
 	if( ! overlayWindow ) {
 		overlayWindow  = [[NSWindow alloc] initWithContentRect:[[view window] frame]
@@ -725,7 +725,7 @@ Class restartAction()
 
 #ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
 #elif defined(__MAC_OS_X_VERSION_MAX_ALLOWED)
-	MacGLView *view = [[CCDirector sharedDirector] openGLView];
+	MacGLView *view = [self.director openGLView];
 	[[view window] removeChildWindow:overlayWindow];
 	[overlayWindow release];
 	overlayWindow = nil;
@@ -767,13 +767,13 @@ Class restartAction()
 	CC_DIRECTOR_INIT();
 	
 	// Obtain the shared director in order to...
-	CCDirector *director = [CCDirector sharedDirector];
+	CCDirector *director_ = director;
 	
 	// Sets landscape mode
-	[director setDeviceOrientation:kCCDeviceOrientationLandscapeLeft];
+	[self.director setDeviceOrientation:kCCDeviceOrientationLandscapeLeft];
 	
 	// Turn on display FPS
-	[director setDisplayFPS:YES];
+	[self.director setDisplayFPS:YES];
 	
 	// Default texture format for PNG/BMP/TIFF/JPEG/GIF images
 	// It can be RGBA8888, RGBA4444, RGB5_A1, RGB565
@@ -783,29 +783,29 @@ Class restartAction()
 	CCScene *scene = [CCScene node];
 	[scene addChild: [nextAction() node]];	
 	
-	[director runWithScene: scene];
+	[self.director runWithScene: scene];
 }
 
 // getting a call, pause the game
 -(void) applicationWillResignActive:(UIApplication *)application
 {
-	[[CCDirector sharedDirector] pause];
+	[self.director pause];
 }
 
 // call got rejected
 -(void) applicationDidBecomeActive:(UIApplication *)application
 {
-	[[CCDirector sharedDirector] resume];
+	[self.director resume];
 }
 
 -(void) applicationDidEnterBackground:(UIApplication*)application
 {
-	[[CCDirector sharedDirector] stopAnimation];
+	[self.director stopAnimation];
 }
 
 -(void) applicationWillEnterForeground:(UIApplication*)application
 {
-	[[CCDirector sharedDirector] startAnimation];
+	[self.director startAnimation];
 }
 
 // application will be killed
@@ -818,13 +818,13 @@ Class restartAction()
 // purge memroy
 - (void)applicationDidReceiveMemoryWarning:(UIApplication *)application
 {
-	[[CCDirector sharedDirector] purgeCachedData];
+	[self.director purgeCachedData];
 }
 
 // next delta time will be zero
 -(void) applicationSignificantTimeChange:(UIApplication *)application
 {
-	[[CCDirector sharedDirector] setNextDeltaTimeZero:YES];
+	[self.director setNextDeltaTimeZero:YES];
 }
 
 - (void) dealloc
@@ -844,13 +844,13 @@ Class restartAction()
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
 	
 	
-	CCDirector *director = [CCDirector sharedDirector];
+	CCDirector *director_ = director;
 	
-	[director setDisplayFPS:YES];
+	[self.director setDisplayFPS:YES];
 	
-	[director setOpenGLView:glView_];
+	[self.director setOpenGLView:glView_];
 	
-	//	[director setProjection:kCCDirectorProjection2D];
+	//	[self.director setProjection:kCCDirectorProjection2D];
 	
 	// Enable "moving" mouse event. Default no.
 	[window_ setAcceptsMouseMovedEvents:NO];
@@ -859,7 +859,7 @@ Class restartAction()
 	CCScene *scene = [CCScene node];
 	[scene addChild: [nextAction() node]];
 	
-	[director runWithScene:scene];
+	[self.director runWithScene:scene];
 }
 
 @end

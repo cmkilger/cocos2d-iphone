@@ -91,7 +91,7 @@ Class restartAction()
 {
 	if( (self = [super init]) ) {
 
-		CGSize s = [[CCDirector sharedDirector] winSize];	
+		CGSize s = [self.director winSize];	
 		CCLabelTTF *label = [CCLabelTTF labelWithString:[self title] fontName:@"Arial" fontSize:26];
 		[self addChild:label z:1 tag:kTagLabel];
 		[label setPosition: ccp(s.width/2, s.height-50)];
@@ -128,21 +128,21 @@ Class restartAction()
 {
 	CCScene *s = [CCScene node];
 	[s addChild: [restartAction() node]];
-	[[CCDirector sharedDirector] replaceScene: s];
+	[self.director replaceScene: s];
 }
 
 -(void) nextCallback: (id) sender
 {
 	CCScene *s = [CCScene node];
 	[s addChild: [nextAction() node]];
-	[[CCDirector sharedDirector] replaceScene: s];
+	[self.director replaceScene: s];
 }
 
 -(void) backCallback: (id) sender
 {
 	CCScene *s = [CCScene node];
 	[s addChild: [backAction() node]];
-	[[CCDirector sharedDirector] replaceScene: s];
+	[self.director replaceScene: s];
 }
 
 -(NSString*) title
@@ -164,7 +164,7 @@ Class restartAction()
 {
 	[super onEnter];	
 
-	CGSize s = [[CCDirector sharedDirector] winSize];
+	CGSize s = [self.director winSize];
 
 	CCSprite *img = [CCSprite spriteWithFile:@"test_image.png"];
 	img.position = ccp( s.width/2.0f, s.height/2.0f);
@@ -185,7 +185,7 @@ Class restartAction()
 -(void) onEnter
 {
 	[super onEnter];
-	CGSize s = [[CCDirector sharedDirector] winSize];
+	CGSize s = [self.director winSize];
 	
 	CCSprite *img = [CCSprite spriteWithFile:@"test_image.jpeg"];
 	img.position = ccp( s.width/2.0f, s.height/2.0f);
@@ -206,7 +206,7 @@ Class restartAction()
 -(void) onEnter
 {
 	[super onEnter];
-	CGSize s = [[CCDirector sharedDirector] winSize];
+	CGSize s = [self.director winSize];
 	
 	CCSprite *img = [CCSprite spriteWithFile:@"test_image.bmp"];
 	img.position = ccp( s.width/2.0f, s.height/2.0f);
@@ -227,7 +227,7 @@ Class restartAction()
 -(void) onEnter
 {
 	[super onEnter];
-	CGSize s = [[CCDirector sharedDirector] winSize];
+	CGSize s = [self.director winSize];
 	
 	CCSprite *img = [CCSprite spriteWithFile:@"test_image.tiff"];
 	img.position = ccp( s.width/2.0f, s.height/2.0f);
@@ -248,7 +248,7 @@ Class restartAction()
 -(void) onEnter
 {
 	[super onEnter];
-	CGSize s = [[CCDirector sharedDirector] winSize];
+	CGSize s = [self.director winSize];
 	
 	CCSprite *img = [CCSprite spriteWithFile:@"test_image.gif"];
 	img.position = ccp( s.width/2.0f, s.height/2.0f);
@@ -269,7 +269,7 @@ Class restartAction()
 -(void) onEnter
 {
 	[super onEnter];
-	CGSize s = [[CCDirector sharedDirector] winSize];
+	CGSize s = [self.director winSize];
 	
 #ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
 	UIImage *image = [[UIImage alloc] initWithContentsOfFile:[CCFileUtils fullPathFromRelativePath: @"test_image.png" ]];
@@ -310,7 +310,7 @@ Class restartAction()
 -(void) onEnter
 {
 	[super onEnter];
-	CGSize s = [[CCDirector sharedDirector] winSize];
+	CGSize s = [self.director winSize];
 	
 	CCTexture2D *texture0 = [[CCTextureCache sharedTextureCache] addImage:@"grossini_dance_atlas.png"];
 	[texture0 generateMipmap];
@@ -360,7 +360,7 @@ Class restartAction()
 -(void) onEnter
 {
 	[super onEnter];
-	CGSize s = [[CCDirector sharedDirector] winSize];
+	CGSize s = [self.director winSize];
 
 	CCSprite *imgMipMap = [CCSprite spriteWithFile:@"logo-mipmap.pvr"];
 	if( imgMipMap ) {
@@ -405,7 +405,7 @@ Class restartAction()
 -(void) onEnter
 {
 	[super onEnter];
-	CGSize s = [[CCDirector sharedDirector] winSize];
+	CGSize s = [self.director winSize];
 	
 	CCSprite *imgMipMap = [CCSprite spriteWithFile:@"test_image_rgba4444_mipmap.pvr"];
 	imgMipMap.position = ccp( s.width/2.0f-100, s.height/2.0f);
@@ -449,7 +449,7 @@ Class restartAction()
 -(void) onEnter
 {
 	[super onEnter];
-	CGSize s = [[CCDirector sharedDirector] winSize];
+	CGSize s = [self.director winSize];
 	
 	CCSprite *img = [CCSprite spriteWithFile:@"test_image_pvrtc2bpp.pvr"];
 	
@@ -477,7 +477,7 @@ Class restartAction()
 	[super onEnter];
 
 #ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
-	CGSize s = [[CCDirector sharedDirector] winSize];
+	CGSize s = [self.director winSize];
 	
 	CCTexture2D *tex = [[CCTextureCache sharedTextureCache] addPVRTCImage:@"test_image.pvrraw" bpp:4 hasAlpha:YES width:128];
 	CCSprite *img = [CCSprite spriteWithTexture:tex];
@@ -505,7 +505,7 @@ Class restartAction()
 -(void) onEnter
 {
 	[super onEnter];
-	CGSize s = [[CCDirector sharedDirector] winSize];
+	CGSize s = [self.director winSize];
 	
 	CCSprite *img = [CCSprite spriteWithFile:@"test_image.pvr"];
 	
@@ -534,7 +534,7 @@ Class restartAction()
 -(void) onEnter
 {
 	[super onEnter];
-	CGSize s = [[CCDirector sharedDirector] winSize];
+	CGSize s = [self.director winSize];
 	
 	CCSprite *img = [CCSprite spriteWithFile:@"test_image_pvrtc4bpp.pvr"];
 	
@@ -564,7 +564,7 @@ Class restartAction()
 -(void) onEnter
 {
 	[super onEnter];
-	CGSize s = [[CCDirector sharedDirector] winSize];
+	CGSize s = [self.director winSize];
 	
 	CCSprite *img = [CCSprite spriteWithFile:@"test_image_rgba8888.pvr"];
 	img.position = ccp( s.width/2.0f, s.height/2.0f);
@@ -588,7 +588,7 @@ Class restartAction()
 -(void) onEnter
 {
 	[super onEnter];
-	CGSize s = [[CCDirector sharedDirector] winSize];
+	CGSize s = [self.director winSize];
 	
 	CCSprite *img = [CCSprite spriteWithFile:@"test_image_bgra8888.pvr"];
 	img.position = ccp( s.width/2.0f, s.height/2.0f);
@@ -613,7 +613,7 @@ Class restartAction()
 -(void) onEnter
 {
 	[super onEnter];
-	CGSize s = [[CCDirector sharedDirector] winSize];
+	CGSize s = [self.director winSize];
 	
 	CCSprite *img = [CCSprite spriteWithFile:@"test_image_rgba5551.pvr"];
 	img.position = ccp( s.width/2.0f, s.height/2.0f);
@@ -637,7 +637,7 @@ Class restartAction()
 -(void) onEnter
 {
 	[super onEnter];
-	CGSize s = [[CCDirector sharedDirector] winSize];
+	CGSize s = [self.director winSize];
 	
 	CCSprite *img = [CCSprite spriteWithFile:@"test_image_rgba4444.pvr"];
 	img.position = ccp( s.width/2.0f, s.height/2.0f);
@@ -661,7 +661,7 @@ Class restartAction()
 -(void) onEnter
 {
 	[super onEnter];
-	CGSize s = [[CCDirector sharedDirector] winSize];
+	CGSize s = [self.director winSize];
 	
 	CCSprite *img = [CCSprite spriteWithFile:@"test_image_rgb565.pvr"];
 	img.position = ccp( s.width/2.0f, s.height/2.0f);
@@ -685,7 +685,7 @@ Class restartAction()
 -(void) onEnter
 {
 	[super onEnter];
-	CGSize s = [[CCDirector sharedDirector] winSize];
+	CGSize s = [self.director winSize];
 	
 	CCSprite *img = [CCSprite spriteWithFile:@"test_image_a8.pvr"];
 	img.position = ccp( s.width/2.0f, s.height/2.0f);
@@ -709,7 +709,7 @@ Class restartAction()
 -(void) onEnter
 {
 	[super onEnter];
-	CGSize s = [[CCDirector sharedDirector] winSize];
+	CGSize s = [self.director winSize];
 	
 	CCSprite *img = [CCSprite spriteWithFile:@"test_image_i8.pvr"];
 	img.position = ccp( s.width/2.0f, s.height/2.0f);
@@ -733,7 +733,7 @@ Class restartAction()
 -(void) onEnter
 {
 	[super onEnter];
-	CGSize s = [[CCDirector sharedDirector] winSize];
+	CGSize s = [self.director winSize];
 	
 	CCSprite *img = [CCSprite spriteWithFile:@"test_image_ai88.pvr"];
 	img.position = ccp( s.width/2.0f, s.height/2.0f);
@@ -754,7 +754,7 @@ Class restartAction()
 -(void) onEnter
 {
 	[super onEnter];
-	CGSize s = [[CCDirector sharedDirector] winSize];
+	CGSize s = [self.director winSize];
 	
 	CCSprite *img = [CCSprite spriteWithFile:@"grossini_128x256_mipmap.pvr"];
 	img.position = ccp( s.width/2.0f, s.height/2.0f);
@@ -781,7 +781,7 @@ Class restartAction()
 -(void) onEnter
 {
 	[super onEnter];
-	CGSize s = [[CCDirector sharedDirector] winSize];
+	CGSize s = [self.director winSize];
 	
 	CCSprite *img = [CCSprite spriteWithFile:@"grossini_pvr_rgba4444.pvr"];
 	img.position = ccp( s.width/2.0f, s.height/2.0f);
@@ -808,7 +808,7 @@ Class restartAction()
 -(void) onEnter
 {
 	[super onEnter];
-	CGSize s = [[CCDirector sharedDirector] winSize];
+	CGSize s = [self.director winSize];
 	
 	//
 	// Sprite 1: GL_LINEAR
@@ -872,7 +872,7 @@ Class restartAction()
 	CCLabelTTF *label = (CCLabelTTF*) [self getChildByTag:kTagLabel];
 	[label setColor:ccc3(16,16,255)];
 	
-	CGSize s = [[CCDirector sharedDirector] winSize];
+	CGSize s = [self.director winSize];
 		
 	CCColorLayer *background = [CCColorLayer layerWithColor:ccc4(128,128,128,255) width:s.width height:s.height];
 	[self addChild:background z:-1];
@@ -1006,7 +1006,7 @@ Class restartAction()
 		
 		imageOffset = 0;
 	
-		CGSize size =[[CCDirector sharedDirector] winSize];
+		CGSize size =[self.director winSize];
 
 		CCLabelTTF *label = [CCLabelTTF labelWithString:@"Loading..." fontName:@"Marker Felt" fontSize:32];
 		label.position = ccp( size.width/2, size.height/2);
@@ -1059,7 +1059,7 @@ Class restartAction()
 	sprite.anchorPoint = ccp(0,0);
 	[self addChild:sprite z:-1];
 	
-	CGSize size =[[CCDirector sharedDirector] winSize];
+	CGSize size =[self.director winSize];
 	
 	int i = imageOffset * 32;
 	sprite.position = ccp( i % (int)size.width, (i / (int)size.width) * 32 );
@@ -1086,7 +1086,7 @@ Class restartAction()
 {
 	if( (self=[super init]) ) {
 		
-		CGSize size =[[CCDirector sharedDirector] winSize];
+		CGSize size =[self.director winSize];
 
 		// The .png image MUST be power of 2 in order to create a continue effect.
 		// eg: 32x64, 512x128, 256x1024, 64x64, etc..
@@ -1126,7 +1126,7 @@ Class restartAction()
 {
 	if( (self=[super init]) ) {
 		
-		CGSize size =[[CCDirector sharedDirector] winSize];
+		CGSize size =[self.director winSize];
 		
 		// The .png image MUST be power of 2 in order to create a continue effect.
 		// eg: 32x64, 512x128, 256x1024, 64x64, etc..
@@ -1285,7 +1285,7 @@ Class restartAction()
 {
 	if( (self=[super init]) ) {
 				
-		CGSize size =[[CCDirector sharedDirector] winSize];
+		CGSize size =[self.director winSize];
 	
 		CCColorLayer *background = [CCColorLayer layerWithColor:ccc4(128,128,128,255) width:size.width height:size.height];
 		[self addChild:background z:-1];
@@ -1478,7 +1478,7 @@ Class restartAction()
 {	
 	if ((self=[super init]) ) {
 		
-		CGSize s = [[CCDirector sharedDirector] winSize];
+		CGSize s = [self.director winSize];
 		
 		CCSprite *sprite;
 		
@@ -1558,13 +1558,13 @@ Class restartAction()
 	CC_DIRECTOR_INIT();
 	
 	// Obtain the shared director in order to...
-	CCDirector *director = [CCDirector sharedDirector];
+	CCDirector *director_ = director;
 	
 	// Sets landscape mode
-	[director setDeviceOrientation:kCCDeviceOrientationLandscapeLeft];
+	[self.director setDeviceOrientation:kCCDeviceOrientationLandscapeLeft];
 	
 	// Turn on display FPS
-	[director setDisplayFPS:YES];
+	[self.director setDisplayFPS:YES];
 	
 	// Default texture format for PNG/BMP/TIFF/JPEG/GIF images
 	// It can be RGBA8888, RGBA4444, RGB5_A1, RGB565
@@ -1574,29 +1574,29 @@ Class restartAction()
 	CCScene *scene = [CCScene node];
 	[scene addChild: [nextAction() node]];
 	
-	[director runWithScene: scene];
+	[self.director runWithScene: scene];
 }
 
 // geting a call, pause the game
 -(void) applicationWillResignActive:(UIApplication *)application
 {
-	[[CCDirector sharedDirector] pause];
+	[self.director pause];
 }
 
 // call got rejected
 -(void) applicationDidBecomeActive:(UIApplication *)application
 {
-	[[CCDirector sharedDirector] resume];
+	[self.director resume];
 }
 
 -(void) applicationDidEnterBackground:(UIApplication*)application
 {
-	[[CCDirector sharedDirector] stopAnimation];
+	[self.director stopAnimation];
 }
 
 -(void) applicationWillEnterForeground:(UIApplication*)application
 {
-	[[CCDirector sharedDirector] startAnimation];
+	[self.director startAnimation];
 }
 
 // application will be killed
@@ -1608,13 +1608,13 @@ Class restartAction()
 // purge memory
 - (void)applicationDidReceiveMemoryWarning:(UIApplication *)application
 {
-	[[CCDirector sharedDirector] purgeCachedData];
+	[self.director purgeCachedData];
 }
 
 // next delta time will be zero
 -(void) applicationSignificantTimeChange:(UIApplication *)application
 {
-	[[CCDirector sharedDirector] setNextDeltaTimeZero:YES];
+	[self.director setNextDeltaTimeZero:YES];
 }
 
 
@@ -1637,13 +1637,13 @@ Class restartAction()
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
 	
 	
-	CCDirector *director = [CCDirector sharedDirector];
+	CCDirector *director_ = director;
 	
-	[director setDisplayFPS:YES];
+	[self.director setDisplayFPS:YES];
 	
-	[director setOpenGLView:glView_];
+	[self.director setOpenGLView:glView_];
 	
-	//	[director setProjection:kCCDirectorProjection2D];
+	//	[self.director setProjection:kCCDirectorProjection2D];
 	
 	// Enable "moving" mouse event. Default no.
 	[window_ setAcceptsMouseMovedEvents:NO];
@@ -1652,7 +1652,7 @@ Class restartAction()
 	CCScene *scene = [CCScene node];
 	[scene addChild: [nextAction() node]];
 	
-	[director runWithScene:scene];
+	[self.director runWithScene:scene];
 }
 
 @end

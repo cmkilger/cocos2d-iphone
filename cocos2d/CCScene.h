@@ -36,7 +36,9 @@
 
  It is a good practice to use and CCScene as the parent of all your nodes.
 */
+@class CCDirector;
 @interface CCScene : CCNode {
-
+	CCDirector * director_;
 }
+@property (assign) CCDirector * director;
 @end

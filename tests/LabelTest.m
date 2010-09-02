@@ -81,7 +81,7 @@ Class restartAction()
 {
 	if( (self = [super init])) {
 
-		CGSize s = [[CCDirector sharedDirector] winSize];
+		CGSize s = [self.director winSize];
 			
 		CCLabelTTF* label = [CCLabelTTF labelWithString:[self title] fontName:@"Arial" fontSize:32];
 		[self addChild: label z:1];
@@ -119,21 +119,21 @@ Class restartAction()
 {
 	CCScene *s = [CCScene node];
 	[s addChild: [restartAction() node]];
-	[[CCDirector sharedDirector] replaceScene: s];
+	[self.director replaceScene: s];
 }
 
 -(void) nextCallback: (id) sender
 {
 	CCScene *s = [CCScene node];
 	[s addChild: [nextAction() node]];
-	[[CCDirector sharedDirector] replaceScene: s];
+	[self.director replaceScene: s];
 }
 
 -(void) backCallback: (id) sender
 {
 	CCScene *s = [CCScene node];
 	[s addChild: [backAction() node]];
-	[[CCDirector sharedDirector] replaceScene: s];
+	[self.director replaceScene: s];
 }
 
 -(NSString*) title
@@ -159,7 +159,7 @@ Class restartAction()
 	
 	textureAtlas = [[CCTextureAtlas textureAtlasWithFile: @"atlastest.png" capacity:3] retain];
 	
-	CGSize s = [[CCDirector sharedDirector] winSize];
+	CGSize s = [self.director winSize];
 
 	//
 	// Notice: u,v tex coordinates are inverted
@@ -380,7 +380,7 @@ Class restartAction()
 		[self addChild:label3 z:0 tag:kTagBitmapAtlas3];
 		
 		
-		CGSize s = [[CCDirector sharedDirector] winSize];	
+		CGSize s = [self.director winSize];	
 		label1.position = ccp( 0,0);
 		label2.position = ccp( s.width/2, s.height/2);
 		label3.position = ccp( s.width, s.height);
@@ -436,7 +436,7 @@ Class restartAction()
 		CCLabelBMFont *label = [CCLabelBMFont labelWithString:@"Bitmap Font Atlas" fntFile:@"bitmapFontTest.fnt"];
 		[self addChild:label];
 		
-		CGSize s = [[CCDirector sharedDirector] winSize];
+		CGSize s = [self.director winSize];
 		
 		label.position = ccp(s.width/2, s.height/2);
 		label.anchorPoint = ccp(0.5f, 0.5f);
@@ -485,7 +485,7 @@ Class restartAction()
 
 -(void) draw
 {
-	CGSize s = [[CCDirector sharedDirector] winSize];
+	CGSize s = [self.director winSize];
 	ccDrawLine( ccp(0, s.height/2), ccp(s.width, s.height/2) );
 	ccDrawLine( ccp(s.width/2, 0), ccp(s.width/2, s.height) );
 
@@ -529,7 +529,7 @@ Class restartAction()
 		CCLabelBMFont *label = [CCLabelBMFont labelWithString:@"abcdefg" fntFile:@"bitmapFontTest4.fnt"];
 		[self addChild:label];
 		
-		CGSize s = [[CCDirector sharedDirector] winSize];
+		CGSize s = [self.director winSize];
 		
 		label.position = ccp(s.width/2, s.height/2);
 		label.anchorPoint = ccp(0.5f, 0.5f);
@@ -565,7 +565,7 @@ Class restartAction()
 {
 	if( (self=[super init]) ) {
 
-		CGSize s = [[CCDirector sharedDirector] winSize];
+		CGSize s = [self.director winSize];
 
 		CCLabelBMFont *label = nil;
 		label = [CCLabelBMFont labelWithString:@"FaFeFiFoFu" fntFile:@"bitmapFontTest5.fnt"];
@@ -615,7 +615,7 @@ Class restartAction()
 {
 	if( (self=[super init]) ) {
 		
-		CGSize s = [[CCDirector sharedDirector] winSize];
+		CGSize s = [self.director winSize];
 		
 		CCLabelBMFont *label = nil;
 		label = [CCLabelBMFont labelWithString:@"Blue" fntFile:@"bitmapFontTest5.fnt"];
@@ -674,7 +674,7 @@ Class restartAction()
 			CCLabelBMFont *label = [CCLabelBMFont labelWithString:[NSString stringWithFormat:@"-%d-",i] fntFile:@"bitmapFontTest.fnt"];
 			[self addChild:label];
 			
-			CGSize s = [[CCDirector sharedDirector] winSize];
+			CGSize s = [self.director winSize];
 
 			CGPoint p = ccp( CCRANDOM_0_1() * s.width, CCRANDOM_0_1() * s.height);
 			label.position = p;
@@ -741,7 +741,7 @@ Class restartAction()
 		NSLog(@"content size: %.2fx%.2f", s.width, s.height);
 
 		
-		s = [[CCDirector sharedDirector] winSize];	
+		s = [self.director winSize];	
 		label1.position = ccp( 0,0);
 		label2.position = ccp( s.width/2, s.height/2);
 		label3.position = ccp( s.width, s.height);
@@ -771,7 +771,7 @@ Class restartAction()
 {
 	if( (self=[super init]) ) {
 		
-		CGSize s = [[CCDirector sharedDirector] winSize];
+		CGSize s = [self.director winSize];
 
 		// CCLabelBMFont
 		CCLabelBMFont *label1 = [CCLabelBMFont labelWithString:@"" fntFile:@"bitmapFontTest3.fnt"];
@@ -861,36 +861,36 @@ Class restartAction()
 	CC_DIRECTOR_INIT();
 	
 	// Obtain the shared director in order to...
-	CCDirector *director = [CCDirector sharedDirector];
+	CCDirector *director_ = director;
 	
 	// Sets landscape mode
-	[director setDeviceOrientation:kCCDeviceOrientationLandscapeLeft];
+	[self.director setDeviceOrientation:kCCDeviceOrientationLandscapeLeft];
 	
 	// Turn on display FPS
-	[director setDisplayFPS:YES];
+	[self.director setDisplayFPS:YES];
 	
 	CCScene *scene = [CCScene node];
 	[scene addChild: [nextAction() node]];
 
-	[director runWithScene: scene];
+	[self.director runWithScene: scene];
 }
 
 // getting a call, pause the game
 -(void) applicationWillResignActive:(UIApplication *)application
 {
-	[[CCDirector sharedDirector] pause];
+	[self.director pause];
 }
 
 // call got rejected
 -(void) applicationDidBecomeActive:(UIApplication *)application
 {
-	[[CCDirector sharedDirector] resume];
+	[self.director resume];
 }
 
 // sent to background
 -(void) applicationDidEnterBackground:(UIApplication*)application
 {
-	[[CCDirector sharedDirector] stopAnimation];
+	[self.director stopAnimation];
 }
 
 // application will be killed
@@ -902,19 +902,19 @@ Class restartAction()
 // sent to foreground
 -(void) applicationWillEnterForeground:(UIApplication*)application
 {
-	[[CCDirector sharedDirector] startAnimation];
+	[self.director startAnimation];
 }
 
 // purge memroy
 - (void)applicationDidReceiveMemoryWarning:(UIApplication *)application
 {
-	[[CCDirector sharedDirector] purgeCachedData];
+	[self.director purgeCachedData];
 }
 
 // next delta time will be zero
 -(void) applicationSignificantTimeChange:(UIApplication *)application
 {
-	[[CCDirector sharedDirector] setNextDeltaTimeZero:YES];
+	[self.director setNextDeltaTimeZero:YES];
 }
 
 - (void) dealloc
@@ -936,13 +936,13 @@ Class restartAction()
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
 	
 	
-	CCDirector *director = [CCDirector sharedDirector];
+	CCDirector *director_ = director;
 	
-	[director setDisplayFPS:YES];
+	[self.director setDisplayFPS:YES];
 	
-	[director setOpenGLView:glView_];
+	[self.director setOpenGLView:glView_];
 	
-	//	[director setProjection:kCCDirectorProjection2D];
+	//	[self.director setProjection:kCCDirectorProjection2D];
 	
 	// Enable "moving" mouse event. Default no.
 	[window_ setAcceptsMouseMovedEvents:NO];
@@ -951,7 +951,7 @@ Class restartAction()
 	CCScene *scene = [CCScene node];
 	[scene addChild: [nextAction() node]];
 	
-	[director runWithScene:scene];
+	[self.director runWithScene:scene];
 }
 
 @end

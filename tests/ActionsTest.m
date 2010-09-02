@@ -82,11 +82,17 @@ Class restartAction()
 		tamara = [[CCSprite alloc] initWithFile:@"grossinis_sister1.png"];
 		kathia = [[CCSprite alloc] initWithFile:@"grossinis_sister2.png"];
 		
+#ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
+		director = [(AppController*)[[UIApplication sharedApplication] delegate] director];
+#elif defined(__MAC_OS_X_VERSION_MAX_ALLOWED)
+		director = [(cocos2dmacAppDelegate*)[[NSApplication sharedApplication] delegate] director];
+#endif
+		
 		[self addChild:grossini z:1];
 		[self addChild:tamara z:2];
 		[self addChild:kathia z:3];
 
-		CGSize s = [[CCDirector sharedDirector] winSize];
+		CGSize s = [director winSize];
 		
 		[grossini setPosition: ccp(s.width/2, s.height/3)];
 		[tamara setPosition: ccp(s.width/2, 2*s.height/3)];
@@ -132,27 +138,27 @@ Class restartAction()
 {
 	CCScene *s = [CCScene node];
 	[s addChild: [restartAction() node]];
-	[[CCDirector sharedDirector] replaceScene: s];
+	[self.director replaceScene: s];
 }
 
 -(void) nextCallback: (id) sender
 {
 	CCScene *s = [CCScene node];
 	[s addChild: [nextAction() node]];
-	[[CCDirector sharedDirector] replaceScene: s];
+	[self.director replaceScene: s];
 }
 
 -(void) backCallback: (id) sender
 {
 	CCScene *s = [CCScene node];
 	[s addChild: [backAction() node]];
-	[[CCDirector sharedDirector] replaceScene: s];
+	[self.director replaceScene: s];
 }
 
 
 -(void) alignSpritesLeft:(unsigned int)numberOfSprites
 {
-	CGSize s = [[CCDirector sharedDirector] winSize];
+	CGSize s = [self.director winSize];
 	
 	if( numberOfSprites == 1 ) {
 		tamara.visible = NO;
@@ -174,7 +180,7 @@ Class restartAction()
 
 -(void) centerSprites:(unsigned int)numberOfSprites
 {
-	CGSize s = [[CCDirector sharedDirector] winSize];
+	CGSize s = [self.director winSize];
 	
 	if( numberOfSprites == 1 ) {
 		tamara.visible = NO;
@@ -211,7 +217,7 @@ Class restartAction()
 	[super onEnter];
 
 	
-	CGSize s = [CCDirector sharedDirector].winSize;
+	CGSize s = director.winSize;
 
 	tamara.scaleX = 2.5f;
 	tamara.scaleY = -1.0f;
@@ -241,7 +247,7 @@ Class restartAction()
 	
 	[self centerSprites:3];
 
-	CGSize s = [[CCDirector sharedDirector] winSize];
+	CGSize s = [self.director winSize];
 
 	
 	id actionTo = [CCMoveTo actionWithDuration: 2 position:ccp(s.width-40, s.height-40)];
@@ -335,7 +341,7 @@ Class restartAction()
 {
 	[super onEnter];
 	
-	CGSize s = [[CCDirector sharedDirector] winSize];
+	CGSize s = [self.director winSize];
 	
 	//
 	// startPosition can be any coordinate, but since the movement
@@ -507,7 +513,7 @@ Class restartAction()
 
 -(void) callback1
 {
-	CGSize s = [[CCDirector sharedDirector] winSize];
+	CGSize s = [self.director winSize];
 	CCLabelTTF *label = [CCLabelTTF labelWithString:@"callback 1 called" fontName:@"Marker Felt" fontSize:16];
 	[label setPosition:ccp( s.width/4*1,s.height/2)];
 	
@@ -516,7 +522,7 @@ Class restartAction()
 
 -(void) callback2:(id)sender
 {
-	CGSize s = [[CCDirector sharedDirector] winSize];
+	CGSize s = [self.director winSize];
 	CCLabelTTF *label = [CCLabelTTF labelWithString:@"callback 2 called" fontName:@"Marker Felt" fontSize:16];
 	[label setPosition:ccp( s.width/4*2,s.height/2)];
 	
@@ -525,7 +531,7 @@ Class restartAction()
 
 -(void) callback3:(id)sender data:(void*)data
 {
-	CGSize s = [[CCDirector sharedDirector] winSize];
+	CGSize s = [self.director winSize];
 	CCLabelTTF *label = [CCLabelTTF labelWithString:@"callback 3 called" fontName:@"Marker Felt" fontSize:16];
 	[label setPosition:ccp( s.width/4*3,s.height/2)];
 	
@@ -800,7 +806,7 @@ Class restartAction()
 -(void) callback1
 {
 	NSLog(@"callback 1 called");
-	CGSize s = [[CCDirector sharedDirector] winSize];
+	CGSize s = [self.director winSize];
 	CCLabelTTF *label = [CCLabelTTF labelWithString:@"callback 1 called" fontName:@"Marker Felt" fontSize:16];
 	[label setPosition:ccp( s.width/4*1,s.height/2)];
 
@@ -809,7 +815,7 @@ Class restartAction()
 -(void) callback2:(id)sender
 {
 	NSLog(@"callback 2 called from:%@", sender);
-	CGSize s = [[CCDirector sharedDirector] winSize];
+	CGSize s = [self.director winSize];
 	CCLabelTTF *label = [CCLabelTTF labelWithString:@"callback 2 called" fontName:@"Marker Felt" fontSize:16];
 	[label setPosition:ccp( s.width/4*2,s.height/2)];
 
@@ -819,7 +825,7 @@ Class restartAction()
 -(void) callback3:(id)sender data:(void*)data
 {
 	NSLog(@"callback 3 called from:%@ with data:%x",sender,(NSUInteger)data);
-	CGSize s = [[CCDirector sharedDirector] winSize];
+	CGSize s = [self.director winSize];
 	CCLabelTTF *label = [CCLabelTTF labelWithString:@"callback 3 called" fontName:@"Marker Felt" fontSize:16];
 	[label setPosition:ccp( s.width/4*3,s.height/2)];
 	[self addChild:label];
@@ -913,7 +919,7 @@ Class restartAction()
 	
 	[self centerSprites:1];
 
-	CGSize winSize = [[CCDirector sharedDirector] winSize];
+	CGSize winSize = [self.director winSize];
 	
 	grossini.position = ccp(-200, winSize.height/2);
 	
@@ -931,7 +937,7 @@ Class restartAction()
 
 -(void) draw
 {
-	CGSize winSize = [[CCDirector sharedDirector] winSize];
+	CGSize winSize = [self.director winSize];
 
 	float x = winSize.width*2 - 100;
 	float y = winSize.height;
@@ -999,31 +1005,17 @@ Class restartAction()
 
 @implementation AppController
 
+@synthesize director=director_;
+
 - (void) applicationDidFinishLaunching:(UIApplication*)application
 {
-	// CC_DIRECTOR_INIT()
-	//
-	// 1. Initializes an EAGLView with 0-bit depth format, and RGB565 render buffer
-	// 2. EAGLView multiple touches: disabled
-	// 3. creates a UIWindow, and assign it to the "window" var (it must already be declared)
-	// 4. Parents EAGLView to the newly created window
-	// 5. Creates Display Link Director
-	// 5a. If it fails, it will use an NSTimer director
-	// 6. It will try to run at 60 FPS
-	// 7. Display FPS: NO
-	// 8. Device orientation: Portrait
-	// 9. Connects the director to the EAGLView
-	//
-	CC_DIRECTOR_INIT();
-	
-	// Obtain the shared director in order to...
-	CCDirector *director = [CCDirector sharedDirector];
+	director_ = [[CCDirectorDisplayLink alloc] init];
 	
 	// Sets landscape mode
-	[director setDeviceOrientation:kCCDeviceOrientationLandscapeLeft];
+	[director_ setDeviceOrientation:kCCDeviceOrientationLandscapeLeft];
 	
 	// Turn on display FPS
-	[director setDisplayFPS:YES];
+	[director_ setDisplayFPS:YES];
 	
 	// Default texture format for PNG/BMP/TIFF/JPEG/GIF images
 	// It can be RGBA8888, RGBA4444, RGB5_A1, RGB565
@@ -1033,48 +1025,51 @@ Class restartAction()
 	CCScene *scene = [CCScene node];
 	[scene addChild: [nextAction() node]];
 	
-	[director runWithScene: scene];
+	[director_ runWithScene: scene];
 		
 }
 
 // getting a call, pause the game
 -(void) applicationWillResignActive:(UIApplication *)application
 {
-	[[CCDirector sharedDirector] pause];
+	[director_ pause];
 }
 
 // call got rejected
 -(void) applicationDidBecomeActive:(UIApplication *)application
 {
-	[[CCDirector sharedDirector] resume];
+	[director_ resume];
 }
 
 // application will be killed
 - (void)applicationWillTerminate:(UIApplication *)application
 {	
-	CC_DIRECTOR_END();
+	EAGLView *view = [director_ openGLView];
+	[view removeFromSuperview];
+	[director_ end];
 }
 
 // sent to background
 -(void) applicationDidEnterBackground:(UIApplication*)application
 {
-	[[CCDirector sharedDirector] stopAnimation];
+	[director_ stopAnimation];
 }
 
 // sent to foreground
 -(void) applicationWillEnterForeground:(UIApplication*)application
 {
-	[[CCDirector sharedDirector] startAnimation];
+	[director_ startAnimation];
 }
 
 // purge memory
 - (void)applicationDidReceiveMemoryWarning:(UIApplication *)application
 {
-	[[CCDirector sharedDirector] purgeCachedData];
+	[director_ purgeCachedData];
 }
 
 - (void) dealloc
 {
+	[director_ release];
 	[window release];
 	[super dealloc];
 }
@@ -1082,7 +1077,7 @@ Class restartAction()
 // next delta time will be zero
 -(void) applicationSignificantTimeChange:(UIApplication *)application
 {
-	[[CCDirector sharedDirector] setNextDeltaTimeZero:YES];
+	[director_ setNextDeltaTimeZero:YES];
 }
 
 @end
@@ -1093,18 +1088,18 @@ Class restartAction()
 
 @implementation cocos2dmacAppDelegate
 
-@synthesize window=window_, glView=glView_;
+@synthesize window=window_, glView=glView_, director=director_;
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
 	
 	
-	CCDirector *director = [CCDirector sharedDirector];
+	director_ = [[CCDirectorDisplayLink alloc] init];
 	
-	[director setDisplayFPS:YES];
+	[director_ setDisplayFPS:YES];
 	
-	[director setOpenGLView:glView_];
+	[director_ setOpenGLView:glView_];
 	
-	//	[director setProjection:kCCDirectorProjection2D];
+	//	[self.director setProjection:kCCDirectorProjection2D];
 	
 	// Enable "moving" mouse event. Default no.
 	[window_ setAcceptsMouseMovedEvents:NO];
@@ -1113,7 +1108,7 @@ Class restartAction()
 	CCScene *scene = [CCScene node];
 	[scene addChild: [nextAction() node]];
 	
-	[director runWithScene:scene];
+	[director_ runWithScene:scene];
 }
 
 @end

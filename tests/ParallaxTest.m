@@ -57,7 +57,7 @@ Class restartAction()
 	[super init];
 
 
-	CGSize s = [[CCDirector sharedDirector] winSize];
+	CGSize s = [self.director winSize];
 		
 	CCLabelTTF *label = [CCLabelTTF labelWithString:[self title] fontName:@"Arial" fontSize:32];
 	[self addChild: label z:1];
@@ -87,21 +87,21 @@ Class restartAction()
 {
 	CCScene *s = [CCScene node];
 	[s addChild: [restartAction() node]];
-	[[CCDirector sharedDirector] replaceScene: s];
+	[self.director replaceScene: s];
 }
 
 -(void) nextCallback: (id) sender
 {
 	CCScene *s = [CCScene node];
 	[s addChild: [nextAction() node]];
-	[[CCDirector sharedDirector] replaceScene: s];
+	[self.director replaceScene: s];
 }
 
 -(void) backCallback: (id) sender
 {
 	CCScene *s = [CCScene node];
 	[s addChild: [backAction() node]];
-	[[CCDirector sharedDirector] replaceScene: s];
+	[self.director replaceScene: s];
 }
 
 -(NSString*) title
@@ -272,8 +272,8 @@ Class restartAction()
 	CGPoint touchLocation = [touch locationInView: [touch view]];	
 	CGPoint prevLocation = [touch previousLocationInView: [touch view]];	
 
-	touchLocation = [[CCDirector sharedDirector] convertToGL: touchLocation];
-	prevLocation = [[CCDirector sharedDirector] convertToGL: prevLocation];
+	touchLocation = [self.director convertToGL: touchLocation];
+	prevLocation = [self.director convertToGL: prevLocation];
 
 	CGPoint diff = ccpSub(touchLocation,prevLocation);
 	
@@ -326,40 +326,40 @@ Class restartAction()
 	CC_DIRECTOR_INIT();
 	
 	// Obtain the shared director in order to...
-	CCDirector *director = [CCDirector sharedDirector];
+	CCDirector *director_ = director;
 	
 	// Sets landscape mode
-	[director setDeviceOrientation:kCCDeviceOrientationLandscapeLeft];
+	[self.director setDeviceOrientation:kCCDeviceOrientationLandscapeLeft];
 	
 	// Turn on display FPS
-	[director setDisplayFPS:YES];
+	[self.director setDisplayFPS:YES];
 	
 	CCScene *scene = [CCScene node];
 	[scene addChild: [nextAction() node]];
 			 
-	[director runWithScene: scene];
+	[self.director runWithScene: scene];
 }
 
 // getting a call, pause the game
 -(void) applicationWillResignActive:(UIApplication *)application
 {
-	[[CCDirector sharedDirector] pause];
+	[self.director pause];
 }
 
 // call got rejected
 -(void) applicationDidBecomeActive:(UIApplication *)application
 {
-	[[CCDirector sharedDirector] resume];
+	[self.director resume];
 }
 
 -(void) applicationDidEnterBackground:(UIApplication*)application
 {
-	[[CCDirector sharedDirector] stopAnimation];
+	[self.director stopAnimation];
 }
 
 -(void) applicationWillEnterForeground:(UIApplication*)application
 {
-	[[CCDirector sharedDirector] startAnimation];
+	[self.director startAnimation];
 }
 
 // application will be killed
@@ -371,13 +371,13 @@ Class restartAction()
 // purge memory
 - (void)applicationDidReceiveMemoryWarning:(UIApplication *)application
 {
-	[[CCDirector sharedDirector] purgeCachedData];
+	[self.director purgeCachedData];
 }
 
 // next delta time will be zero
 -(void) applicationSignificantTimeChange:(UIApplication *)application
 {
-	[[CCDirector sharedDirector] setNextDeltaTimeZero:YES];
+	[self.director setNextDeltaTimeZero:YES];
 }
 
 - (void) dealloc
@@ -396,13 +396,13 @@ Class restartAction()
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
 	
 	
-	CCDirector *director = [CCDirector sharedDirector];
+	CCDirector *director_ = director;
 	
-	[director setDisplayFPS:YES];
+	[self.director setDisplayFPS:YES];
 	
-	[director setOpenGLView:glView_];
+	[self.director setOpenGLView:glView_];
 	
-	//	[director setProjection:kCCDirectorProjection2D];
+	//	[self.director setProjection:kCCDirectorProjection2D];
 	
 	// Enable "moving" mouse event. Default no.
 	[window_ setAcceptsMouseMovedEvents:NO];
@@ -411,7 +411,7 @@ Class restartAction()
 	CCScene *scene = [CCScene node];
 	[scene addChild: [nextAction() node]];
 	
-	[director runWithScene:scene];
+	[self.director runWithScene:scene];
 }
 
 @end

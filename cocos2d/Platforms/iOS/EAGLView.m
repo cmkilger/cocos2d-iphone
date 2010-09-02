@@ -90,6 +90,7 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
 @synthesize pixelFormat=pixelformat_, depthFormat=depthFormat_;
 @synthesize touchDelegate=touchDelegate_;
 @synthesize context=context_;
+@synthesize director=director_;
 
 + (Class) layerClass
 {
@@ -195,11 +196,10 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
 	size_ = [renderer_ backingSize];
 
 	// Issue #914 #924
-	CCDirector *director = [CCDirector sharedDirector];
-	[director reshapeProjection:size_];
+	[director_ reshapeProjection:size_];
 
 	// Avoid flicker. Issue #350
-	[director drawScene];	
+	[director_ drawScene];	
 }
 
 - (void) swapBuffers

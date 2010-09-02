@@ -65,12 +65,14 @@
  
  Only available for Mac OS X
  */
+@class CCDirector;
 @interface MacGLView : NSOpenGLView {
 	id<MacEventDelegate> eventDelegate_;
-	
+	CCDirector * director_;
 }
 
 @property (nonatomic, readwrite, assign) id<MacEventDelegate> eventDelegate;
+@property (nonatomic, readwrite, assign) CCDirector * director;
 
 // private
 +(void) load_;

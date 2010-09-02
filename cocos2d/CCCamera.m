@@ -78,7 +78,7 @@
 +(float) getZEye
 {
 	return FLT_EPSILON;
-//	CGSize s = [[CCDirector sharedDirector] displaySize];
+//	CGSize s = [self.director displaySize];
 //	return ( s.height / 1.1566f );
 }
 

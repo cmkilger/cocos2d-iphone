@@ -7,7 +7,9 @@
 @interface AppController : NSObject <UIApplicationDelegate>
 {
 	UIWindow *window;
+	CCDirector *director_;
 }
+@property (retain) IBOutlet CCDirector	*director;
 @end
 
 #elif defined(__MAC_OS_X_VERSION_MAX_ALLOWED)
@@ -15,10 +17,12 @@
 {
 	NSWindow	*window_;
 	MacGLView	*glView_;
+	CCDirector	*director_;
 }
 
 @property (assign) IBOutlet NSWindow	*window;
 @property (assign) IBOutlet MacGLView	*glView;
+@property (retain) IBOutlet CCDirector	*director;
 
 @end
 #endif // Mac
@@ -28,6 +32,7 @@
 	CCSprite * grossini;
 	CCSprite *tamara;
 	CCSprite *kathia;
+	CCDirector *director;
 }
 -(void) centerSprites:(unsigned int)numberOfSprites;
 -(NSString*) title;

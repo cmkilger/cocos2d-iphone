@@ -89,32 +89,6 @@ extern NSString * cocos2dVersion(void);
 @synthesize isPaused=isPaused_;
 @synthesize sendCleanupToScene=sendCleanupToScene_;
 @synthesize runningThread=runningThread_;
-//
-// singleton stuff
-//
-static CCDirector *_sharedDirector = nil;
-
-+ (CCDirector *)sharedDirector
-{
-	if (!_sharedDirector) {
-
-		//
-		// Default Director is TimerDirector
-		// 
-		if( [ [CCDirector class] isEqual:[self class]] )
-			_sharedDirector = [[CC_DIRECTOR_DEFAULT alloc] init];
-		else
-			_sharedDirector = [[self alloc] init];
-	}
-		
-	return _sharedDirector;
-}
-
-+(id)alloc
-{
-	NSAssert(_sharedDirector == nil, @"Attempted to allocate a second instance of a singleton.");
-	return [super alloc];
-}
 
 - (id) init
 {  
@@ -159,9 +133,7 @@ static CCDirector *_sharedDirector = nil;
 #endif
 	[runningScene_ release];
 	[scenesStack_ release];
-	
-	_sharedDirector = nil;
-	
+		
 	[super dealloc];
 }
 
@@ -308,8 +280,10 @@ static CCDirector *_sharedDirector = nil;
 	NSAssert( view, @"OpenGLView must be non-nil");
 
 	if( view != openGLView_ ) {
+		openGLView_.director = nil;
 		[openGLView_ release];
 		openGLView_ = [view retain];
+		openGLView_.director = self;
 		
 		// set size
 		surfaceSize_ = screenSize_ = CCNSSizeToCGSize( [view bounds].size );
@@ -367,6 +341,9 @@ static CCDirector *_sharedDirector = nil;
 
 	NSUInteger index = [scenesStack_ count];
 	
+	scene.director = self;
+	runningScene_.director = nil;
+	
 	sendCleanupToScene_ = YES;
 	[scenesStack_ replaceObjectAtIndex:index-1 withObject:scene];
 	nextScene_ = scene;	// nextScene_ is a weak ref
@@ -377,6 +354,8 @@ static CCDirector *_sharedDirector = nil;
 	NSAssert( scene != nil, @"Argument must be non-nil");
 
 	sendCleanupToScene_ = NO;
+	
+	scene.director = self;
 
 	[scenesStack_ addObject: scene];
 	nextScene_ = scene;	// nextScene_ is a weak ref
@@ -385,6 +364,8 @@ static CCDirector *_sharedDirector = nil;
 -(void) popScene
 {	
 	NSAssert( runningScene_ != nil, @"A running Scene is needed");
+	
+	runningScene_.director = nil;
 
 	[scenesStack_ removeLastObject];
 	NSUInteger c = [scenesStack_ count];

@@ -223,7 +223,7 @@ Class restartTransition()
 
 		float x,y;
 		
-		CGSize size = [[CCDirector sharedDirector] winSize];
+		CGSize size = [self.director winSize];
 		x = size.width;
 		y = size.height;
 
@@ -285,7 +285,7 @@ Class restartTransition()
 //	CCScene *s2 = [CCScene node];
 //	[s2 addChild: [TextLayer2 node]];
 	CCScene *s2 = [TextLayer2 node];
-	[[CCDirector sharedDirector] replaceScene: [transition transitionWithDuration:TRANSITION_DURATION scene:s2]];
+	[self.director replaceScene: [transition transitionWithDuration:TRANSITION_DURATION scene:s2]];
 
 }	
 
@@ -295,7 +295,7 @@ Class restartTransition()
 //	CCScene *s2 = [CCScene node];
 //	[s2 addChild: [TextLayer2 node]];
 	CCScene *s2 = [TextLayer2 node];
-	[[CCDirector sharedDirector] replaceScene: [transition transitionWithDuration:TRANSITION_DURATION scene:s2]];
+	[self.director replaceScene: [transition transitionWithDuration:TRANSITION_DURATION scene:s2]];
 }	
 
 -(void) restartCallback:(id) sender
@@ -304,7 +304,7 @@ Class restartTransition()
 //	CCScene *s2 = [CCScene node];
 //	[s2 addChild: [TextLayer2 node]];
 	CCScene *s2 = [TextLayer2 node];
-	[[CCDirector sharedDirector] replaceScene: [transition transitionWithDuration:TRANSITION_DURATION scene:s2]];
+	[self.director replaceScene: [transition transitionWithDuration:TRANSITION_DURATION scene:s2]];
 }	
 -(void) onEnter
 {
@@ -332,7 +332,7 @@ Class restartTransition()
 			
 		float x,y;
 		
-		CGSize size = [[CCDirector sharedDirector] winSize];
+		CGSize size = [self.director winSize];
 		x = size.width;
 		y = size.height;
 		
@@ -388,7 +388,7 @@ Class restartTransition()
 	Class transition = nextTransition();
 	CCScene *s2 = [CCScene node];
 	[s2 addChild: [TextLayer node]];
-	[[CCDirector sharedDirector] replaceScene: [transition transitionWithDuration:TRANSITION_DURATION scene:s2]];
+	[self.director replaceScene: [transition transitionWithDuration:TRANSITION_DURATION scene:s2]];
 }	
 
 -(void) backCallback:(id) sender
@@ -396,7 +396,7 @@ Class restartTransition()
 	Class transition = backTransition();
 	CCScene *s2 = [CCScene node];
 	[s2 addChild: [TextLayer node]];
-	[[CCDirector sharedDirector] replaceScene: [transition transitionWithDuration:TRANSITION_DURATION scene:s2]];
+	[self.director replaceScene: [transition transitionWithDuration:TRANSITION_DURATION scene:s2]];
 }	
 
 -(void) restartCallback:(id) sender
@@ -404,7 +404,7 @@ Class restartTransition()
 	Class transition = restartTransition();
 	CCScene *s2 = [CCScene node];
 	[s2 addChild: [TextLayer node]];
-	[[CCDirector sharedDirector] replaceScene: [transition transitionWithDuration:TRANSITION_DURATION scene:s2]];
+	[self.director replaceScene: [transition transitionWithDuration:TRANSITION_DURATION scene:s2]];
 }
 -(void) step:(ccTime)dt
 {
@@ -453,16 +453,16 @@ Class restartTransition()
 		[CCDirector setDirectorType:kCCDirectorTypeMainLoop];
 	
 	// get instance of the shared director
-	CCDirector *director = [CCDirector sharedDirector];
+	CCDirector *director_ = director;
 	
 	// before creating any layer, set the landscape mode
-	[director setDeviceOrientation:kCCDeviceOrientationLandscapeLeft];
+	[self.director setDeviceOrientation:kCCDeviceOrientationLandscapeLeft];
 	
 	// display FPS (useful when debugging)
-	[director setDisplayFPS:YES];
+	[self.director setDisplayFPS:YES];
 	
 	// frames per second
-	[director setAnimationInterval:1.0/60];
+	[self.director setAnimationInterval:1.0/60];
 	
 	// create an OpenGL view
 	// PageTurnTransition needs a depth buffer of 16 or 24 bits
@@ -475,7 +475,7 @@ Class restartTransition()
 	[glView setMultipleTouchEnabled:YES];
 	
 	// connect it to the director
-	[director setOpenGLView:glView];
+	[self.director setOpenGLView:glView];
 	
 	// glview is a child of the main window
 	[window addSubview:glView];
@@ -492,48 +492,48 @@ Class restartTransition()
 	CCScene *scene = [CCScene node];
 	[scene addChild: [TextLayer node]];
 	
-	[director runWithScene: scene];
+	[self.director runWithScene: scene];
 }
 
 // getting a call, pause the game
 -(void) applicationWillResignActive:(UIApplication *)application
 {
-	[[CCDirector sharedDirector] pause];
+	[self.director pause];
 }
 
 // call got rejected
 -(void) applicationDidBecomeActive:(UIApplication *)application
 {
-	[[CCDirector sharedDirector] resume];
+	[self.director resume];
 }
 
 -(void) applicationDidEnterBackground:(UIApplication*)application
 {
-	[[CCDirector sharedDirector] stopAnimation];
+	[self.director stopAnimation];
 }
 
 -(void) applicationWillEnterForeground:(UIApplication*)application
 {
-	[[CCDirector sharedDirector] startAnimation];
+	[self.director startAnimation];
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application
 {	
-	CCDirector *director = [CCDirector sharedDirector];
-	[[director openGLView] removeFromSuperview];
-	[director end];
+	CCDirector *director_ = director;
+	[[self.director openGLView] removeFromSuperview];
+	[self.director end];
 }
 
 // purge memory
 - (void)applicationDidReceiveMemoryWarning:(UIApplication *)application
 {
-	[[CCDirector sharedDirector] purgeCachedData];
+	[self.director purgeCachedData];
 }
 
 // next delta time will be zero
 -(void) applicationSignificantTimeChange:(UIApplication *)application
 {
-	[[CCDirector sharedDirector] setNextDeltaTimeZero:YES];
+	[self.director setNextDeltaTimeZero:YES];
 }
 
 - (void) dealloc
@@ -556,13 +556,13 @@ Class restartTransition()
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
 	
 	
-	CCDirector *director = [CCDirector sharedDirector];
+	CCDirector *director_ = director;
 	
-	[director setDisplayFPS:YES];
+	[self.director setDisplayFPS:YES];
 	
-	[director setOpenGLView:glView_];
+	[self.director setOpenGLView:glView_];
 	
-	//	[director setProjection:kCCDirectorProjection2D];
+	//	[self.director setProjection:kCCDirectorProjection2D];
 	
 	// Enable "moving" mouse event. Default no.
 	[window_ setAcceptsMouseMovedEvents:NO];
@@ -571,7 +571,7 @@ Class restartTransition()
 	CCScene *scene = [CCScene node];
 	[scene addChild: [TextLayer node]];
 	
-	[director runWithScene:scene];
+	[self.director runWithScene:scene];
 }
 
 @end

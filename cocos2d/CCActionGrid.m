@@ -105,7 +105,7 @@
 
 -(CCGridBase *)grid
 {
-	return [CCGrid3D gridWithSize:gridSize];
+	return [CCGrid3D gridWithSize:gridSize director:[target_ director]];
 }
 
 -(ccVertex3F)vertex:(ccGridSize)pos
@@ -136,7 +136,7 @@
 
 -(CCGridBase *)grid
 {
-	return [CCTiledGrid3D gridWithSize:gridSize];
+	return [CCTiledGrid3D gridWithSize:gridSize director:[target_ director]];
 }
 
 -(ccQuad3)tile:(ccGridSize)pos

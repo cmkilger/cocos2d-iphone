@@ -70,7 +70,7 @@ enum {
 		
 		// retain
 		inScene = [s retain];
-		outScene = [[CCDirector sharedDirector] runningScene];
+		outScene = [self.director runningScene];
 		[outScene retain];
 		
 		NSAssert( inScene != outScene, @"Incoming scene must be different from the outgoing scene" );
@@ -123,13 +123,11 @@ enum {
 -(void) setNewScene: (ccTime) dt
 {	
 	[self unschedule:_cmd];
-	
-	CCDirector *director = [CCDirector sharedDirector];
-	
+		
 	// Before replacing, save the "send cleanup to scene"
-	sendCleanupToScene = [director sendCleanupToScene];
+	sendCleanupToScene = [self.director sendCleanupToScene];
 	
-	[director replaceScene: inScene];
+	[director_ replaceScene: inScene];
 
 	// enable events while transitions
 #ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
@@ -239,7 +237,7 @@ enum {
 -(void) onEnter
 {
 	[super onEnter];
-	CGSize s = [[CCDirector sharedDirector] winSize];
+	CGSize s = [self.director winSize];
 	
 	[inScene setScale:0.5f];
 	[inScene setPosition:ccp( s.width,0 )];
@@ -296,7 +294,7 @@ enum {
 
 -(void) initScenes
 {
-	CGSize s = [[CCDirector sharedDirector] winSize];
+	CGSize s = [self.director winSize];
 	[inScene setPosition: ccp( -s.width,0) ];
 }
 @end
@@ -307,7 +305,7 @@ enum {
 @implementation CCTransitionMoveInR
 -(void) initScenes
 {
-	CGSize s = [[CCDirector sharedDirector] winSize];
+	CGSize s = [self.director winSize];
 	[inScene setPosition: ccp( s.width,0) ];
 }
 @end
@@ -318,7 +316,7 @@ enum {
 @implementation CCTransitionMoveInT
 -(void) initScenes
 {
-	CGSize s = [[CCDirector sharedDirector] winSize];
+	CGSize s = [self.director winSize];
 	[inScene setPosition: ccp( 0, s.height) ];
 }
 @end
@@ -329,7 +327,7 @@ enum {
 @implementation CCTransitionMoveInB
 -(void) initScenes
 {
-	CGSize s = [[CCDirector sharedDirector] winSize];
+	CGSize s = [self.director winSize];
 	[inScene setPosition: ccp( 0, -s.height) ];
 }
 @end
@@ -368,12 +366,12 @@ enum {
 }
 -(void) initScenes
 {
-	CGSize s = [[CCDirector sharedDirector] winSize];
+	CGSize s = [self.director winSize];
 	[inScene setPosition: ccp( -(s.width-ADJUST_FACTOR),0) ];
 }
 -(CCActionInterval*) action
 {
-	CGSize s = [[CCDirector sharedDirector] winSize];
+	CGSize s = [self.director winSize];
 	return [CCMoveBy actionWithDuration:duration position:ccp(s.width-ADJUST_FACTOR,0)];
 }
 
@@ -395,13 +393,13 @@ enum {
 }
 -(void) initScenes
 {
-	CGSize s = [[CCDirector sharedDirector] winSize];
+	CGSize s = [self.director winSize];
 	[inScene setPosition: ccp( s.width-ADJUST_FACTOR,0) ];
 }
 
 -(CCActionInterval*) action
 {
-	CGSize s = [[CCDirector sharedDirector] winSize];
+	CGSize s = [self.director winSize];
 	return [CCMoveBy actionWithDuration:duration position:ccp(-(s.width-ADJUST_FACTOR),0)];
 }
 
@@ -417,13 +415,13 @@ enum {
 }
 -(void) initScenes
 {
-	CGSize s = [[CCDirector sharedDirector] winSize];
+	CGSize s = [self.director winSize];
 	[inScene setPosition: ccp(0,s.height-ADJUST_FACTOR) ];
 }
 
 -(CCActionInterval*) action
 {
-	CGSize s = [[CCDirector sharedDirector] winSize];
+	CGSize s = [self.director winSize];
 	return [CCMoveBy actionWithDuration:duration position:ccp(0,-(s.height-ADJUST_FACTOR))];
 }
 
@@ -440,13 +438,13 @@ enum {
 
 -(void) initScenes
 {
-	CGSize s = [[CCDirector sharedDirector] winSize];
+	CGSize s = [self.director winSize];
 	[inScene setPosition: ccp(0,-(s.height-ADJUST_FACTOR)) ];
 }
 
 -(CCActionInterval*) action
 {
-	CGSize s = [[CCDirector sharedDirector] winSize];
+	CGSize s = [self.director winSize];
 	return [CCMoveBy actionWithDuration:duration position:ccp(0,s.height-ADJUST_FACTOR)];
 }
 @end
@@ -832,7 +830,7 @@ enum {
 	// create a transparent color layer
 	// in which we are going to add our rendertextures
 	ccColor4B  color = {0,0,0,0};
-	CGSize size = [[CCDirector sharedDirector] winSize];
+	CGSize size = [self.director winSize];
 	CCColorLayer * layer = [CCColorLayer layerWithColor:color];
 	
 	// create the first render texture for inScene
@@ -913,7 +911,7 @@ enum {
 -(void) onEnter
 {
 	[super onEnter];
-	CGSize s = [[CCDirector sharedDirector] winSize];
+	CGSize s = [self.director winSize];
 	float aspect = s.width / s.height;
 	int x = 12 * aspect;
 	int y = 12;
@@ -999,7 +997,7 @@ enum {
 {
 	[super onEnter];
 	
-	CGSize s = [[CCDirector sharedDirector] winSize];
+	CGSize s = [self.director winSize];
 	float aspect = s.width / s.height;
 	int x = 12 * aspect;
 	int y = 12;

@@ -39,6 +39,7 @@ enum {
 
 @class CCCamera;
 @class CCGridBase;
+@class CCDirector;
 
 /** CCNode is the main element. Anything thats gets drawn or contains things that get drawn is a CCNode.
  The most popular CCNodes are: CCScene, CCLayer, CCSprite, CCMenu.
@@ -224,6 +225,8 @@ enum {
 @property(nonatomic,readwrite,assign) NSInteger tag;
 /** A custom user data pointer */
 @property(nonatomic,readwrite,assign) void *userData;
+
+@property(readonly) CCDirector *director;
 
 // initializators
 /** allocates and initializes a node.

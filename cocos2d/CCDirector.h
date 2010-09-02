@@ -67,7 +67,7 @@ and when to execute the Scenes.
   - setting the orientation (default one is Protrait)
  
  Since the CCDirector is a singleton, the standard way to use it is by calling:
-  - [[CCDirector sharedDirector] xxxx];
+  - [self.director xxxx];
  
  The CCDirector also sets the default OpenGL ES context:
   - GL_TEXTURE_2D is enabled
@@ -162,10 +162,6 @@ and when to execute the Scenes.
  @since v0.99.0
  */
 @property (nonatomic, readonly) BOOL sendCleanupToScene;
-
-/** returns a shared instance of the director */
-+(CCDirector *)sharedDirector;
-
 
 
 // Window size

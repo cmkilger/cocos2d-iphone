@@ -30,15 +30,19 @@
 
 
 @implementation CCScene
+@synthesize director=director_;
 -(id) init
 {
 	if( (self=[super init]) ) {
-		CGSize s = [[CCDirector sharedDirector] winSize];
 		self.isRelativeAnchorPoint = NO;
 		anchorPoint_ = ccp(0.5f, 0.5f);
-		[self setContentSize:s];	
 	}
 	
 	return self;
+}
+- (void) setDirector:(CCDirector *)director
+{
+	director_ = director;
+	[self setContentSize:[self.director winSize]];
 }
 @end

@@ -145,7 +145,7 @@ static CCTextureCache *sharedTextureCache;
 
 #pragma mark TextureCache - Add Images
 
--(void) addImageWithAsyncObject:(CCAsyncObject*)async
+-(void) addImageWithAsyncObject:(CCAsyncObject*)async director:(CCDirector *)director
 {
 	NSAutoreleasePool *autoreleasepool = [[NSAutoreleasePool alloc] init];
 	
@@ -157,7 +157,7 @@ static CCTextureCache *sharedTextureCache;
 	if( auxGLcontext == nil ) {
 		auxGLcontext = [[EAGLContext alloc]
 							   initWithAPI:kEAGLRenderingAPIOpenGLES1
-							   sharegroup:[[[[CCDirector sharedDirector] openGLView] context] sharegroup]];
+							   sharegroup:[[[self.director openGLView] context] sharegroup]];
 		
 		if( ! auxGLcontext )
 			CCLOG(@"cocos2d: TextureCache: Could not create EAGL context");
@@ -184,7 +184,7 @@ static CCTextureCache *sharedTextureCache;
 	[contextLock lock];
 	if( auxGLcontext == nil ) {
 
-		MacGLView *view = [[CCDirector sharedDirector] openGLView];
+		MacGLView *view = [director openGLView];
 		
 		NSOpenGLPixelFormat *pf = [view pixelFormat];
 		NSOpenGLContext *share = [view openGLContext];
@@ -202,10 +202,9 @@ static CCTextureCache *sharedTextureCache;
 	CCTexture2D *tex = [self addImage:async.data];
 	
 	// The callback will be executed on the main thread
-	[async.target performSelector:async.selector
-						 onThread:[[CCDirector sharedDirector] runningThread]
-					   withObject:tex
-					waitUntilDone:NO];
+	[async.target performSelectorOnMainThread:async.selector
+								   withObject:tex
+								waitUntilDone:NO];
 	
 	
 	[NSOpenGLContext clearCurrentContext];

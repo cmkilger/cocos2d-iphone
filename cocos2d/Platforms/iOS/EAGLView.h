@@ -77,6 +77,7 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
 //CLASSES:
 
 @class EAGLView;
+@class CCDirector;
 
 //PROTOCOLS:
 
@@ -106,6 +107,8 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
 	CGSize					size_;
 	BOOL					discardFramebufferSupported_;
 	id<EAGLTouchDelegate>   touchDelegate_;
+	
+	CCDirector				*director_;
 }
 
 /** creates an initializes an EAGLView with a frame and 0-bit depth buffer, and a RGB565 color buffer */
@@ -136,6 +139,8 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
 
 /** touch delegate */
 @property(nonatomic,readwrite,assign) id<EAGLTouchDelegate> touchDelegate;
+
+@property(nonatomic,readwrite,assign) CCDirector *director;
 
 /** EAGLView uses double-buffer. This method swaps the buffers */
 -(void) swapBuffers;

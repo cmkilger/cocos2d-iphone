@@ -77,7 +77,7 @@ enum {
 #endif
 		
 		// menu in the center of the screen
-		CGSize s = [[CCDirector sharedDirector] winSize];
+		CGSize s = [self.director winSize];
 		
 		self.isRelativeAnchorPoint = NO;
 		anchorPoint_ = ccp(0.5f, 0.5f);
@@ -87,7 +87,7 @@ enum {
 		// XXX: so the bar calculation should be done there
 #ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
 		CGRect r = [[UIApplication sharedApplication] statusBarFrame];
-		ccDeviceOrientation orientation = [[CCDirector sharedDirector] deviceOrientation];
+		ccDeviceOrientation orientation = [self.director deviceOrientation];
 		if( orientation == CCDeviceOrientationLandscapeLeft || orientation == CCDeviceOrientationLandscapeRight )
 			s.height -= r.size.width;
 		else
@@ -151,7 +151,7 @@ enum {
 -(CCMenuItem *) itemForTouch: (UITouch *) touch
 {
 	CGPoint touchLocation = [touch locationInView: [touch view]];
-	touchLocation = [[CCDirector sharedDirector] convertToGL: touchLocation];
+	touchLocation = [self.director convertToGL: touchLocation];
 	
 	CCMenuItem* item;
 	CCARRAY_FOREACH(children_, item){
@@ -228,7 +228,7 @@ enum {
 
 -(CCMenuItem *) itemForMouseEvent: (NSEvent *) event
 {
-	CGPoint location = [(CCDirectorMac*)[CCDirector sharedDirector] convertEventToGL:event];
+	CGPoint location = [(CCDirectorMac*)self.director convertEventToGL:event];
 	
 	CCMenuItem* item;
 	CCARRAY_FOREACH(children_, item){
@@ -380,7 +380,7 @@ enum {
 	}
 	NSAssert( !columnsOccupied, @"Too many rows/columns for available menu items." );
 
-	CGSize winSize = [[CCDirector sharedDirector] winSize];
+	CGSize winSize = [self.director winSize];
     
 	row = 0; rowHeight = 0; rowColumns = 0;
 	float w, x, y = height / 2;
@@ -461,7 +461,7 @@ enum {
 	}
 	NSAssert( !rowsOccupied, @"Too many rows/columns for available menu items.");
 	
-	CGSize winSize = [[CCDirector sharedDirector] winSize];
+	CGSize winSize = [self.director winSize];
 	
 	column = 0; columnWidth = 0; columnRows = 0;
 	float x = -width / 2, y;

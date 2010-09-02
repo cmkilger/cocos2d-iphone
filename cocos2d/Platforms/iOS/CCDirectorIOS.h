@@ -174,26 +174,6 @@ typedef enum {
 -(CGFloat) contentScaleFactor;
 @end
 
-@interface CCDirector (iOSExtensionClassMethods)
-
-/** There are 4 types of Director.
- - kCCDirectorTypeNSTimer (default)
- - kCCDirectorTypeMainLoop
- - kCCDirectorTypeThreadMainLoop
- - kCCDirectorTypeDisplayLink
- 
- Each Director has it's own benefits, limitations.
- If you are using SDK 3.1 or newer it is recommed to use the DisplayLink director
- 
- This method should be called before any other call to the director.
- 
- It will return NO if the director type is kCCDirectorTypeDisplayLink and the running SDK is < 3.1. Otherwise it will return YES.
- 
- @since v0.8.2
- */
-+(BOOL) setDirectorType:(ccDirectorType) directorType;
-@end
-
 #pragma mark -
 #pragma mark CCDirectorIOS
 

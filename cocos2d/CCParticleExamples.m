@@ -60,7 +60,7 @@
 		self.speedVar = 50;
 		
 		// emitter position
-		CGSize winSize = [[CCDirector sharedDirector] winSize];
+		CGSize winSize = [self.director winSize];
 		self.position = ccp(winSize.width/2, winSize.height/2);
 		
 		// angle
@@ -142,7 +142,7 @@
 		angleVar = 10;
 		
 		// emitter position
-		CGSize winSize = [[CCDirector sharedDirector] winSize];
+		CGSize winSize = [self.director winSize];
 		self.position = ccp(winSize.width/2, 60);
 		posVar = ccp(40, 20);
 		
@@ -226,7 +226,7 @@
 		angleVar = 360;
 		
 		// emitter position
-		CGSize winSize = [[CCDirector sharedDirector] winSize];
+		CGSize winSize = [self.director winSize];
 		self.position = ccp(winSize.width/2, winSize.height/2);
 		posVar = CGPointZero;
 		
@@ -306,7 +306,7 @@
 		angleVar = 360;
 		
 		// emitter position
-		CGSize winSize = [[CCDirector sharedDirector] winSize];
+		CGSize winSize = [self.director winSize];
 		self.position = ccp(winSize.width/2, winSize.height/2);
 		posVar = CGPointZero;
 		
@@ -389,7 +389,7 @@
 		angleVar = 360;
 		
 		// emitter position
-		CGSize winSize = [[CCDirector sharedDirector] winSize];
+		CGSize winSize = [self.director winSize];
 		self.position = ccp(winSize.width/2, winSize.height/2);
 		posVar = CGPointZero;
 		
@@ -472,7 +472,7 @@
 		angleVar = 360;
 		
 		// emitter position
-		CGSize winSize = [[CCDirector sharedDirector] winSize];
+		CGSize winSize = [self.director winSize];
 		self.position = ccp(winSize.width/2, winSize.height/2);
 		posVar = CGPointZero;
 		
@@ -555,7 +555,7 @@
 		angleVar = 0;
 		
 		// emitter position
-		CGSize winSize = [[CCDirector sharedDirector] winSize];
+		CGSize winSize = [self.director winSize];
 		self.position = ccp(winSize.width/2, winSize.height/2);
 		posVar = CGPointZero;
 		
@@ -637,7 +637,7 @@
 		angleVar = 360;
 				
 		// emitter position
-		CGSize winSize = [[CCDirector sharedDirector] winSize];
+		CGSize winSize = [self.director winSize];
 		self.position = ccp(winSize.width/2, winSize.height/2);
 		posVar = CGPointZero;
 		
@@ -716,7 +716,7 @@
 		angleVar = 5;
 		
 		// emitter position
-		CGSize winSize = [[CCDirector sharedDirector] winSize];
+		CGSize winSize = [self.director winSize];
 		self.position = ccp(winSize.width/2, 0);
 		posVar = ccp(20, 0);
 		
@@ -793,10 +793,10 @@
 		
 		// emitter position
 		self.position = (CGPoint) {
-			[[CCDirector sharedDirector] winSize].width / 2,
-			[[CCDirector sharedDirector] winSize].height + 10
+			[self.director winSize].width / 2,
+			[self.director winSize].height + 10
 		};
-		posVar = ccp( [[CCDirector sharedDirector] winSize].width / 2, 0 );
+		posVar = ccp( [self.director winSize].width / 2, 0 );
 		
 		// angle
 		angle = -90;
@@ -879,10 +879,10 @@
 		
 		// emitter position
 		self.position = (CGPoint) {
-			[[CCDirector sharedDirector] winSize].width / 2,
-			[[CCDirector sharedDirector] winSize].height
+			[self.director winSize].width / 2,
+			[self.director winSize].height
 		};
-		posVar = ccp( [[CCDirector sharedDirector] winSize].width / 2, 0 );
+		posVar = ccp( [self.director winSize].width / 2, 0 );
 		
 		// life of particles
 		life = 4.5f;

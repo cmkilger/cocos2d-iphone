@@ -34,7 +34,7 @@ enum {
 	//     Lens3D is Grid3D and it's size is (15,10)
 	//     Waves3D is Grid3D and it's size is (15,10)
 	
-	CGSize size = [[CCDirector sharedDirector] winSize];
+	CGSize size = [self.director winSize];
 	id lens = [CCLens3D actionWithPosition:ccp(size.width/2,size.height/2) radius:240 grid:ccg(15,10) duration:0.0f];
 	id waves = [CCWaves3D actionWithWaves:18 amplitude:15 grid:ccg(15,10) duration:10];
 
@@ -256,7 +256,7 @@ Class restartAction()
 	
 		float x,y;
 		
-		CGSize size = [[CCDirector sharedDirector] winSize];
+		CGSize size = [self.director winSize];
 		x = size.width;
 		y = size.height;
 		
@@ -324,21 +324,21 @@ Class restartAction()
 {
 	CCScene *s = [CCScene node];
 	[s addChild: [restartAction() node]];
-	[[CCDirector sharedDirector] replaceScene: s];
+	[self.director replaceScene: s];
 }
 
 -(void) nextCallback: (id) sender
 {
 	CCScene *s = [CCScene node];
 	[s addChild: [nextAction() node]];
-	[[CCDirector sharedDirector] replaceScene: s];
+	[self.director replaceScene: s];
 }
 
 -(void) backCallback: (id) sender
 {
 	CCScene *s = [CCScene node];
 	[s addChild: [backAction() node]];
-	[[CCDirector sharedDirector] replaceScene: s];
+	[self.director replaceScene: s];
 }
 
 - (void) dealloc
@@ -363,16 +363,16 @@ Class restartAction()
 		[CCDirector setDirectorType:kCCDirectorTypeMainLoop];
 	
 	// get instance of the shared director
-	CCDirector *director = [CCDirector sharedDirector];
+	CCDirector *director_ = director;
 	
 	// before creating any layer, set the landscape mode
-	[director setDeviceOrientation:kCCDeviceOrientationLandscapeLeft];
+	[self.director setDeviceOrientation:kCCDeviceOrientationLandscapeLeft];
 	
 	// display FPS (useful when debugging)
-	[director setDisplayFPS:YES];
+	[self.director setDisplayFPS:YES];
 	
 	// frames per second
-	[director setAnimationInterval:1.0/60];
+	[self.director setAnimationInterval:1.0/60];
 	
 	// create an OpenGL view
 	EAGLView *glView = [EAGLView viewWithFrame:[window bounds]
@@ -382,7 +382,7 @@ Class restartAction()
 	[glView setMultipleTouchEnabled:YES];
 	
 	// connect it to the director
-	[director setOpenGLView:glView];
+	[self.director setOpenGLView:glView];
 	
 	// glview is a child of the main window
 	[window addSubview:glView];
@@ -398,7 +398,7 @@ Class restartAction()
 	CCScene *scene = [CCScene node];
 	[scene addChild: [nextAction() node]];
 
-	[director runWithScene: scene];
+	[self.director runWithScene: scene];
 }
 
 - (void) dealloc
@@ -411,43 +411,43 @@ Class restartAction()
 // getting a call, pause the game
 -(void) applicationWillResignActive:(UIApplication *)application
 {
-	[[CCDirector sharedDirector] pause];
+	[self.director pause];
 }
 
 // call got rejected
 -(void) applicationDidBecomeActive:(UIApplication *)application
 {
-	[[CCDirector sharedDirector] resume];
+	[self.director resume];
 }
 
 -(void) applicationDidEnterBackground:(UIApplication*)application
 {
-	[[CCDirector sharedDirector] stopAnimation];
+	[self.director stopAnimation];
 }
 
 -(void) applicationWillEnterForeground:(UIApplication*)application
 {
-	[[CCDirector sharedDirector] startAnimation];
+	[self.director startAnimation];
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application
 {	
-	CCDirector *director = [CCDirector sharedDirector];
+	CCDirector *director_ = director;
 	
-	[[director openGLView] removeFromSuperview];
-	[director end];
+	[[self.director openGLView] removeFromSuperview];
+	[self.director end];
 }
 
 // purge memroy
 - (void)applicationDidReceiveMemoryWarning:(UIApplication *)application
 {
-	[[CCDirector sharedDirector] purgeCachedData];
+	[self.director purgeCachedData];
 }
 
 // next delta time will be zero
 -(void) applicationSignificantTimeChange:(UIApplication *)application
 {
-	[[CCDirector sharedDirector] setNextDeltaTimeZero:YES];
+	[self.director setNextDeltaTimeZero:YES];
 }
 
 @end
@@ -461,13 +461,13 @@ Class restartAction()
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
 	
 	
-	CCDirector *director = [CCDirector sharedDirector];
+	CCDirector *director_ = director;
 	
-	[director setDisplayFPS:YES];
+	[self.director setDisplayFPS:YES];
 	
-	[director setOpenGLView:glView_];
+	[self.director setOpenGLView:glView_];
 	
-//	[director setProjection:kCCDirectorProjection2D];
+//	[self.director setProjection:kCCDirectorProjection2D];
 	
 	// Enable "moving" mouse event. Default no.
 	[window_ setAcceptsMouseMovedEvents:NO];
@@ -476,7 +476,7 @@ Class restartAction()
 	CCScene *scene = [CCScene node];
 	[scene addChild: [nextAction() node]];
 	
-	[director runWithScene:scene];
+	[self.director runWithScene:scene];
 }
 
 @end

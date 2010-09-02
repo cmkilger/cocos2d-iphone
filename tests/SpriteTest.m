@@ -111,7 +111,7 @@ Class restartAction()
 	if( (self = [super init]) ) {
 
 
-		CGSize s = [[CCDirector sharedDirector] winSize];
+		CGSize s = [self.director winSize];
 			
 		CCLabelTTF *label = [CCLabelTTF labelWithString:[self title] fontName:@"Arial" fontSize:26];
 		[self addChild: label z:1];
@@ -149,21 +149,21 @@ Class restartAction()
 {
 	CCScene *s = [CCScene node];
 	[s addChild: [restartAction() node]];
-	[[CCDirector sharedDirector] replaceScene: s];
+	[self.director replaceScene: s];
 }
 
 -(void) nextCallback: (id) sender
 {
 	CCScene *s = [CCScene node];
 	[s addChild: [nextAction() node]];
-	[[CCDirector sharedDirector] replaceScene: s];
+	[self.director replaceScene: s];
 }
 
 -(void) backCallback: (id) sender
 {
 	CCScene *s = [CCScene node];
 	[s addChild: [backAction() node]];
-	[[CCDirector sharedDirector] replaceScene: s];
+	[self.director replaceScene: s];
 }
 
 -(NSString*) title
@@ -193,7 +193,7 @@ Class restartAction()
 		self.isMouseEnabled = YES;
 #endif
 		
-		CGSize s = [[CCDirector sharedDirector] winSize];
+		CGSize s = [self.director winSize];
 		[self addNewSpriteWithCoords:ccp(s.width/2, s.height/2)];
 		
 	}	
@@ -237,7 +237,7 @@ Class restartAction()
 	for( UITouch *touch in touches ) {
 		CGPoint location = [touch locationInView: [touch view]];
 		
-		location = [[CCDirector sharedDirector] convertToGL: location];
+		location = [self.director convertToGL: location];
 		
 		[self addNewSpriteWithCoords: location];
 	}
@@ -245,7 +245,7 @@ Class restartAction()
 #elif defined(__MAC_OS_X_VERSION_MAX_ALLOWED)
 -(BOOL) ccMouseUp:(NSEvent *)event
 {
-	CGPoint location = [[CCDirector sharedDirector] convertEventToGL:event];
+	CGPoint location = [self.director convertEventToGL:event];
 	[self addNewSpriteWithCoords: location];
 	
 	return YES;
@@ -274,7 +274,7 @@ Class restartAction()
 		CCSpriteBatchNode *batch = [CCSpriteBatchNode batchNodeWithFile:@"grossini_dance_atlas.png" capacity:50];
 		[self addChild:batch z:0 tag:kTagSpriteBatchNode];
 		
-		CGSize s = [[CCDirector sharedDirector] winSize];
+		CGSize s = [self.director winSize];
 		[self addNewSpriteWithCoords:ccp(s.width/2, s.height/2)];
 		
 	}	
@@ -320,7 +320,7 @@ Class restartAction()
 	for( UITouch *touch in touches ) {
 		CGPoint location = [touch locationInView: [touch view]];
 		
-		location = [[CCDirector sharedDirector] convertToGL: location];
+		location = [self.director convertToGL: location];
 		
 		[self addNewSpriteWithCoords: location];
 	}
@@ -328,7 +328,7 @@ Class restartAction()
 #elif defined(__MAC_OS_X_VERSION_MAX_ALLOWED)
 -(BOOL) ccMouseUp:(NSEvent *)event
 {
-	CGPoint location = [[CCDirector sharedDirector] convertEventToGL:event];
+	CGPoint location = [self.director convertEventToGL:event];
 	[self addNewSpriteWithCoords: location];
 	
 	return YES;
@@ -362,7 +362,7 @@ Class restartAction()
 		CCSprite *sprite7 = [CCSprite spriteWithFile:@"grossini_dance_atlas.png" rect:CGRectMake(85*2, 121*1, 85, 121)];
 		CCSprite *sprite8 = [CCSprite spriteWithFile:@"grossini_dance_atlas.png" rect:CGRectMake(85*3, 121*1, 85, 121)];
 		
-		CGSize s = [[CCDirector sharedDirector] winSize];
+		CGSize s = [self.director winSize];
 		sprite1.position = ccp( (s.width/5)*1, (s.height/3)*1);
 		sprite2.position = ccp( (s.width/5)*2, (s.height/3)*1);
 		sprite3.position = ccp( (s.width/5)*3, (s.height/3)*1);
@@ -452,7 +452,7 @@ Class restartAction()
 		CCSprite *sprite8 = [CCSprite spriteWithTexture:batch.texture rect:CGRectMake(85*3, 121*1, 85, 121)];
 		
 		
-		CGSize s = [[CCDirector sharedDirector] winSize];
+		CGSize s = [self.director winSize];
 		sprite1.position = ccp( (s.width/5)*1, (s.height/3)*1);
 		sprite2.position = ccp( (s.width/5)*2, (s.height/3)*1);
 		sprite3.position = ccp( (s.width/5)*3, (s.height/3)*1);
@@ -533,7 +533,7 @@ Class restartAction()
 		
 		dir = 1;
 				
-		CGSize s = [[CCDirector sharedDirector] winSize];
+		CGSize s = [self.director winSize];
 		
 		float step = s.width/11;
 		for(int i=0;i<5;i++) {
@@ -595,7 +595,7 @@ Class restartAction()
 		CCSpriteBatchNode *batch = [CCSpriteBatchNode batchNodeWithFile:@"grossini_dance_atlas.png" capacity:1];
 		[self addChild:batch z:0 tag:kTagSpriteBatchNode];		
 		
-		CGSize s = [[CCDirector sharedDirector] winSize];
+		CGSize s = [self.director winSize];
 
 		float step = s.width/11;
 		for(int i=0;i<5;i++) {
@@ -704,7 +704,7 @@ Class restartAction()
 {
 	if( (self=[super init]) ) {
 		
-		CGSize s = [[CCDirector sharedDirector] winSize];
+		CGSize s = [self.director winSize];
 		
 
 		// Testing issue #744
@@ -737,7 +737,7 @@ Class restartAction()
 {
 	if( (self=[super init]) ) {
 		
-		CGSize s = [[CCDirector sharedDirector] winSize];		
+		CGSize s = [self.director winSize];		
 		
 		[[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile:@"animations/ghosts.plist"];
 		
@@ -840,13 +840,13 @@ Class restartAction()
 	// TIP: don't forget to enable Alpha test
 	glEnable(GL_ALPHA_TEST);
 	glAlphaFunc(GL_GREATER, 0.0f);
-	[[CCDirector sharedDirector] setProjection:kCCDirectorProjection3D];
+	[self.director setProjection:kCCDirectorProjection3D];
 }
 
 -(void) onExit
 {
 	glDisable(GL_ALPHA_TEST);
-	[[CCDirector sharedDirector] setProjection:kCCDirectorProjection2D];
+	[self.director setProjection:kCCDirectorProjection2D];
 	[super onExit];
 }
 
@@ -866,7 +866,7 @@ Class restartAction()
 		dir = 1;
 		time = 0;
 
-		CGSize s = [[CCDirector sharedDirector] winSize];
+		CGSize s = [self.director winSize];
 		float step = s.width/12;
 		
 		CCNode *node = [CCNode node];
@@ -913,13 +913,13 @@ Class restartAction()
 	glEnable(GL_ALPHA_TEST);
 	glAlphaFunc(GL_GREATER, 0.0f);
 	
-	[[CCDirector sharedDirector] setProjection:kCCDirectorProjection3D];
+	[self.director setProjection:kCCDirectorProjection3D];
 }
 
 -(void) onExit
 {
 	glDisable(GL_ALPHA_TEST);
-	[[CCDirector sharedDirector] setProjection:kCCDirectorProjection2D];
+	[self.director setProjection:kCCDirectorProjection2D];
 	[super onExit];
 }
 
@@ -937,7 +937,7 @@ Class restartAction()
 		//
 		
 		
-		CGSize s = [[CCDirector sharedDirector] winSize];
+		CGSize s = [self.director winSize];
 		float step = s.width/12;
 		
 		// small capacity. Testing resizing.
@@ -987,7 +987,7 @@ Class restartAction()
 {
 	if( (self=[super init]) ) {
 				
-		CGSize s = [[CCDirector sharedDirector] winSize];
+		CGSize s = [self.director winSize];
 		
 		
 		id rotate = [CCRotateBy actionWithDuration:10 angle:360];
@@ -1039,7 +1039,7 @@ Class restartAction()
 		CCSpriteBatchNode *batch = [CCSpriteBatchNode batchNodeWithFile:@"grossini_dance_atlas.png" capacity:1];
 		[self addChild:batch z:0 tag:kTagSpriteBatchNode];		
 		
-		CGSize s = [[CCDirector sharedDirector] winSize];
+		CGSize s = [self.director winSize];
 		
 		
 		id rotate = [CCRotateBy actionWithDuration:10 angle:360];
@@ -1095,7 +1095,7 @@ Class restartAction()
 		[self addChild:batch z:0 tag:kTagSpriteBatchNode];
 		batch.isRelativeAnchorPoint = NO;
 
-		CGSize s = [[CCDirector sharedDirector] winSize];
+		CGSize s = [self.director winSize];
 
 		batch.anchorPoint = ccp(0.5f, 0.5f);
 		batch.contentSize = CGSizeMake(s.width, s.height);
@@ -1144,7 +1144,7 @@ Class restartAction()
 {
 	if( (self=[super init]) ) {
 		
-		CGSize s = [[CCDirector sharedDirector] winSize];
+		CGSize s = [self.director winSize];
 		
 		CCSprite *sprite1 = [CCSprite spriteWithFile:@"grossini_dance_atlas.png" rect:CGRectMake(85*1, 121*1, 85, 121)];
 		sprite1.position = ccp( s.width/2 - 100, s.height/2 );
@@ -1183,7 +1183,7 @@ Class restartAction()
 		CCSpriteBatchNode *batch = [CCSpriteBatchNode batchNodeWithFile:@"grossini_dance_atlas.png" capacity:10];
 		[self addChild:batch z:0 tag:kTagSpriteBatchNode];
 		
-		CGSize s = [[CCDirector sharedDirector] winSize];
+		CGSize s = [self.director winSize];
 		
 		CCSprite *sprite1 = [CCSprite spriteWithTexture:batch.texture rect:CGRectMake(85*1, 121*1, 85, 121)];
 		sprite1.position = ccp( s.width/2 - 100, s.height/2 );
@@ -1223,7 +1223,7 @@ Class restartAction()
 {
 	if( (self=[super init]) ) {
 				
-		CGSize s = [[CCDirector sharedDirector] winSize];
+		CGSize s = [self.director winSize];
 		
 		CCSprite *sprite1 = [CCSprite spriteWithFile:@"grossini_dance_atlas.png" rect:CGRectMake(85*1, 121*1, 85, 121)];
 		sprite1.position = ccp( s.width/2 - 100, s.height/2 );
@@ -1281,7 +1281,7 @@ Class restartAction()
 		CCSpriteBatchNode *batch = [CCSpriteBatchNode batchNodeWithFile:@"grossini_dance_atlas.png" capacity:10];
 		[self addChild:batch z:0 tag:kTagSpriteBatchNode];
 		
-		CGSize s = [[CCDirector sharedDirector] winSize];
+		CGSize s = [self.director winSize];
 	
 		CCSprite *sprite1 = [CCSprite spriteWithTexture:batch.texture rect:CGRectMake(85*1, 121*1, 85, 121)];
 		sprite1.position = ccp( s.width/2 - 100, s.height/2 );
@@ -1364,7 +1364,7 @@ Class restartAction()
 
 -(void) addNewSprite
 {
-	CGSize s = [[CCDirector sharedDirector] winSize];
+	CGSize s = [self.director winSize];
 
 	CGPoint p = ccp( CCRANDOM_0_1() * s.width, CCRANDOM_0_1() * s.height);
 
@@ -1461,7 +1461,7 @@ Class restartAction()
 
 -(void) addNewSprite
 {
-	CGSize s = [[CCDirector sharedDirector] winSize];
+	CGSize s = [self.director winSize];
 	
 	CGPoint p = ccp( CCRANDOM_0_1() * s.width, CCRANDOM_0_1() * s.height);
 	
@@ -1531,7 +1531,7 @@ Class restartAction()
 {
 	if( (self=[super init]) ) {
 
-		CGSize s = [[CCDirector sharedDirector] winSize];
+		CGSize s = [self.director winSize];
 
 		// IMPORTANT:
 		// The sprite frames will be cached AND RETAINED, and they won't be released unless you call
@@ -1684,7 +1684,7 @@ Class restartAction()
 {
 	if( (self=[super init]) ) {
 		
-		CGSize s = [[CCDirector sharedDirector] winSize];
+		CGSize s = [self.director winSize];
 		
 		// IMPORTANT:
 		// The sprite frames will be cached AND RETAINED, and they won't be released unless you call
@@ -1759,7 +1759,7 @@ Class restartAction()
 {
 	if( (self=[super init]) ) {
 		
-		CGSize s = [[CCDirector sharedDirector] winSize];		
+		CGSize s = [self.director winSize];		
 		
 		for(int i=0;i<3;i++) {
 			[[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile:@"animations/grossini.plist"];
@@ -1829,7 +1829,7 @@ Class restartAction()
 {
 	if( (self=[super init]) ) {
 		
-		CGSize s = [[CCDirector sharedDirector] winSize];		
+		CGSize s = [self.director winSize];		
 		
 		for(int i=0;i<3;i++) {
 			[[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile:@"animations/grossini.plist"];
@@ -1901,7 +1901,7 @@ Class restartAction()
 {
 	if( (self=[super init]) ) {
 		
-		CGSize s = [[CCDirector sharedDirector] winSize];		
+		CGSize s = [self.director winSize];		
 		
 		for(int i=0;i<3;i++) {
 			[[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile:@"animations/grossini.plist"];
@@ -1974,7 +1974,7 @@ Class restartAction()
 {
 	if( (self=[super init]) ) {
 		
-		CGSize s = [[CCDirector sharedDirector] winSize];		
+		CGSize s = [self.director winSize];		
 		
 		for(int i=0;i<3;i++) {
 			[[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile:@"animations/grossini.plist"];
@@ -2051,7 +2051,7 @@ Class restartAction()
 {
 	if( (self=[super init]) ) {
 		
-		CGSize s = [[CCDirector sharedDirector] winSize];
+		CGSize s = [self.director winSize];
 		
 		CCTexture2D *texture = [[CCTextureCache sharedTextureCache] addImage:@"animations/dragon_animation.png"];
 		
@@ -2114,7 +2114,7 @@ Class restartAction()
 {
 	if( (self=[super init]) ) {
 		
-		CGSize s = [[CCDirector sharedDirector] winSize];
+		CGSize s = [self.director winSize];
 
 		// parents
 		CCNode *parent1 = [CCNode node];
@@ -2209,7 +2209,7 @@ Class restartAction()
 {
 	if( (self=[super init]) ) {
 		
-		CGSize s = [[CCDirector sharedDirector] winSize];
+		CGSize s = [self.director winSize];
 		
 		// parents
 		CCSpriteBatchNode *batch = [CCSpriteBatchNode batchNodeWithFile:@"animations/grossini.png" capacity:50];
@@ -2281,7 +2281,7 @@ Class restartAction()
 {
 	if( (self=[super init]) ) {
 		
-		CGSize s = [[CCDirector sharedDirector] winSize];
+		CGSize s = [self.director winSize];
 		
 		// parents
 		CCSpriteBatchNode *batch = [CCSpriteBatchNode batchNodeWithFile:@"animations/grossini.png" capacity:50];
@@ -2377,7 +2377,7 @@ Class restartAction()
 {
 	if( (self=[super init]) ) {
 		
-		CGSize s = [[CCDirector sharedDirector] winSize];
+		CGSize s = [self.director winSize];
 		
 		// parents
 		CCSpriteBatchNode *batch;
@@ -2481,7 +2481,7 @@ Class restartAction()
 {
 	if( (self=[super init]) ) {
 		
-		CGSize s = [[CCDirector sharedDirector] winSize];
+		CGSize s = [self.director winSize];
 
 		[[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile:@"animations/grossini.plist"];
 
@@ -2559,7 +2559,7 @@ Class restartAction()
 {
 	if( (self=[super init]) ) {
 		
-		CGSize s = [[CCDirector sharedDirector] winSize];
+		CGSize s = [self.director winSize];
 		
 		[[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile:@"animations/grossini.plist"];
 		
@@ -2677,7 +2677,7 @@ Class restartAction()
 {
 	if( (self=[super init]) ) {
 		
-		CGSize s = [[CCDirector sharedDirector] winSize];
+		CGSize s = [self.director winSize];
 		
 		[[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile:@"animations/grossini.plist"];
 		
@@ -2792,7 +2792,7 @@ Class restartAction()
 {
 	if( (self=[super init]) ) {
 		
-		CGSize s = [[CCDirector sharedDirector] winSize];		
+		CGSize s = [self.director winSize];		
 		
 		[[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile:@"animations/grossini_family.plist"];
 
@@ -2898,7 +2898,7 @@ Class restartAction()
 {
 	if( (self=[super init]) ) {
 		
-		CGSize s = [[CCDirector sharedDirector] winSize];		
+		CGSize s = [self.director winSize];		
 		
 		[[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile:@"animations/ghosts.plist"];
 		
@@ -2986,7 +2986,7 @@ Class restartAction()
 {
 	if( (self=[super init]) ) {
 		
-		CGSize s = [[CCDirector sharedDirector] winSize];		
+		CGSize s = [self.director winSize];		
 		
 		[[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile:@"animations/ghosts.plist"];
 		
@@ -3074,7 +3074,7 @@ Class restartAction()
 {
 	if( (self=[super init]) ) {
 		
-		CGSize s = [[CCDirector sharedDirector] winSize];
+		CGSize s = [self.director winSize];
 	
 		CCSprite *sprite = nil;
 		
@@ -3151,7 +3151,7 @@ Class restartAction()
 {
 	if( (self=[super init]) ) {
 		
-		CGSize s = [[CCDirector sharedDirector] winSize];
+		CGSize s = [self.director winSize];
 
 		[[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile:@"animations/ghosts.plist"];
 		
@@ -3206,16 +3206,16 @@ Class restartAction()
 //	[CCDirector setDirectorType:kCCDirectorTypeThreadMainLoop];
 	
 	// before creating any layer, set the landscape mode
-	CCDirector *director = [CCDirector sharedDirector];
+	CCDirector *director_ = director;
 	
 	// landscape orientation
-	[director setDeviceOrientation:kCCDeviceOrientationLandscapeLeft];
+	[self.director setDeviceOrientation:kCCDeviceOrientationLandscapeLeft];
 	
 	// set FPS at 60
-	[director setAnimationInterval:1.0/60];
+	[self.director setAnimationInterval:1.0/60];
 	
 	// Display FPS: yes
-	[director setDisplayFPS:YES];
+	[self.director setDisplayFPS:YES];
 
 	// Create an EAGLView with a RGB8 color buffer, and a depth buffer of 24-bits
 	EAGLView *glView = [EAGLView viewWithFrame:[window bounds]
@@ -3224,13 +3224,13 @@ Class restartAction()
 							preserveBackbuffer:NO];
 	
 	// attach the openglView to the director
-	[director setOpenGLView:glView];
+	[self.director setOpenGLView:glView];
 
 	// 2D projection
-//	[director setProjection:kCCDirectorProjection2D];
+//	[self.director setProjection:kCCDirectorProjection2D];
 
 	// To use High-Res un comment the following line
-//	[director setContentScaleFactor:2];	
+//	[self.director setContentScaleFactor:2];	
 	
 	// make the OpenGLView a child of the main window
 	[window addSubview:glView];
@@ -3249,7 +3249,7 @@ Class restartAction()
 	
 	
 	// and run it!
-	[director runWithScene: scene];
+	[self.director runWithScene: scene];
 	
 	return YES;
 }
@@ -3257,42 +3257,42 @@ Class restartAction()
 // getting a call, pause the game
 -(void) applicationWillResignActive:(UIApplication *)application
 {
-	[[CCDirector sharedDirector] pause];
+	[self.director pause];
 }
 
 // call got rejected
 -(void) applicationDidBecomeActive:(UIApplication *)application
 {
-	[[CCDirector sharedDirector] resume];
+	[self.director resume];
 }
 
 -(void) applicationDidEnterBackground:(UIApplication*)application
 {
-	[[CCDirector sharedDirector] stopAnimation];
+	[self.director stopAnimation];
 }
 
 -(void) applicationWillEnterForeground:(UIApplication*)application
 {
-	[[CCDirector sharedDirector] startAnimation];
+	[self.director startAnimation];
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application
 {	
-	CCDirector *director = [CCDirector sharedDirector];
-	[[director openGLView] removeFromSuperview];
-	[director end];
+	CCDirector *director_ = director;
+	[[self.director openGLView] removeFromSuperview];
+	[self.director end];
 }
 
 // purge memory
 - (void)applicationDidReceiveMemoryWarning:(UIApplication *)application
 {
-	[[CCDirector sharedDirector] purgeCachedData];
+	[self.director purgeCachedData];
 }
 
 // next delta time will be zero
 -(void) applicationSignificantTimeChange:(UIApplication *)application
 {
-	[[CCDirector sharedDirector] setNextDeltaTimeZero:YES];
+	[self.director setNextDeltaTimeZero:YES];
 }
 
 - (void) dealloc
@@ -3314,13 +3314,13 @@ Class restartAction()
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
 	
 	
-	CCDirector *director = [CCDirector sharedDirector];
+	CCDirector *director_ = director;
 	
-	[director setDisplayFPS:YES];
+	[self.director setDisplayFPS:YES];
 	
-	[director setOpenGLView:glView_];
+	[self.director setOpenGLView:glView_];
 	
-	//	[director setProjection:kCCDirectorProjection2D];
+	//	[self.director setProjection:kCCDirectorProjection2D];
 	
 	// Enable "moving" mouse event. Default no.
 	[window_ setAcceptsMouseMovedEvents:NO];
@@ -3329,7 +3329,7 @@ Class restartAction()
 	CCScene *scene = [CCScene node];
 	[scene addChild: [nextAction() node]];
 	
-	[director runWithScene:scene];
+	[self.director runWithScene:scene];
 }
 
 @end

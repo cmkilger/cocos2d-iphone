@@ -59,7 +59,7 @@
 {
 	[super onEnter];
 	
-	CGSize s = [[CCDirector sharedDirector] winSize];
+	CGSize s = [self.director winSize];
 	int x,y;
 	if( s.width > s.height)
 	{
