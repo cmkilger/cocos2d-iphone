@@ -237,8 +237,15 @@ Class restartAction()
 	// Sets landscape mode
 	[director setDeviceOrientation:kCCDeviceOrientationLandscapeLeft];
 	
+	// Enables High Res mode (Retina Display) on iPhone 4 and maintains low res on all other devices
+	if ([UIScreen instancesRespondToSelector:@selector(scale)])
+		[director setContentScaleFactor:[[UIScreen mainScreen] scale]];
+	
 	// Turn on display FPS
 	[director setDisplayFPS:YES];
+	
+	// To use High-Res un comment the following line
+	[director setContentScaleFactor:2];	
 	
 	// Default texture format for PNG/BMP/TIFF/JPEG/GIF images
 	// It can be RGBA8888, RGBA4444, RGB5_A1, RGB565

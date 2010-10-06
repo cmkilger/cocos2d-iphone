@@ -12,6 +12,7 @@
 
 static int sceneIdx=-1;
 static NSString *transitions[] = {	
+
 			@"TMXIsoZorder",
 			@"TMXOrthoZorder",
 			@"TMXIsoVertexZ",
@@ -34,6 +35,7 @@ static NSString *transitions[] = {
 			@"TMXResizeTest",
 			@"TMXIsoMoveLayer",
 			@"TMXOrthoMoveLayer",
+			@"TMXBug987",
 
 			@"TileMapTest",
 			@"TileMapEditTest",
@@ -440,7 +442,7 @@ Class restartAction()
 
 		CCTMXLayer *layer = [map layerNamed:@"Layer 0"];
 		CGSize s = [layer layerSize];
-		
+	
 		CCSprite *sprite;
 		sprite = [layer tileAt:ccp(0,0)];
 		[sprite setScale:2];
@@ -1196,19 +1198,20 @@ char *NewBase64Encode(
 		CCTMXTiledMap *map = [CCTMXTiledMap tiledMapWithTMXFile:@"TileMaps/iso-test-zorder.tmx"];
 		[self addChild:map z:0 tag:kTagTileMap];
 		
-		[map setPosition:ccp(-700,-50)];
 		CGSize s = map.contentSize;
 		NSLog(@"ContentSize: %f, %f", s.width,s.height);
+		
+		[map setPosition:ccp(-s.width/2,0)];
 		
 		tamara = [CCSprite spriteWithFile:@"grossinis_sister1.png"];
 		[map addChild:tamara z: [[map children] count]];
 		[tamara retain];
 		int mapWidth = map.mapSize.width * map.tileSize.width;
-		[tamara setPosition:ccp( mapWidth/2,0)];
+		[tamara setPositionInPixels:ccp( mapWidth/2,0)];
 		[tamara setAnchorPoint:ccp(0.5f,0)];
 
 		
-		id move = [CCMoveBy actionWithDuration:10 position:ccp(300,250)];
+		id move = [CCMoveBy actionWithDuration:10 position:ccpMult(ccp(300,250), 1/CC_CONTENT_SCALE_FACTOR() )];
 		id back = [move reverse];
 		id seq = [CCSequence actions:move, back, nil];
 		[tamara runAction: [CCRepeatForever actionWithAction:seq]];
@@ -1227,7 +1230,7 @@ char *NewBase64Encode(
 
 -(void) repositionSprite:(ccTime)dt
 {
-	CGPoint p = [tamara position];
+	CGPoint p = [tamara positionInPixels];
 	CCNode *map = [self getChildByTag:kTagTileMap];
 	
 	// there are only 4 layers. (grass and 3 trees layers)
@@ -1272,7 +1275,7 @@ char *NewBase64Encode(
 		[tamara setAnchorPoint:ccp(0.5f,0)];
 
 		
-		id move = [CCMoveBy actionWithDuration:10 position:ccp(400,450)];
+		id move = [CCMoveBy actionWithDuration:10 position:ccpMult(ccp(400,450), 1/CC_CONTENT_SCALE_FACTOR() )];
 		id back = [move reverse];
 		id seq = [CCSequence actions:move, back, nil];
 		[tamara runAction: [CCRepeatForever actionWithAction:seq]];
@@ -1291,7 +1294,7 @@ char *NewBase64Encode(
 
 -(void) repositionSprite:(ccTime)dt
 {
-	CGPoint p = [tamara position];
+	CGPoint p = [tamara positionInPixels];
 	CCNode *map = [self getChildByTag:kTagTileMap];
 	
 	// there are only 4 layers. (grass and 3 trees layers)
@@ -1328,17 +1331,18 @@ char *NewBase64Encode(
 		CCTMXTiledMap *map = [CCTMXTiledMap tiledMapWithTMXFile:@"TileMaps/iso-test-vertexz.tmx"];
 		[self addChild:map z:0 tag:kTagTileMap];
 		
-		[map setPosition:ccp(-700,-50)];
 		CGSize s = map.contentSize;
 		NSLog(@"ContentSize: %f, %f", s.width,s.height);
-		
+
+		[map setPosition:ccp(-s.width/2,0)];
+
 		// because I'm lazy, I'm reusing a tile as an sprite, but since this method uses vertexZ, you
 		// can use any CCSprite and it will work OK.
 		CCTMXLayer *layer = [map layerNamed:@"Trees"];
 		tamara = [layer tileAt:ccp(29,29)];
 		[tamara retain];
 		
-		id move = [CCMoveBy actionWithDuration:10 position:ccp(300,250)];
+		id move = [CCMoveBy actionWithDuration:10 position:ccpMult( ccp(300,250), 1/CC_CONTENT_SCALE_FACTOR() ) ];
 		id back = [move reverse];
 		id seq = [CCSequence actions:move, back, nil];
 		[tamara runAction: [CCRepeatForever actionWithAction:seq]];
@@ -1359,7 +1363,7 @@ char *NewBase64Encode(
 {
 	// tile height is 64x32
 	// map size: 30x30
-	CGPoint p = [tamara position];
+	CGPoint p = [tamara positionInPixels];
 	[tamara setVertexZ: -( (p.y+32) /16) ];
 }
 
@@ -1406,10 +1410,12 @@ char *NewBase64Encode(
 		// because I'm lazy, I'm reusing a tile as an sprite, but since this method uses vertexZ, you
 		// can use any CCSprite and it will work OK.
 		CCTMXLayer *layer = [map layerNamed:@"trees"];
+		
 		tamara = [layer tileAt:ccp(0,11)];
+		NSLog(@"%@ vertexZ: %f", tamara, tamara.vertexZ);
 		[tamara retain];
 
-		id move = [CCMoveBy actionWithDuration:10 position:ccp(400,450)];
+		id move = [CCMoveBy actionWithDuration:10 position:ccpMult( ccp(400,450), 1/CC_CONTENT_SCALE_FACTOR()) ];
 		id back = [move reverse];
 		id seq = [CCSequence actions:move, back, nil];
 		[tamara runAction: [CCRepeatForever actionWithAction:seq]];
@@ -1430,7 +1436,7 @@ char *NewBase64Encode(
 {
 	// tile height is 101x81
 	// map size: 12x12
-	CGPoint p = [tamara position];
+	CGPoint p = [tamara positionInPixels];
 	[tamara setVertexZ: -( (p.y+81) /81) ];
 }
 
@@ -1520,6 +1526,43 @@ char *NewBase64Encode(
 }
 @end
 
+#pragma mark -
+#pragma mark TMXBug987
+
+@implementation TMXBug987
+-(id) init
+{
+	if( (self=[super init]) ) {		
+		CCTMXTiledMap *map = [CCTMXTiledMap tiledMapWithTMXFile:@"TileMaps/orthogonal-test6.tmx"];
+		[self addChild:map z:0 tag:kTagTileMap];
+		
+		CGSize s1 = map.contentSize;
+		NSLog(@"ContentSize: %f, %f", s1.width,s1.height);
+		
+		for( CCSpriteBatchNode* child in [map children] ) {
+			[[child texture] setAntiAliasTexParameters];
+		}
+		
+		[map setAnchorPoint:ccp(0, 0)];
+		
+		CCTMXLayer *layer = [map layerNamed:@"Tile Layer 1"];
+
+		[layer setTileGID:3 at:ccp(2,2)];
+	}	
+	return self;
+}
+
+-(NSString *) title
+{
+	return @"TMX Bug 987";
+}
+-(NSString *) subtitle
+{
+	return @"You should see an square";
+}
+
+@end
+
 // CLASS IMPLEMENTATIONS
 
 #pragma mark -
@@ -1560,6 +1603,10 @@ char *NewBase64Encode(
 	
 	// connect it to the director
 	[director setOpenGLView:glView];
+	
+	// Enables High Res mode (Retina Display) on iPhone 4 and maintains low res on all other devices
+	if ([UIScreen instancesRespondToSelector:@selector(scale)])
+		[director setContentScaleFactor:[[UIScreen mainScreen] scale]];
 	
 	// glview is a child of the main window
 	[window addSubview:glView];

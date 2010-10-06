@@ -1160,14 +1160,18 @@ Class restartAction()
 }
 -(void) flipSprites:(ccTime)dt
 {
-	id sprite1 = [self getChildByTag:kTagSprite1];
-	id sprite2 = [self getChildByTag:kTagSprite2];
+	CCSprite *sprite1 = (CCSprite*)[self getChildByTag:kTagSprite1];
+	CCSprite *sprite2 = (CCSprite*)[self getChildByTag:kTagSprite2];
 	
 	BOOL x = [sprite1 flipX];
 	BOOL y = [sprite2 flipY];
 	
+	// testing bug #970
+	NSLog(@"Pre: %f", sprite1.contentSize.height);
 	[sprite1 setFlipX: !x];
 	[sprite2 setFlipY: !y];
+	NSLog(@"Post: %f", sprite1.contentSize.height);
+
 }
 -(NSString*) title
 {
@@ -1200,14 +1204,19 @@ Class restartAction()
 -(void) flipSprites:(ccTime)dt
 {
 	id batch = [self getChildByTag:kTagSpriteBatchNode];
-	id sprite1 = [batch getChildByTag:kTagSprite1];
-	id sprite2 = [batch getChildByTag:kTagSprite2];
+	CCSprite *sprite1 = (CCSprite*)[batch getChildByTag:kTagSprite1];
+	CCSprite *sprite2 = (CCSprite*)[batch getChildByTag:kTagSprite2];
 	
 	BOOL x = [sprite1 flipX];
 	BOOL y = [sprite2 flipY];
 	
+
+	// testing bug #970
+	NSLog(@"Pre: %f", sprite1.contentSize.height);
 	[sprite1 setFlipX: !x];
-	[sprite2 setFlipY: !y];
+	[sprite2 setFlipY: !y];	
+	NSLog(@"Post: %f", sprite1.contentSize.height);
+	
 }
 -(NSString*) title
 {
@@ -2056,12 +2065,12 @@ Class restartAction()
 		CCTexture2D *texture = [[CCTextureCache sharedTextureCache] addImage:@"animations/dragon_animation.png"];
 		
 		// manually add frames to the frame cache
-		CCSpriteFrame *frame0 = [CCSpriteFrame frameWithTexture:texture rect:CGRectMake(132*0, 132*0, 132, 132) offset:CGPointZero];
-		CCSpriteFrame *frame1 = [CCSpriteFrame frameWithTexture:texture rect:CGRectMake(132*1, 132*0, 132, 132) offset:CGPointZero];
-		CCSpriteFrame *frame2 = [CCSpriteFrame frameWithTexture:texture rect:CGRectMake(132*2, 132*0, 132, 132) offset:CGPointZero];
-		CCSpriteFrame *frame3 = [CCSpriteFrame frameWithTexture:texture rect:CGRectMake(132*3, 132*0, 132, 132) offset:CGPointZero];
-		CCSpriteFrame *frame4 = [CCSpriteFrame frameWithTexture:texture rect:CGRectMake(132*0, 132*1, 132, 132) offset:CGPointZero];
-		CCSpriteFrame *frame5 = [CCSpriteFrame frameWithTexture:texture rect:CGRectMake(132*1, 132*1, 132, 132) offset:CGPointZero];
+		CCSpriteFrame *frame0 = [CCSpriteFrame frameWithTexture:texture rect:CGRectMake(132*0, 132*0, 132, 132)];
+		CCSpriteFrame *frame1 = [CCSpriteFrame frameWithTexture:texture rect:CGRectMake(132*1, 132*0, 132, 132)];
+		CCSpriteFrame *frame2 = [CCSpriteFrame frameWithTexture:texture rect:CGRectMake(132*2, 132*0, 132, 132)];
+		CCSpriteFrame *frame3 = [CCSpriteFrame frameWithTexture:texture rect:CGRectMake(132*3, 132*0, 132, 132)];
+		CCSpriteFrame *frame4 = [CCSpriteFrame frameWithTexture:texture rect:CGRectMake(132*0, 132*1, 132, 132)];
+		CCSpriteFrame *frame5 = [CCSpriteFrame frameWithTexture:texture rect:CGRectMake(132*1, 132*1, 132, 132)];
 		
 		
 		//
@@ -3229,8 +3238,9 @@ Class restartAction()
 	// 2D projection
 //	[director setProjection:kCCDirectorProjection2D];
 
-	// To use High-Res un comment the following line
-//	[director setContentScaleFactor:2];	
+	// Enables High Res mode on iPhone 4 and maintains low res on all other devices
+	if ([UIScreen instancesRespondToSelector:@selector(scale)])
+		[director setContentScaleFactor:[[UIScreen mainScreen] scale]];
 	
 	// make the OpenGLView a child of the main window
 	[window addSubview:glView];

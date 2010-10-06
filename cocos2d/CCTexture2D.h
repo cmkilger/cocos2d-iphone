@@ -135,14 +135,18 @@ typedef enum {
 /** texture name */
 @property(nonatomic,readonly) GLuint name;
 
-/** content size */
-@property(nonatomic,readonly, nonatomic) CGSize contentSize;
+/** returns content size of the texture in pixels */
+@property(nonatomic,readonly, nonatomic) CGSize contentSizeInPixels;
+
 /** texture max S */
 @property(nonatomic,readwrite) GLfloat maxS;
 /** texture max T */
 @property(nonatomic,readwrite) GLfloat maxT;
 /** whether or not the texture has their Alpha premultiplied */
 @property(nonatomic,readonly) BOOL hasPremultipliedAlpha;
+
+/** returns the content size of the texture in points */
+-(CGSize) contentSize;
 @end
 
 /**
@@ -293,6 +297,8 @@ typedef struct _ccTexParams {
  */
 +(CCTexture2DPixelFormat) defaultAlphaPixelFormat;
 @end
+
+
 
 
 

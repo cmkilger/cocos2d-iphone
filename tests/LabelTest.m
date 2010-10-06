@@ -21,6 +21,8 @@ static NSString *transitions[] = {
 	@"AtlasFastBitmap",
 	@"BitmapFontMultiLine",
 	@"LabelsEmpty",
+	@"LabelBMFontHD",
+	@"LabelAtlasHD",
 	
 	// Not a label test. Should be moved to Atlas test
 	@"Atlas1",
@@ -338,7 +340,7 @@ Class restartAction()
 #pragma mark Example Atlas3
 
 /*
- * Use any of these editors to generate bitmap font atlas:
+ * Use any of these editors to generate BMFont labels:
  *   http://www.n4te.com/hiero/hiero.jnlp
  *   http://slick.cokeandcode.com/demos/hiero.jnlp
  *   http://www.angelcode.com/products/bmfont/
@@ -421,7 +423,7 @@ Class restartAction()
 #pragma mark Example Atlas4
 
 /*
- * Use any of these editors to generate bitmap font atlas:
+ * Use any of these editors to generate BMFont labels:
  *   http://www.n4te.com/hiero/hiero.jnlp
  *   http://slick.cokeandcode.com/demos/hiero.jnlp
  *   http://www.angelcode.com/products/bmfont/
@@ -433,7 +435,7 @@ Class restartAction()
 	if( (self=[super init]) ) {
 		
 		// Upper Label
-		CCLabelBMFont *label = [CCLabelBMFont labelWithString:@"Bitmap Font Atlas" fntFile:@"bitmapFontTest.fnt"];
+		CCLabelBMFont *label = [CCLabelBMFont labelWithString:@"BMFont label" fntFile:@"bitmapFontTest.fnt"];
 		[self addChild:label];
 		
 		CGSize s = [[CCDirector sharedDirector] winSize];
@@ -515,7 +517,7 @@ Class restartAction()
 #pragma mark Example Atlas5
 
 /*
- * Use any of these editors to generate bitmap font atlas:
+ * Use any of these editors to generate BMFont labels:
  *   http://www.n4te.com/hiero/hiero.jnlp
  *   http://slick.cokeandcode.com/demos/hiero.jnlp
  *   http://www.angelcode.com/products/bmfont/
@@ -554,7 +556,7 @@ Class restartAction()
 #pragma mark Example Atlas6
 
 /*
- * Use any of these editors to generate bitmap font atlas:
+ * Use any of these editors to generate BMFont label:
  *   http://www.n4te.com/hiero/hiero.jnlp
  *   http://slick.cokeandcode.com/demos/hiero.jnlp
  *   http://www.angelcode.com/products/bmfont/
@@ -604,7 +606,7 @@ Class restartAction()
 #pragma mark Example AtlasBitmapColor
 
 /*
- * Use any of these editors to generate bitmap font atlas:
+ * Use any of these editors to generate BMFont label:
  *   http://www.n4te.com/hiero/hiero.jnlp
  *   http://slick.cokeandcode.com/demos/hiero.jnlp
  *   http://www.angelcode.com/products/bmfont/
@@ -658,7 +660,7 @@ Class restartAction()
 #pragma mark Example AtlasFastBitmap
 
 /*
- * Use any of these editors to generate bitmap font atlas:
+ * Use any of these editors to generate BMFont label:
  *   http://www.n4te.com/hiero/hiero.jnlp
  *   http://slick.cokeandcode.com/demos/hiero.jnlp
  *   http://www.angelcode.com/products/bmfont/
@@ -701,7 +703,7 @@ Class restartAction()
 #pragma mark BitmapFontMultiLine
 
 /*
- * Use any of these editors to generate bitmap font atlas:
+ * Use any of these editors to generate BMFont label:
  *   http://www.n4te.com/hiero/hiero.jnlp
  *   http://slick.cokeandcode.com/demos/hiero.jnlp
  *   http://www.angelcode.com/products/bmfont/
@@ -836,6 +838,74 @@ Class restartAction()
 @end
 
 #pragma mark -
+#pragma mark LabelBMFontHD
+
+@implementation LabelBMFontHD
+-(id) init
+{
+	if( (self=[super init]) ) {
+		
+		CGSize s = [[CCDirector sharedDirector] winSize];
+		
+		// CCLabelBMFont
+		CCLabelBMFont *label1 = [CCLabelBMFont labelWithString:@"TESTING RETINA DISPLAY" fntFile:@"konqa32.fnt"];
+		[self addChild:label1];
+		[label1 setPosition: ccp(s.width/2, s.height/2)];
+		
+	}
+	
+	return self;
+}
+
+-(NSString*) title
+{
+	return @"Testing Retina Display BMFont";
+}
+
+-(NSString *) subtitle
+{
+	return @"loading arista16 or arista16-hd";
+}
+
+@end
+
+#pragma mark -
+#pragma mark LabelAtlasHD
+
+@implementation LabelAtlasHD
+-(id) init
+{
+	if( (self=[super init]) ) {
+		
+		CGSize s = [[CCDirector sharedDirector] winSize];
+		
+		// CCLabelBMFont
+		CCLabelAtlas *label1 = [CCLabelAtlas labelWithString:@"TESTING RETINA DISPLAY" charMapFile:@"larabie-16.png" itemWidth:10 itemHeight:20 startCharMap:'A'];
+		label1.anchorPoint = ccp(0.5f, 0.5f);
+		
+		[self addChild:label1];
+		[label1 setPosition: ccp(s.width/2, s.height/2)];
+		
+	}
+	
+	return self;
+}
+
+-(NSString*) title
+{
+	return @"LabelAtlas with Retina Display";
+}
+
+-(NSString *) subtitle
+{
+	return @"loading larabie-16 / larabie-16-hd";
+}
+
+@end
+
+
+
+#pragma mark -
 #pragma mark Application Delegate - iPhone
 
 // CLASS IMPLEMENTATIONS
@@ -865,6 +935,10 @@ Class restartAction()
 	
 	// Sets landscape mode
 	[director setDeviceOrientation:kCCDeviceOrientationLandscapeLeft];
+	
+	// Enables High Res mode (Retina Display) on iPhone 4 and maintains low res on all other devices
+	if ([UIScreen instancesRespondToSelector:@selector(scale)])
+		[director setContentScaleFactor:[[UIScreen mainScreen] scale]];
 	
 	// Turn on display FPS
 	[director setDisplayFPS:YES];

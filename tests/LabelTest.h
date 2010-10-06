@@ -86,3 +86,13 @@
 }
 @end
 
+@interface LabelBMFontHD : AtlasDemo
+{
+}
+@end
+
+@interface LabelAtlasHD : AtlasDemo
+{
+}
+@end
+

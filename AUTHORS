@@ -114,6 +114,8 @@ People/companies who were/are contributing code to cocos2d for iPhone (alphabeti
 		patches for MultiplexLayer
 	* geefmijgratismail:
 		EAGLView supports resizing. patch.
+	* Gildas (http://www.bigpapoo.com)
+		Fixed memory leak when loading ParticleDesigner particles.
 	* Graham Perks:
 		Atlas works with GL_CULL_FACE
 		FastDirector doesn't leak autorelease pool patch
@@ -239,6 +241,9 @@ People/companies who were/are contributing code to cocos2d for iPhone (alphabeti
 		Particles: also work with vertex array list (compile time option). patch.
 		Mac Port: Ported CCLabelTTF to Mac
 		MenuItems are disabled at exit time (patch)
+		Fixed possible crash with NPOT PVR images
+		Optimized the loading time of PVR images
+		CCArray: improved performance in insert & delete elements
 	* Marco Tillemans:
 		RenderTexture renders images with correct blend function. patch.
 	* marcu.catalin:
@@ -265,6 +270,7 @@ People/companies who were/are contributing code to cocos2d for iPhone (alphabeti
 	* Michal Szymerski:
 		Added support for AtlasSprite as MenuItems
 		author of CCFollow action
+		Added a way to remove from the SpriteFrameCache frames given a dictionary, file or texture
 	* Michael Thornton:
 		TMXTileMap supports any kind of child. patch.
 	* mike AT finklyinteractive:

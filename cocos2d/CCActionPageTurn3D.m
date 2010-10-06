@@ -43,9 +43,9 @@
 	float sinTheta = sinf(theta);
 	float cosTheta = cosf(theta);
 	
-	for( int i = 0; i <=gridSize.x; i++ )
+	for( int i = 0; i <=gridSize_.x; i++ )
 	{
-		for( int j = 0; j <= gridSize.y; j++ )
+		for( int j = 0; j <= gridSize_.y; j++ )
 		{
 			// Get original vertex
 			ccVertex3F	p = [self originalVertex:ccg(i,j)];
@@ -78,8 +78,8 @@
 			
 			// Stop z coord from dropping beneath underlying page in a transition
 			// issue #751
-			if( p.z<0.9f )
-				p.z = 0.9f;
+			if( p.z<0.22f )
+				p.z = 0.22f;
 			
 			// Set new coords
 			[self setVertex:ccg(i,j) vertex:p];
